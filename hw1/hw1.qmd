@@ -99,32 +99,74 @@ done
 5.  Display the first few lines of `admissions.csv.gz`. How many rows are in this data file? How many unique patients (identified by `subject_id`) are in this data file? Do they match the number of patients listed in the `patients.csv.gz` file? (Hint: combine Linux commands `zcat <`, `head`/`tail`, `awk`, `sort`, `uniq`, `wc`, and so on.)
 
 ```{bash, eval=TRUE}
-# display
+echo "display of the first 10 lines in admissions.csv.gz"
 gzcat ~/mimic/hosp/admissions.csv.gz | head
+
+echo "count the unique patients numbers in admissions.csv.gz (without headline)"
+gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2 | cut -d ',' -f 1 | sort | uniq | wc -l 
+
+echo "count the patients numbers in paitients.csv.gz"
+gzcat ~/mimic/hosp/patients.csv.gz |tail -n +2| cut -d ',' -f 1 | sort | uniq | wc -l 
 ```
 
-6.  What are the possible values taken by each of the variable `admission_type`, `admission_location`, `insurance`, and `ethnicity`? Also report the count for each unique value of these variables. (Hint: combine Linux commands `zcat`, `head`/`tail`, `awk`, `uniq -c`, `wc`, and so on; skip the header line.)
+According to the result, apparently it doesn't match. The unique patients number in the patients.csv.gz is much higher.
+
+6.  What are the possible values taken by each of the variable `admission_type`, `admission_location`, `insurance`, and `race`? Also report the count for each unique value of these variables. (Hint: combine Linux commands `zcat`, `head`/`tail`, `awk`, `uniq -c`, `wc`, and so on; skip the header line.)
+
+```{bash, eval=TRUE}
+echo "list the unique values"
+echo "admission_type:"
+gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 6 | sort | uniq
+echo "admission_location:"
+gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 8 | sort | uniq
+echo "insurance:"
+gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 10 | sort | uniq
+echo "race:"
+gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 13 | sort | uniq
+
+echo "count the unique values"
+echo "admission_type:"
+gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 6 | sort | uniq | wc -l
+echo "admission_location:"
+gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 8 | sort | uniq | wc -l
+echo "insurance:"
+gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 10 | sort | uniq | wc -l
+echo "race:"
+gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 13 | sort | uniq | wc -l
+
+```
 
 7.  *To compress, or not to compress. That's the question.* Let's focus on the big data file `labevents.csv.gz`. Compare compressed gz file size to the uncompressed file size. Compare the run times of `zcat < ~/mimic/labevents.csv.gz | wc -l` versus `wc -l labevents.csv`. Discuss the trade off between storage and speed for big data files. (Hint: `gzip -dk < FILENAME.gz > ./FILENAME`. Remember to delete the large `labevents.csv` file after the exercise.)
+
+```{bash, eval=TRUE}
+echo "decompress labevents.csv.gz"
+# gzip -dk ~/mimic/hosp/labevents.csv.gz
+```
+
+```{bash, eval=TRUE}
+cd ~/mimic/hosp/
+echo "list the size of the two files"
+ls -lh labevents.csv.gz
+ls -lh labevents.csv
+echo "list the time consumption of the two commands"
+time gzcat < labevents.csv.gz | wc -l > /dev/null
+time wc -l labevents.csv > /dev/null
+```
+
+As we can see from the results, the gz files is much smaller(1.8G) than csv file (13G), however, the running time of the commands to read and process the data will be longer for gz files.
 
 ## Q4. Who's popular in Price and Prejudice
 
 1.  You and your friend just have finished reading *Pride and Prejudice* by Jane Austen. Among the four main characters in the book, Elizabeth, Jane, Lydia, and Darcy, your friend thinks that Darcy was the most mentioned. You, however, are certain it was Elizabeth. Obtain the full text of the novel from <http://www.gutenberg.org/cache/epub/42671/pg42671.txt> and save to your local folder.
 
-```{bash}
-#| eval: false
-wget -nc http://www.gutenberg.org/cache/epub/42671/pg42671.txt
-```
-
 Explain what `wget -nc` does. Do **not** put this text file `pg42671.txt` in Git. Complete the following loop to tabulate the number of times each of the four characters is mentioned using Linux commands.
 
-```{bash}
-#| eval: false
+```{bash,eval=TRUE}
 wget -nc http://www.gutenberg.org/cache/epub/42671/pg42671.txt
 for char in Elizabeth Jane Lydia Darcy
 do
   echo $char:
-  # some bash commands here
+  grep -o -w $char ~/pg42671.txt | wc -l
 done
 ```
 
@@ -142,9 +184,11 @@ and
 echo 'hello, world' >> test2.txt
 ```
 
+The difference is on the operator '\>' and '\>\>'. '\>' is used for redirection and will overwrite the destination file. '\>\>' is used for appending, adding content to the end of the file without overwriting its existing content. As for the commands above, the first one will create a new file named test1.txt and write the string 'hello, world' into it. If the file already exists, it will be overwritten. The second one will create a new file named test2.txt if it doesn't exist, or append the string 'hello, world' to the end of the file if it already exists.
+
 3.  Using your favorite text editor (e.g., `vi`), type the following and save the file as `middle.sh`:
 
-```{bash eval=FALSE}
+```{bash eval=TRUE}
 #!/bin/sh
 # Select lines from the middle of a file.
 # Usage: bash middle.sh filename end_line num_lines
@@ -153,16 +197,89 @@ head -n "$2" "$1" | tail -n "$3"
 
 Using `chmod` to make the file executable by the owner, and run
 
-```{bash}
-#| eval: false
-./middle.sh pg42671.txt 20 5
+```{bash eval=FALSE}
+# After inserting the code bleow into middle.sh
+chmod +x ~/middle.sh
+~/middle.sh ~/pg42671.txt 20 5
 ```
 
 Explain the output. Explain the meaning of `"$1"`, `"$2"`, and `"$3"` in this shell script. Why do we need the first line of the shell script?
 
+The out put is actually the 16\~20 lines in pg42671.txt. The reason they are printed is that the middle.sh choose the first 20 lines of this file using head, and then take the lst 5 lines of the 20 lines.
+
+"\$1", "\$2", and "\$3" refer to the three arguments the script require. Specifically, "\$1" is the file name (and directory), "\$2" is the upper-bound of the expect lines range, while "\$3" is the lower-bound.
+
+The first line fo this script is a Shebang line, which is used to specify which interpreter the script should be executed by.
+
 ## Q5. More fun with Linux
 
 Try following commands in Bash and interpret the results: `cal`, `cal 2024`, `cal 9 1752` (anything unusual?), `date`, `hostname`, `arch`, `uname -a`, `uptime`, `who am i`, `who`, `w`, `id`, `last | head`, `echo {con,pre}{sent,fer}{s,ed}`, `time sleep 5`, `history | tail`.
+
+```{bash eval=TRUE}
+echo "cal"
+cal
+echo "cal 2024"
+cal 2024
+echo "cal 9 1752"
+cal  1752
+echo "date"
+date
+```
+
+The "**cal**" command can displays the calendar for the current month, while "**cal 2024**" can print the calendar of specified year 2024. "**cal 9 1752**" shows an unusual September calendar in 1752. "**date**" can show the current date and time.
+
+```{bash eval=TRUE}
+echo "hostname"
+hostname
+echo "arch"
+arch
+echo -e "\nuname -a"
+uname -a
+echo "uptime "
+uptime
+echo "who am i"
+who am i
+echo "who"
+who
+echo "w"
+w
+echo "id"
+id
+```
+
+"**hostname**" shows the system's hostname. "**arch**" displays the system architecture. "**uname -a:**" is a command that shows system information, like some system architecture. "**uptime**" displays the system's uptime and average load.
+
+**"who am i"** shows information about the current user. "**who"** displays a list of users currently logged into the system."**w**"will print detailed information about active users on the system, including login time and running commands, while "**id"** shows the current user's UID, GID, and group memberships.
+
+```{bash eval=TRUE}
+echo "last | head"
+last | head
+echo "echo {con,pre}{sent,fer}{s,ed}"
+echo {con,pre}{sent,fer}{s,ed}
+echo "time sleep 5"
+time sleep 5
+```
+
+**"last \| head"** can display information about recently logged-in users. "**echo {con,pre}{sent,fer}{s,ed}"** is a Bash shell brace expansion, expanding to multiple strings: **`conss, consed, confess, conferred, press, pressed, press, pressed`**."**time sleep 5"** measures the time it takes to run the **`sleep 5`** command.
+
+```{bash eval=TRUE}
+echo "cal"
+cal
+echo "cal 2024"
+cal 2024
+echo "cal 9 1752"
+cal  1752
+echo "date"
+date
+```
+
+The "**cal**" command can displays the calendar for the current month, while "**cal 2024**" can print the calendar of specified year 2024. "**cal 9 1752**" shows an unusual September calendar in 1752. "**date**" can show the current date and time.
+
+```{bash eval=TRUE}
+history | tail
+```
+
+**"history \| tail"** shows the last few entries from the Bash shell command history. (works well on my local machine)
 
 ## Q6. Book
 
