@@ -35,6 +35,10 @@ This exercise (and later in this course) uses the [MIMIC-IV data v2.2](https://p
 
 **Completion Certificate:** [citiprogram.org/verify/?w30937e79-3ad1-4acd-a010-d7ba417d5813-60370630](https://www.citiprogram.org/verify/?w30937e79-3ad1-4acd-a010-d7ba417d5813-60370630)
 
+**Credentialing:**
+
+![](images/Screenshot%202024-01-26%20at%202.05.15%20PM.png)
+
 ## Q3. Linux Shell Commands
 
 1.  Make the MIMIC v2.2 data available at location `~/mimic`.
@@ -89,6 +93,8 @@ The bash commands above will list every files in patterns of {a,l,pa}\*.gz using
 
 The following commands shows the line counts.
 
+**'zcat' somehow doesn't work in my mac machine, so I use 'gzcat' instead in the rest of the qmd file.**
+
 ```{bash, eval=TRUE}
 for datafile in ~/mimic/hosp/{a,l,pa}*.gz
 do
@@ -100,12 +106,15 @@ done
 
 ```{bash, eval=TRUE}
 echo "display of the first 10 lines in admissions.csv.gz"
-gzcat ~/mimic/hosp/admissions.csv.gz | head
+gzcat ~/mimic/hosp/admissions.csv.gz | 
+
+echo "count the lines admissions.csv.gz (without headlines)"
+gzcat ~/mimic/hosp/admissions.csv.gz | tail -n +2 | wc -l
 
 echo "count the unique patients numbers in admissions.csv.gz (without headline)"
 gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2 | cut -d ',' -f 1 | sort | uniq | wc -l 
 
-echo "count the patients numbers in paitients.csv.gz"
+echo "count the patients numbers in paitients.csv.gz (without headline)"
 gzcat ~/mimic/hosp/patients.csv.gz |tail -n +2| cut -d ',' -f 1 | sort | uniq | wc -l 
 ```
 
@@ -114,7 +123,7 @@ According to the result, apparently it doesn't match. The unique patients number
 6.  What are the possible values taken by each of the variable `admission_type`, `admission_location`, `insurance`, and `race`? Also report the count for each unique value of these variables. (Hint: combine Linux commands `zcat`, `head`/`tail`, `awk`, `uniq -c`, `wc`, and so on; skip the header line.)
 
 ```{bash, eval=TRUE}
-echo "list the unique values"
+echo "list the unique values (without headline)"
 echo "admission_type:"
 gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 6 | sort | uniq
 echo "admission_location:"
@@ -124,7 +133,7 @@ gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 10 | sort | uniq
 echo "race:"
 gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 13 | sort | uniq
 
-echo "count the unique values"
+echo "count the unique values (without headline)"
 echo "admission_type:"
 gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 6 | sort | uniq | wc -l
 echo "admission_location:"
@@ -151,6 +160,9 @@ ls -lh labevents.csv
 echo "list the time consumption of the two commands"
 time gzcat < labevents.csv.gz | wc -l > /dev/null
 time wc -l labevents.csv > /dev/null
+
+# echo "delete the csv file"
+# rm labevents.csv
 ```
 
 As we can see from the results, the gz files is much smaller(1.8G) than csv file (13G), however, the running time of the commands to read and process the data will be longer for gz files.
@@ -162,13 +174,16 @@ As we can see from the results, the gz files is much smaller(1.8G) than csv file
 Explain what `wget -nc` does. Do **not** put this text file `pg42671.txt` in Git. Complete the following loop to tabulate the number of times each of the four characters is mentioned using Linux commands.
 
 ```{bash,eval=TRUE}
-wget -nc http://www.gutenberg.org/cache/epub/42671/pg42671.txt
+# wget -nc http://www.gutenberg.org/cache/epub/42671/pg42671.txt
 for char in Elizabeth Jane Lydia Darcy
 do
-  echo $char:
+  echo $char
+  # only grep the whole independent word
   grep -o -w $char ~/pg42671.txt | wc -l
 done
 ```
+
+The `wget -nc` will download files from Internet through given URL without overwriting exists files.
 
 2.  What's the difference between the following two commands?
 
@@ -242,7 +257,7 @@ who am i
 echo "who"
 who
 echo "w"
-w
+# w
 echo "id"
 id
 ```
@@ -290,3 +305,5 @@ history | tail
 The point of this exercise is (1) to get the book for free and (2) to see an example how a complicated project such as a book can be organized in a reproducible way.
 
 For grading purpose, include a screenshot of Section 4.1.5 of the book here.
+
+![](images/Screenshot%202024-01-26%20at%202.01.22%20PM.png)
