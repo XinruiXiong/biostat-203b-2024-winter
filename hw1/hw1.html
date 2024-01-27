@@ -180,7 +180,7 @@ drwxr-xr-x@ 11 xinrui  staff    352 Jan 26 02:11 icu</code></pre>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> ~/mimic/icu</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>contents in hosp folder:
-total 35792184
+total 35676328
 -rw-rw-r--@ 1 xinrui  staff     15516088 Jan  5  2023 admissions.csv.gz
 -rw-rw-r--@ 1 xinrui  staff       427468 Jan  5  2023 d_hcpcs.csv.gz
 -rw-rw-r--@ 1 xinrui  staff       859438 Jan  5  2023 d_icd_diagnoses.csv.gz
@@ -205,7 +205,7 @@ total 35792184
 -rw-rw-r--@ 1 xinrui  staff      6781247 Jan  5  2023 services.csv.gz
 -rw-rw-r--@ 1 xinrui  staff     36158338 Jan  5  2023 transfers.csv.gz
 contents in hosp folder:
-total 6165984
+total 6155968
 -rw-rw-r--@ 1 xinrui  staff       35893 Jan  5  2023 caregiver.csv.gz
 -rw-rw-r--@ 1 xinrui  staff  2467761053 Jan  5  2023 chartevents.csv.gz
 -rw-rw-r--@ 1 xinrui  staff       57476 Jan  5  2023 d_items.csv.gz
@@ -260,7 +260,7 @@ total 6165984
 </ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"display of the first 10 lines in admissions.csv.gz"</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gzcat</span> ~/mimic/hosp/admissions.csv.gz <span class="kw">|</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gzcat</span> ~/mimic/hosp/admissions.csv.gz <span class="kw">|</span> <span class="fu">head</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"count the lines admissions.csv.gz (without headlines)"</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">gzcat</span> ~/mimic/hosp/admissions.csv.gz <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> +2 <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
@@ -272,6 +272,16 @@ total 6165984
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="ex">gzcat</span> ~/mimic/hosp/patients.csv.gz <span class="kw">|</span><span class="fu">tail</span> <span class="at">-n</span> +2<span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>display of the first 10 lines in admissions.csv.gz
+subject_id,hadm_id,admittime,dischtime,deathtime,admission_type,admit_provider_id,admission_location,discharge_location,insurance,language,marital_status,race,edregtime,edouttime,hospital_expire_flag
+10000032,22595853,2180-05-06 22:23:00,2180-05-07 17:15:00,,URGENT,P874LG,TRANSFER FROM HOSPITAL,HOME,Other,ENGLISH,WIDOWED,WHITE,2180-05-06 19:17:00,2180-05-06 23:30:00,0
+10000032,22841357,2180-06-26 18:27:00,2180-06-27 18:49:00,,EW EMER.,P09Q6Y,EMERGENCY ROOM,HOME,Medicaid,ENGLISH,WIDOWED,WHITE,2180-06-26 15:54:00,2180-06-26 21:31:00,0
+10000032,25742920,2180-08-05 23:44:00,2180-08-07 17:50:00,,EW EMER.,P60CC5,EMERGENCY ROOM,HOSPICE,Medicaid,ENGLISH,WIDOWED,WHITE,2180-08-05 20:58:00,2180-08-06 01:44:00,0
+10000032,29079034,2180-07-23 12:35:00,2180-07-25 17:55:00,,EW EMER.,P30KEH,EMERGENCY ROOM,HOME,Medicaid,ENGLISH,WIDOWED,WHITE,2180-07-23 05:54:00,2180-07-23 14:00:00,0
+10000068,25022803,2160-03-03 23:16:00,2160-03-04 06:26:00,,EU OBSERVATION,P51VDL,EMERGENCY ROOM,,Other,ENGLISH,SINGLE,WHITE,2160-03-03 21:55:00,2160-03-04 06:26:00,0
+10000084,23052089,2160-11-21 01:56:00,2160-11-25 14:52:00,,EW EMER.,P6957U,WALK-IN/SELF REFERRAL,HOME HEALTH CARE,Medicare,ENGLISH,MARRIED,WHITE,2160-11-20 20:36:00,2160-11-21 03:20:00,0
+10000084,29888819,2160-12-28 05:11:00,2160-12-28 16:07:00,,EU OBSERVATION,P63AD6,PHYSICIAN REFERRAL,,Medicare,ENGLISH,MARRIED,WHITE,2160-12-27 18:32:00,2160-12-28 16:07:00,0
+10000108,27250926,2163-09-27 23:17:00,2163-09-28 09:04:00,,EU OBSERVATION,P38XXV,EMERGENCY ROOM,,Other,ENGLISH,SINGLE,WHITE,2163-09-27 16:18:00,2163-09-28 09:04:00,0
+10000117,22927623,2181-11-15 02:05:00,2181-11-15 14:52:00,,EU OBSERVATION,P2358X,EMERGENCY ROOM,,Other,ENGLISH,DIVORCED,WHITE,2181-11-14 21:51:00,2181-11-15 09:57:00,0
 count the lines admissions.csv.gz (without headlines)
   431231
 count the unique patients numbers in admissions.csv.gz (without headline)
@@ -295,15 +305,15 @@ count the patients numbers in paitients.csv.gz (without headline)
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"race:"</span></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="ex">gzcat</span> ~/mimic/hosp/admissions.csv.gz <span class="kw">|</span><span class="fu">tail</span> <span class="at">-n</span> +2<span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 13 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span></span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"count the unique values (without headline)"</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="at">-e</span> <span class="st">"\ncount the unique values (without headline)"</span></span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"admission_type:"</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="ex">gzcat</span> ~/mimic/hosp/admissions.csv.gz <span class="kw">|</span><span class="fu">tail</span> <span class="at">-n</span> +2<span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 6 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="ex">gzcat</span> ~/mimic/hosp/admissions.csv.gz <span class="kw">|</span><span class="fu">tail</span> <span class="at">-n</span> +2<span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 6 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span>
 <span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"admission_location:"</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="ex">gzcat</span> ~/mimic/hosp/admissions.csv.gz <span class="kw">|</span><span class="fu">tail</span> <span class="at">-n</span> +2<span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 8 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="ex">gzcat</span> ~/mimic/hosp/admissions.csv.gz <span class="kw">|</span><span class="fu">tail</span> <span class="at">-n</span> +2<span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 8 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"insurance:"</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="ex">gzcat</span> ~/mimic/hosp/admissions.csv.gz <span class="kw">|</span><span class="fu">tail</span> <span class="at">-n</span> +2<span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 10 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="ex">gzcat</span> ~/mimic/hosp/admissions.csv.gz <span class="kw">|</span><span class="fu">tail</span> <span class="at">-n</span> +2<span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 10 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span>
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"race:"</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="ex">gzcat</span> ~/mimic/hosp/admissions.csv.gz <span class="kw">|</span><span class="fu">tail</span> <span class="at">-n</span> +2<span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 13 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="ex">gzcat</span> ~/mimic/hosp/admissions.csv.gz <span class="kw">|</span><span class="fu">tail</span> <span class="at">-n</span> +2<span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> <span class="st">','</span> <span class="at">-f</span> 13 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>list the unique values (without headline)
 admission_type:
@@ -366,15 +376,68 @@ WHITE - BRAZILIAN
 WHITE - EASTERN EUROPEAN
 WHITE - OTHER EUROPEAN
 WHITE - RUSSIAN
+
 count the unique values (without headline)
 admission_type:
-       9
+6626 AMBULATORY OBSERVATION
+19554 DIRECT EMER.
+18707 DIRECT OBSERVATION
+10565 ELECTIVE
+94776 EU OBSERVATION
+149413 EW EMER.
+52668 OBSERVATION ADMIT
+34231 SURGICAL SAME DAY ADMISSION
+44691 URGENT
 admission_location:
-      11
+ 185 AMBULATORY SURGERY TRANSFER
+10008 CLINIC REFERRAL
+232595 EMERGENCY ROOM
+ 359 INFORMATION NOT AVAILABLE
+4205 INTERNAL TRANSFER TO OR FROM PSYCH
+5479 PACU
+114963 PHYSICIAN REFERRAL
+7804 PROCEDURE SITE
+35974 TRANSFER FROM HOSPITAL
+3843 TRANSFER FROM SKILLED NURSING FACILITY
+15816 WALK-IN/SELF REFERRAL
 insurance:
-       3
+41330 Medicaid
+160560 Medicare
+229341 Other
 race:
-      33</code></pre>
+ 919 AMERICAN INDIAN/ALASKA NATIVE
+6156 ASIAN
+1198 ASIAN - ASIAN INDIAN
+5587 ASIAN - CHINESE
+ 506 ASIAN - KOREAN
+1446 ASIAN - SOUTH EAST ASIAN
+2530 BLACK/AFRICAN
+59959 BLACK/AFRICAN AMERICAN
+4765 BLACK/CAPE VERDEAN
+2704 BLACK/CARIBBEAN ISLAND
+7754 HISPANIC OR LATINO
+ 437 HISPANIC/LATINO - CENTRAL AMERICAN
+ 639 HISPANIC/LATINO - COLUMBIAN
+ 500 HISPANIC/LATINO - CUBAN
+4383 HISPANIC/LATINO - DOMINICAN
+1330 HISPANIC/LATINO - GUATEMALAN
+ 536 HISPANIC/LATINO - HONDURAN
+ 665 HISPANIC/LATINO - MEXICAN
+8076 HISPANIC/LATINO - PUERTO RICAN
+ 892 HISPANIC/LATINO - SALVADORAN
+ 560 MULTIPLE RACE/ETHNICITY
+ 386 NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER
+15102 OTHER
+1761 PATIENT DECLINED TO ANSWER
+1510 PORTUGUESE
+ 505 SOUTH AMERICAN
+1603 UNABLE TO OBTAIN
+10668 UNKNOWN
+272932 WHITE
+1103 WHITE - BRAZILIAN
+1170 WHITE - EASTERN EUROPEAN
+7925 WHITE - OTHER EUROPEAN
+5024 WHITE - RUSSIAN</code></pre>
 </div>
 </div>
 <ol start="7" type="1">
@@ -404,13 +467,13 @@ race:
 -rw-rw-r--@ 1 xinrui  staff    13G Jan  5  2023 labevents.csv
 list the time consumption of the two commands
 
-real    0m18.785s
-user    0m22.887s
-sys 0m2.036s
+real    0m18.746s
+user    0m22.881s
+sys 0m1.997s
 
-real    0m7.886s
-user    0m4.212s
-sys 0m1.465s</code></pre>
+real    0m7.841s
+user    0m4.201s
+sys 0m1.432s</code></pre>
 </div>
 </div>
 <p>As we can see from the results, the gz files is much smaller(1.8G) than csv file (13G), however, the running time of the commands to read and process the data will be longer for gz files.</p>
@@ -572,7 +635,7 @@ Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa
 29 30 31              26 27 28 29 30        24 25 26 27 28 29 30  
                                             31                    
 date
-Fri Jan 26 15:06:27 PST 2024</code></pre>
+Fri Jan 26 18:43:25 PST 2024</code></pre>
 </div>
 </div>
 <p>The “<strong>cal</strong>” command can displays the calendar for the current month, while “<strong>cal 2024</strong>” can print the calendar of specified year 2024. “<strong>cal 9 1752</strong>” shows an unusual September calendar in 1752. “<strong>date</strong>” can show the current date and time.</p>
@@ -601,12 +664,11 @@ arm64
 uname -a
 Darwin Xinruis-MacBook-Air.local 22.6.0 Darwin Kernel Version 22.6.0: Wed Jul  5 22:17:35 PDT 2023; root:xnu-8796.141.3~6/RELEASE_ARM64_T8112 arm64
 uptime 
-15:06  up 13:43, 2 users, load averages: 1.62 1.64 1.57
+18:43  up  1:59, 1 user, load averages: 1.90 1.71 1.52
 who am i
-xinrui                        Jan 26 15:06 
+xinrui                        Jan 26 18:43 
 who
-xinrui           console      Jan 26 01:23 
-xinrui           ttys000      Jan 26 14:53 
+xinrui           console      Jan 26 16:44 
 w
 id
 uid=501(xinrui) gid=20(staff) groups=20(staff),12(everyone),61(localaccounts),79(_appserverusr),80(admin),81(_appserveradm),98(_lpadmin),33(_appstore),100(_lpoperator),204(_developer),250(_analyticsusers),395(com.apple.access_ftp),398(com.apple.access_screensharing),399(com.apple.access_ssh),400(com.apple.access_remote_ae),701(com.apple.sharepoint.group.1)</code></pre>
@@ -623,21 +685,21 @@ uid=501(xinrui) gid=20(staff) groups=20(staff),12(everyone),61(localaccounts),79
 <span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> sleep 5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>last | head
-xinrui    ttys000                   Fri Jan 26 14:53   still logged in
+xinrui    console                   Fri Jan 26 16:44   still logged in
+reboot    ~                         Fri Jan 26 16:43 
+shutdown  ~                         Fri Jan 26 15:55 
+xinrui    ttys000                   Fri Jan 26 14:53 - 14:53  (00:00)
 xinrui    ttys000                   Fri Jan 26 03:06 - 03:06  (00:00)
 xinrui    ttys000                   Fri Jan 26 02:37 - 02:37  (00:00)
 xinrui    ttys001                   Fri Jan 26 02:30 - 02:30  (00:00)
 xinrui    ttys000                   Fri Jan 26 02:26 - 02:26  (00:00)
 xinrui    ttys000                   Fri Jan 26 01:26 - 01:26  (00:00)
-xinrui    console                   Fri Jan 26 01:23   still logged in
-reboot    ~                         Fri Jan 26 01:23 
-shutdown  ~                         Fri Jan 26 01:22 
-xinrui    ttys000                   Fri Jan 26 01:00 - 01:00  (00:00)
+xinrui    console                   Fri Jan 26 01:23 - 15:55  (14:32)
 echo {con,pre}{sent,fer}{s,ed}
 consents consented confers confered presents presented prefers prefered
 time sleep 5
 
-real    0m5.007s
+real    0m5.018s
 user    0m0.000s
 sys 0m0.001s</code></pre>
 </div>
@@ -737,7 +799,7 @@ Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa
 29 30 31              26 27 28 29 30        24 25 26 27 28 29 30  
                                             31                    
 date
-Fri Jan 26 15:06:32 PST 2024</code></pre>
+Fri Jan 26 18:43:30 PST 2024</code></pre>
 </div>
 </div>
 <p>The “<strong>cal</strong>” command can displays the calendar for the current month, while “<strong>cal 2024</strong>” can print the calendar of specified year 2024. “<strong>cal 9 1752</strong>” shows an unusual September calendar in 1752. “<strong>date</strong>” can show the current date and time.</p>

@@ -106,7 +106,7 @@ done
 
 ```{bash, eval=TRUE}
 echo "display of the first 10 lines in admissions.csv.gz"
-gzcat ~/mimic/hosp/admissions.csv.gz | 
+gzcat ~/mimic/hosp/admissions.csv.gz | head
 
 echo "count the lines admissions.csv.gz (without headlines)"
 gzcat ~/mimic/hosp/admissions.csv.gz | tail -n +2 | wc -l
@@ -133,15 +133,15 @@ gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 10 | sort | uniq
 echo "race:"
 gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 13 | sort | uniq
 
-echo "count the unique values (without headline)"
+echo -e "\ncount the unique values (without headline)"
 echo "admission_type:"
-gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 6 | sort | uniq | wc -l
+gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 6 | sort | uniq -c
 echo "admission_location:"
-gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 8 | sort | uniq | wc -l
+gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 8 | sort | uniq -c
 echo "insurance:"
-gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 10 | sort | uniq | wc -l
+gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 10 | sort | uniq -c
 echo "race:"
-gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 13 | sort | uniq | wc -l
+gzcat ~/mimic/hosp/admissions.csv.gz |tail -n +2| cut -d ',' -f 13 | sort | uniq -c
 
 ```
 
