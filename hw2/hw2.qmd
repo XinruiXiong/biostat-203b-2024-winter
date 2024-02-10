@@ -1,7 +1,7 @@
 ---
 title: "Biostat 203B Homework 2"
 subtitle: Due Feb 9 @ 11:59PM
-author: "Your NAME and UID"
+author: "Xinrui Xiong 806329308"
 
 knitr:
   opts_chunk: 
@@ -290,15 +290,15 @@ cat("File size:", file_size_formatted, "GB", "\n")
 The Parquet file is 2.1GB.
 
 ```{r, eval=F}
-# the data is extremely large, and rendering this part will cause vector memory exhausted, so I set eval=F
+# the data is extremely large, and rendering this part will cause
+# vector memory exhausted, so I set eval=F
 system.time({
 csv_read7<-read_parquet("~/mimic/hosp/labevents.parquet/part-0.parquet")
 filtered_csv_read7<-csv_read7%>%
   filter(itemid %in% c(50912, 50971, 50983, 50902, 50882, 51221, 51301, 50931)) %>%
   select(subject_id, itemid, charttime, valuenum)
-
 })
-rm(csv_read7)# delete the large dataset
+
 nrow(filtered_csv_read7)
 head(filtered_csv_read7,10)
 
@@ -306,7 +306,7 @@ rm(filtered_csv_read7)
 
 ```
 
-The running time is displayed above.
+The data is extremely large and rendering it will cause vector memory exhausted, so I set "eval=F" in this part.
 
 Parquet format is like a efficient data format for storage. Parquet keeps similar kinds of data together, making it really fast to find the needed information while taking less space to store.
 
@@ -372,6 +372,28 @@ In later exercises, we are interested in the vitals for ICU patients: heart rate
 
 Document the steps and show code. Display the number of rows and the first 10 rows of the result tibble.
 
-```{r}
+```{bash, eval=F}
+cd ~/mimic/icu/
+gzcat chartevents.csv.gz > chartevents.csv
+```
+
+```{r,eval=T}
+library(arrow)
+system.time({
+csv_read9<-open_dataset("~/mimic/icu/chartevents.csv", format="csv")
+filtered_csv_read9<-csv_read9%>%
+  filter(itemid %in% c(220045, 220181, 220179, 223761, 220210)) %>%
+  select(itemid, value)
+})
+rm(csv_read9)
+filtered_csv_read9<-data.frame(filtered_csv_read9)
+nrow(filtered_csv_read9)
+head(filtered_csv_read9,10)
+
+
+rm(filtered_csv_read9)
+
 
 ```
+
+We choose the Apache Arrow to complete this task. I first wrote bash codes to decompress the .gz file. Then I use arrow::open_dataset() to read the depressed file, using filter() and select() to get the specific rows and columns (itemid and value). Finally I use nrow() and head() to get the number of rows and the first 10 rows.
