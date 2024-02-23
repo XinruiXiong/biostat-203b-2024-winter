@@ -1,18 +1,7 @@
 ---
 title: "Biostat 203B Homework 3"
 subtitle: "Due Feb 23 @ 11:59PM"
-author: "Your Name and UID"
-format:
-  html:
-    theme: cosmo
-    embed-resources: true
-    number-sections: false
-    toc: true
-    toc-depth: 4
-    toc-location: left
-    code-fold: false
-execute:
-  eval: false    
+author: "Xinrui Xiong 806329308"
 ---
 
 Display machine information for reproducibility:
@@ -55,30 +44,107 @@ Hint: We need to pull information from data files `patients.csv.gz`, `admissions
 
 ```{r,eval=T}
 setwd("~/mimic/hosp")
-patients_tble <- read_csv("patients.csv.gz")
-admissions_tble <- read_csv("admissions.csv.gz")
-transfers_tble <- read_csv("transfers.csv.gz")
-labevents_tble <- read_parquet("labevents.parquet/part-0.parquet")
-procedures_icd_tble <- read_csv("procedures_icd.csv.gz")
-diagnoses_icd_tble <- read_csv("diagnoses_icd.csv.gz")
-d_icd_procedures_tble <- read_csv("d_icd_procedures.csv.gz")
 
-temp<-filter(transfers_tble, subject_id == 10013310) 
+
+library(tidyverse)
+
+# subject id
+sid<-10013310
+
+# obtain the ADT data
+sid_adt <- read_csv("transfers.csv.gz")|>
+  filter(subject_id == sid)|>
+  print(width=Inf)
+
+# obtain the labevents data
+sid_lab<-read_parquet("labevents.parquet/part-0.parquet")|>
+  filter(subject_id == sid)|>
+  print(width=Inf)
+
+# obtain the procedures data
+sid_proc<-read_csv("procedures_icd.csv.gz")|>
+  filter(subject_id == sid)|>
+  print(width=Inf)
+
+sid_proc_d<-read_csv("d_icd_procedures.csv.gz")|>
+  filter(icd_version %in% sid_proc$icd_version)|>
+  filter(icd_code %in% sid_proc$icd_code)|>
+  print(width=Inf)
+
+sid_proc$type<-sid_proc_d$long_title[match(sid_proc$icd_code, sid_proc_d$icd_code)]
+sid_proc$chartdate <- as.POSIXct(sid_proc$chartdate)
+sid_proc$type<-substr(sid_proc$type,1,50)
+
+sid_diag<-read_csv("diagnoses_icd.csv.gz")|>
+  filter(subject_id == sid)|>
+  print(width=Inf)
+
+sid_diag_d<-read_csv("d_icd_diagnoses.csv.gz")|>
+  filter(icd_version %in% sid_diag$icd_version)|>
+  filter(icd_code %in% sid_diag$icd_code)|>
+  print(width=Inf)
+
+sid_pat<-read_csv("patients.csv.gz")|>
+  filter(subject_id == sid)|>
+  print(width=Inf)
+
+sid_adm<-read_csv("admissions.csv.gz")|>
+  filter(subject_id == sid)|>
+  print(width=Inf)
+
 
 
 
 ```
 
 ```{r,eval=T}
-temp%>%
-  ggplot()+
-  geom_segment(aes(x = intime, xend = outtime, y = "ADT", yend = "ADT", color = careunit,linewidth = str_detect(careunit,c(1,2,3,4,5))))+
-  labs(x="", y="")
+  ggplot() +
+  geom_segment(
+    data=sid_adt %>%filter(eventtype != "discharge"),
+    aes(
+      x = intime, 
+      xend = outtime, 
+      y = "ADT", 
+      yend = "ADT", 
+      color = careunit,
+      linewidth = str_detect(careunit, "(ICU|CCU)")
+    ),
+
+  ) +
+  geom_point(
+    data = sid_lab,
+    aes(
+      x = charttime, 
+      y = "Lab"
+    ),
+    shape = "+",
+    size=4
+
+  ) +
+   geom_point(
+    data = sid_proc,
+    aes(
+      x = chartdate,
+      y = "Procedure",
+      shape = type
+    ),
+    size=3
+  ) +
+    scale_shape_manual(values = 15:24)+
+  labs(
+    x = "", 
+    y = "",
+    title = str_c("Patient ", sid, ", ", sid_pat$gender, ", ", sid_pat$anchor_age, " years old ",sid_adm$race),
+    subtitle= str_c(sid_diag_d$long_title[match(sid_diag$icd_code, sid_diag_d$icd_code)][1],"\n",sid_diag_d$long_title[match(sid_diag$icd_code, sid_diag_d$icd_code)][2],"\n",sid_diag_d$long_title[match(sid_diag$icd_code, sid_diag_d$icd_code)][3]),
+    shape="Procedure",
+    color="Care Unit"
+  )+
+  guides(linewidth = FALSE,
+         color=guide_legend(ncol=1),
+         shape=guide_legend(ncol=1))+
+  theme(legend.position = "bottom")
 
 ```
-
-
-
 
 ### Q1.2 ICU stays
 
@@ -87,6 +153,58 @@ ICU stays are a subset of ADT history. This figure shows the vitals of the patie
 ![](10001217_icu.png)
 
 Do a similar visualization for the patient `10013310`.
+
+#### Q1.2 Answer
+
+```{r,eval=T}
+
+# subject id
+sid<-10013310
+
+sid_icu<-read_csv("~/mimic/icu/icustays.csv.gz")|>
+  filter(subject_id == sid)|>
+  print(width=Inf)
+
+
+sid_cht<-read_parquet("~/mimic/icu/chartevents.parquet/part-0.parquet")|>
+  filter(stay_id %in% sid_icu$stay_id)|>
+  print(width=Inf)
+
+sid_cht_d<-read_csv("~/mimic/icu/d_items.csv.gz")|>
+  filter(itemid %in% sid_cht$itemid)|>
+  print(width=Inf)
+
+sid_cht$type<-sid_cht_d$abbreviation[match(sid_cht$itemid, sid_cht_d$itemid)]
+
+sid_cht<-filter(sid_cht, type %in% c("HR","NBPd","NBPs","RR","Temperature F"))
+
+```
+
+```{r,eval=T}
+library(scales)
+
+ggplot(data=sid_cht,
+       aes(
+        x=charttime,
+        y=as.numeric(value),
+        color=type
+    ))+
+  geom_line()+
+  geom_point(size=0.5)+
+  facet_grid(type~stay_id, scales="free_x", space = "free_y")+
+  labs(
+    x="",
+    y="",
+    title=str_c("Patient ", sid, " ICU Stays - Vital "),
+    color="Vital"
+  )+
+  theme(legend.title = element_blank(),
+        legend.position = "bottom",
+        strip.text = element_text(size = 5))+
+  scale_x_datetime(labels = date_format("%b %d\n%H:%M:%S")) 
+  scale_y_continuous(limits=NULL)
+
+```
 
 ## Q2. ICU stays
 
@@ -100,9 +218,37 @@ zcat < ~/mimic/icu/icustays.csv.gz | head
 
 Import `icustays.csv.gz` as a tibble `icustays_tble`.
 
+```{r,eval=T}
+icustays_tble<-read_csv("~/mimic/icu/icustays.csv.gz")|>
+    print(width=Inf)
+```
+
 ### Q2.2 Summary and visualization
 
 How many unique `subject_id`? Can a `subject_id` have multiple ICU stays? Summarize the number of ICU stays per `subject_id` by graphs.
+
+```{r,eval=T}
+uniq_sid<-length(unique(icustays_tble$subject_id))
+uniq_sid
+uniq_stayid<-length(unique(icustays_tble$stay_id))
+uniq_stayid
+```
+
+So there are 50920 unique subject_ids. Since it's less than uniqe stayid 73181, we can know that one subject_id can have multiple ICU stays
+
+```{r,eval=T}
+
+count_data <- icustays_tble %>% 
+  count(subject_id)
+
+ggplot(count_data, aes(x = as.character(subject_id), y = n)) +
+  geom_bar(stat = "identity") +
+  labs(
+    x = "Subject ID",
+    y = "ICU stays counts",
+    title = "ICU stays counts of Subject IDs"
+  )
+```
 
 ## Q3. `admissions` data
 
@@ -115,6 +261,12 @@ zcat < ~/mimic/hosp/admissions.csv.gz | head
 ### Q3.1 Ingestion
 
 Import `admissions.csv.gz` as a tibble `admissions_tble`.
+
+```{r,eval=T}
+
+
+
+```
 
 ### Q3.2 Summary and visualization
 
