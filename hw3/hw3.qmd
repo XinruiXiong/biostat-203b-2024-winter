@@ -202,7 +202,6 @@ ggplot(data=sid_cht,
         legend.position = "bottom",
         strip.text = element_text(size = 5))+
   scale_x_datetime(labels = date_format("%b %d\n%H:%M:%S")) 
-  scale_y_continuous(limits=NULL)
 
 ```
 
@@ -241,14 +240,15 @@ So there are 50920 unique subject_ids. Since it's less than uniqe stayid 73181, 
 count_data <- icustays_tble %>% 
   count(subject_id)
 
-ggplot(count_data, aes(x = as.character(subject_id), y = n)) +
-  geom_bar(stat = "identity") +
+ggplot(count_data, aes(x = n)) +
+  geom_histogram(binwidth = 5, fill = "skyblue", color = "black") +
   labs(
-    x = "Subject ID",
-    y = "ICU stays counts",
-    title = "ICU stays counts of Subject IDs"
+    x = "patients's ICU stays count",
+    title = "Histogram of patients with multiple ICU stays"
   )
 ```
+According to the histogram, most of the patients have 1 ICU stay, and the number of patients with multiple ICU stays is decreasing as the number of ICU stays increases.
+
 
 ## Q3. `admissions` data
 
@@ -263,7 +263,8 @@ zcat < ~/mimic/hosp/admissions.csv.gz | head
 Import `admissions.csv.gz` as a tibble `admissions_tble`.
 
 ```{r,eval=T}
-
+admissions_tble<-read_csv("~/mimic/hosp/admissions.csv.gz")|>
+    print(width=Inf)
 
 
 ```
@@ -280,6 +281,62 @@ Summarize the following information by graphics and explain any patterns you see
 According to the [MIMIC-IV documentation](https://mimic.mit.edu/docs/iv/about/concepts/#date-shifting),
 
 > All dates in the database have been shifted to protect patient confidentiality. Dates will be internally consistent for the same patient, but randomly distributed in the future. Dates of birth which occur in the present time are not true dates of birth. Furthermore, dates of birth which occur before the year 1900 occur if the patient is older than 89. In these cases, the patient's age at their first admission has been fixed to 300.
+
+```{r,eval=T}
+
+admissions_tble$admittime_hour <- hour(admissions_tble$admittime)
+admissions_tble$admittime_min <- minute(admissions_tble$admittime)
+admissions_tble$length <- admissions_tble$dischtime - admissions_tble$admittime
+
+# number of admissions per patient:
+count_adm <- admissions_tble %>% 
+  count(subject_id)
+
+ggplot(count_adm, aes(x = n)) +
+  geom_histogram(binwidth = 10, fill = "skyblue", color = "black") +
+  labs(
+    x = "patients's admissions count",
+    title = "Histogram of patients with multiple admissions"
+  )
+
+# admission hour:
+admissions_tble %>% 
+  count(admittime_hour) %>% 
+  ggplot(aes(x = admittime_hour, y = n)) +
+  geom_col(fill = "green") +
+  labs(
+    x = "admission hour",
+    y = "count",
+    title = "Admission hour distribution"
+  )
+
+# admission minute:
+admissions_tble %>% 
+  count(admittime_min) %>% 
+  ggplot(aes(x = admittime_min, y = n)) +
+  geom_col(fill = "pink") +
+  labs(
+    x = "admission minute",
+    y = "count",
+    title = "Admission minute distribution"
+  )
+
+# length of hospital stay:
+admissions_tble %>% 
+  ggplot(aes(x = as.numeric(length, units = "days"))) +
+  geom_histogram(binwidth = 10, fill = "blue", color = "black") +
+  labs(
+    x = "length of hospital stay",
+    title = "Histogram of length of hospital stay"
+  )
+
+```
+According to the plots, most of the patients have 1 admission, and the number of patients with multiple admissions is decreasing as the number of admissions increases. 
+For the admission hour, most of the admissions occur from 3:00 pm to 12:00 pm, there are relatively fewer admissions from 12:00 am to 6:00 am. But the amount is unusually high around 7 am.
+For the admission hour, there are 4 time period that has unusually high amount of admissions, which are 0, 15, 30, 45. It's possible that the data is recorded in 15 minutes interval.
+For the length of hospital stay, most of the patients stay in the hospital for less than 10 days, and the number of patients with longer hospital stay is decreasing as the length of hospital stay increases.
+
+
 
 ## Q4. `patients` data
 
