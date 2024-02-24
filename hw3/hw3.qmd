@@ -53,44 +53,36 @@ sid<-10013310
 
 # obtain the ADT data
 sid_adt <- read_csv("transfers.csv.gz")|>
-  filter(subject_id == sid)|>
-  print(width=Inf)
+  filter(subject_id == sid)
 
 # obtain the labevents data
 sid_lab<-read_parquet("labevents.parquet/part-0.parquet")|>
-  filter(subject_id == sid)|>
-  print(width=Inf)
+  filter(subject_id == sid)
 
 # obtain the procedures data
 sid_proc<-read_csv("procedures_icd.csv.gz")|>
-  filter(subject_id == sid)|>
-  print(width=Inf)
+  filter(subject_id == sid)
 
 sid_proc_d<-read_csv("d_icd_procedures.csv.gz")|>
   filter(icd_version %in% sid_proc$icd_version)|>
-  filter(icd_code %in% sid_proc$icd_code)|>
-  print(width=Inf)
+  filter(icd_code %in% sid_proc$icd_code)
 
 sid_proc$type<-sid_proc_d$long_title[match(sid_proc$icd_code, sid_proc_d$icd_code)]
 sid_proc$chartdate <- as.POSIXct(sid_proc$chartdate)
 sid_proc$type<-substr(sid_proc$type,1,50)
 
 sid_diag<-read_csv("diagnoses_icd.csv.gz")|>
-  filter(subject_id == sid)|>
-  print(width=Inf)
+  filter(subject_id == sid)
 
 sid_diag_d<-read_csv("d_icd_diagnoses.csv.gz")|>
   filter(icd_version %in% sid_diag$icd_version)|>
-  filter(icd_code %in% sid_diag$icd_code)|>
-  print(width=Inf)
+  filter(icd_code %in% sid_diag$icd_code)
 
 sid_pat<-read_csv("patients.csv.gz")|>
-  filter(subject_id == sid)|>
-  print(width=Inf)
+  filter(subject_id == sid)
 
 sid_adm<-read_csv("admissions.csv.gz")|>
-  filter(subject_id == sid)|>
-  print(width=Inf)
+  filter(subject_id == sid)
 
 
 
@@ -162,17 +154,13 @@ Do a similar visualization for the patient `10013310`.
 sid<-10013310
 
 sid_icu<-read_csv("~/mimic/icu/icustays.csv.gz")|>
-  filter(subject_id == sid)|>
-  print(width=Inf)
+  filter(subject_id == sid)
 
 
 sid_cht<-read_parquet("~/mimic/icu/chartevents.parquet/part-0.parquet")|>
-  filter(stay_id %in% sid_icu$stay_id)|>
-  print(width=Inf)
-
+  filter(stay_id %in% sid_icu$stay_id)
 sid_cht_d<-read_csv("~/mimic/icu/d_items.csv.gz")|>
-  filter(itemid %in% sid_cht$itemid)|>
-  print(width=Inf)
+  filter(itemid %in% sid_cht$itemid)
 
 sid_cht$type<-sid_cht_d$abbreviation[match(sid_cht$itemid, sid_cht_d$itemid)]
 
@@ -222,6 +210,7 @@ Import `icustays.csv.gz` as a tibble `icustays_tble`.
 ```{r,eval=T}
 icustays_tble<-read_csv("~/mimic/icu/icustays.csv.gz")|>
     print(width=Inf)
+
 ```
 
 ### Q2.2 Summary and visualization
@@ -354,6 +343,8 @@ zcat < ~/mimic/hosp/patients.csv.gz | head
 
 Import `patients.csv.gz` (<https://mimic.mit.edu/docs/iv/modules/hosp/patients/>) as a tibble `patients_tble`.
 
+#### Q4.1 Answer
+
 ```{r, eval=T}
 patients_tble<-read_csv("~/mimic/hosp/patients.csv.gz")|>
     print(width=Inf)
@@ -362,6 +353,8 @@ patients_tble<-read_csv("~/mimic/hosp/patients.csv.gz")|>
 ### Q4.2 Summary and visualization
 
 Summarize variables `gender` and `anchor_age` by graphics, and explain any patterns you see.
+
+#### Q4.2 Answer
 
 ```{r, eval=T}
 ggplot(patients_tble, aes(x = anchor_age, fill = gender)) +
@@ -397,6 +390,8 @@ We are interested in the lab measurements of creatinine (50912), potassium (5097
 ![](labevents_tble.png)
 
 Hint: Use the Parquet format you generated in Homework 2. For reproducibility, make `labevents_pq` folder available at the current working directory `hw3`, for example, by a symbolic link.
+
+#### Q5 Answer
 
 ```{r, eval=T}
 labevents_tble<-read_parquet("~/mimic/hosp/labevents.parquet/part-0.parquet")|>
@@ -440,6 +435,8 @@ zcat < ~/mimic/icu/d_items.csv.gz | head
 ```
 
 We are interested in the vitals for ICU patients: heart rate (220045), systolic non-invasive blood pressure (220179), diastolic non-invasive blood pressure (220180), body temperature in Fahrenheit (223761), and respiratory rate (220210). Retrieve a subset of `chartevents.csv.gz` only containing these items for the patients in `icustays_tble`. Further restrict to the first vital measurement within the ICU stay. The final `chartevents_tble` should have one row per ICU stay and columns for each vital measurement.
+
+#### Q6 Answer
 
 ```{r, eval=T}
 chartevents_tble<-read_parquet("~/mimic/icu/chartevents.parquet/part-0.parquet")|>
@@ -489,15 +486,21 @@ The final `mimic_icu_cohort` should have one row per ICU stay and columns for ea
 
 ![](mimic_icu_cohort.png)
 
+#### Q7 Answer
+
 ```{r, eval=T}
 
 icustays_patient_join_tble<-icustays_tble%>%
   left_join(patients_tble, by = "subject_id")
 
-temp<-icustays_patient_join_tble%>%
-  filter(anchor_age>=18)
 
-temp_t<-temp%>%
+icustays_patient_join_tble <- icustays_patient_join_tble %>%
+  mutate(age_intime = year(intime) - anchor_year + anchor_age)
+
+temp<-icustays_patient_join_tble%>%
+  filter(age_intime>18)
+
+mimic_icu_cohort<-temp%>%
   left_join(select(admissions_tble,-subject_id), by = "hadm_id")%>%
   left_join(labevents_tble, by = c("subject_id","stay_id"))%>%
   left_join(chartevents_tble, by = c("subject_id","stay_id"))%>%
@@ -509,10 +512,220 @@ temp_t<-temp%>%
 
 Summarize the following information about the ICU stay cohort `mimic_icu_cohort` using appropriate numerics or graphs:
 
+#### Q8 Answer
+
 -   Length of ICU stay `los` vs demographic variables (race, insurance, marital_status, gender, age at intime)
+
+```{r, eval=T}
+mimic_icu_cohort%>%
+ggplot(aes(x = age_intime, y = los)) +
+  geom_point() +
+  labs(title = "Length of ICU stay vs Age at intime",
+       x = "Age at intime",
+       y = "Length of ICU stay (days)") 
+
+```
+
+As we can see from the plot, for patients with most age_intime, they have a los under 30. There are some outliers with los over 30, but the number of these outliers is small. For elderly patients, the los is generally shorter, that might because the cardinality of the elderly patients is smaller than the younger patients.
+
+```{r, eval=T}
+mimic_icu_cohort%>%
+ggplot(aes(x = race,y=los)) +
+  geom_boxplot() +
+  labs(
+    x = "Race Group",
+    y = "Los",
+    title = "Distribution of Los in Race Group"
+  ) 
+  
+```
+
+Since the box plot is not very clear, we can use the following code to get the summary:
+
+```{r, eval=T}
+mimic_icu_cohort%>%
+  group_by(race)%>%
+  summarize(mean_value = mean(los),
+            median_value = median(los),
+            min_value = min(los),
+            max_value = max(los),
+            range= max_value - min_value)
+
+```
+
+According to the summary, the AMERICAN INDIAN/ALASKA NATIVE group has the highest mean los, while the HISPANIC/LATINO - MEXICAN group has the lowest mean los. The distribution of los in the White group is the most concentrated, with the smallest range. The distribution of los in the SOUTH AMERICAN group is the most dispersed, with the largest range.
+
+```{r, eval=T}
+mimic_icu_cohort%>%
+  ggplot(aes(x = insurance,y=los)) +
+  geom_point() +
+  labs(title = "Length of ICU stay vs insurance",
+       x = "Insurance",
+       y = "Length of ICU stay (days)") 
+
+```
+
+According to the plot, the los of patients with insurance type "Medicare" is generally longer than other insurance types. The los of patients with insurance type "Medicaid" is generally shorter than other insurance types.
+
+```{r, eval=T}
+mimic_icu_cohort%>%
+  ggplot(aes(x = marital_status,y=los)) +
+  geom_boxplot() +
+  labs(title = "Length of ICU stay vs marital_status",
+       x = "Marital Status",
+       y = "Length of ICU stay (days)") 
+
+```
+
+According to the box plot, the los of patients with marital status "WIDOWED" is generally longer than other marital status. The los of patients with marital status "LIFE PARTNER" is generally shorter than other marital status.
+
+```{r, eval=T}
+mimic_icu_cohort%>%
+  ggplot(aes(x =gender,y=los)) +
+  geom_boxplot() +
+  labs(title = "Length of ICU stay vs gender",
+       x ="Gender",
+       y = "Length of ICU stay (days)")
+```
+
+According to the box plot, the Female patients group has a higher longest los than the male patients Group. And both of the groups' majority of the outliers' los are under 60 days.
 
 -   Length of ICU stay `los` vs the last available lab measurements before ICU stay
 
+```{r, eval=T}
+
+
+mimic_icu_cohort%>%
+  ggplot(aes(x = Hematocrit,y=los)) +
+  geom_point() +
+  labs(title = "Length of ICU stay vs Hematocrit",
+       x = "Hematocrit",
+       y = "Length of ICU stay (days)")
+
+mimic_icu_cohort%>%
+  ggplot(aes(x = `White Blood Cells`,y=los)) +
+  geom_point() +
+  labs(title = "Length of ICU stay vs White Blood Cells",
+       x = "White Blood Cells",
+       y = "Length of ICU stay (days)")
+
+mimic_icu_cohort%>%
+  ggplot(aes(x = Bicarbonate,y=los)) +
+  geom_point() +
+  labs(title = "Length of ICU stay vs Bicarbonate",
+       x = "Bicarbonate",
+       y = "Length of ICU stay (days)")
+
+
+mimic_icu_cohort%>%
+  ggplot(aes(x = Chloride,y=los)) +
+  geom_point() +
+  labs(title = "Length of ICU stay vs Chloride",
+       x = "Chloride",
+       y = "Length of ICU stay (days)")
+
+mimic_icu_cohort%>%
+  ggplot(aes(x = Creatinine,y=los)) +
+  geom_point() +
+  labs(title = "Length of ICU stay vs Creatinine",
+       x = "Creatinine",
+       y = "Length of ICU stay (days)")
+
+
+mimic_icu_cohort%>%
+  ggplot(aes(x = Potassium,y=los)) +
+  geom_point() +
+  labs(title = "Length of ICU stay vs Potassium",
+       x = "Potassium",
+       y = "Length of ICU stay (days)")
+
+mimic_icu_cohort%>%
+  ggplot(aes(x = Glucose,y=los)) +
+  geom_point() +
+  labs(title = "Length of ICU stay vs glucose",
+       x = "Glucose",
+       y = "Length of ICU stay (days)")
+
+mimic_icu_cohort%>%
+  ggplot(aes(x = Sodium,y=los)) +
+  geom_point() +
+  labs(title = "Length of ICU stay vs Sodium",
+       x = "Sodium",
+       y = "Length of ICU stay (days)")
+
+```
+
+For white blood cells, creatinine, glucose, we can see the patients with higher this value have a shorter los (perhaps because the amount is small). For the rest of the lab measurements, we can see most patietns have a middle value of the lab measurements, and the los is not very different.
+
 -   Length of ICU stay `los` vs the average vital measurements within the first hour of ICU stay
 
--   Length of ICU stay `los` vs first ICU unit
+```{r, eval=T}
+
+mimic_icu_cohort%>%
+  ggplot(aes(x = as.numeric(`Heart Rate`),y=los)) +
+  geom_point() +
+  labs(title = "Length of ICU stay vs Heart Rate",
+       x = "Heart Rate",
+       y = "Length of ICU stay (days)")
+
+
+mimic_icu_cohort%>%
+  ggplot(aes(x = as.numeric(`Respiratory Rate`),y=los)) +
+  geom_point() +
+  labs(title = "Length of ICU stay vs Respiratory Rate",
+       x = "Respiratory Rate",
+       y = "Length of ICU stay (days)")
+
+
+mimic_icu_cohort%>%
+  ggplot(aes(x = as.numeric(`Temperature Fahrenheit`),y=los)) +
+  geom_point() +
+  labs(title = "Length of ICU stay vs Temperature Fahrenheit",
+       x = "Temperature Fahrenheit",
+       y = "Length of ICU stay (days)")
+
+
+mimic_icu_cohort%>%
+  ggplot(aes(x = as.numeric(`Non Invasive Blood Pressure diastolic`),y=los)) +
+  geom_point() +
+  labs(title = "Length of ICU stay vs Non Invasive Blood Pressure diastolic",
+       x = "Non Invasive Blood Pressure diastolic",
+       y = "Length of ICU stay (days)")
+  
+mimic_icu_cohort%>%
+  ggplot(aes(x = as.numeric(`Non Invasive Blood Pressure systolic`),y=los)) +
+  geom_point() +
+  labs(title = "Length of ICU stay vs Non Invasive Blood Pressure systolic",
+       x = "Non Invasive Blood Pressure systolic",
+       y = "Length of ICU stay (days)")
+```
+
+For all these vital measurements, we can see there are some outliers with a very high value of the vital measurements, perhaps due to the measurement error. And the los of these patients are not very different from the majority of rest of the patients (who tends to have a short los).
+
+-   Length of ICU stay `los` vs the first ICU unit
+
+```{r, eval=T}
+
+mimic_icu_cohort%>%
+  ggplot(aes(x = first_careunit,y=los)) +
+  geom_boxplot() +
+  labs(title = "Length of ICU stay vs first_careunit",
+       x = "First Care Unit",
+       y = "Length of ICU stay (days)")
+
+```
+Similarly, due to the unclearity of the plot, we can't see the pattern of los between different first care units directly from the box plot.
+
+
+we can use the following code to get the summary:
+
+```{r, eval=T}
+mimic_icu_cohort%>%
+  group_by(first_careunit)%>%
+  summarise(mean_los = mean(los),
+            median_los = median(los),
+            min_los = min(los),
+            max_los = max(los),
+            sd_los = sd(los))
+```
+According to the summary, the mean and median los of the SICU is the highest, and the median los of the MICU is the lowest. The sd of the los of the SICU is the highest, and the sd of the los of the MICU is the lowest.
