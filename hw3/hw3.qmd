@@ -217,6 +217,8 @@ zcat < ~/mimic/icu/icustays.csv.gz | head
 
 Import `icustays.csv.gz` as a tibble `icustays_tble`.
 
+#### Q2.1 Answer
+
 ```{r,eval=T}
 icustays_tble<-read_csv("~/mimic/icu/icustays.csv.gz")|>
     print(width=Inf)
@@ -225,6 +227,8 @@ icustays_tble<-read_csv("~/mimic/icu/icustays.csv.gz")|>
 ### Q2.2 Summary and visualization
 
 How many unique `subject_id`? Can a `subject_id` have multiple ICU stays? Summarize the number of ICU stays per `subject_id` by graphs.
+
+#### Q2.2 Answer
 
 ```{r,eval=T}
 uniq_sid<-length(unique(icustays_tble$subject_id))
@@ -247,8 +251,8 @@ ggplot(count_data, aes(x = n)) +
     title = "Histogram of patients with multiple ICU stays"
   )
 ```
-According to the histogram, most of the patients have 1 ICU stay, and the number of patients with multiple ICU stays is decreasing as the number of ICU stays increases.
 
+According to the histogram, most of the patients have 1 ICU stay, and the number of patients with multiple ICU stays is decreasing as the number of ICU stays increases.
 
 ## Q3. `admissions` data
 
@@ -261,6 +265,8 @@ zcat < ~/mimic/hosp/admissions.csv.gz | head
 ### Q3.1 Ingestion
 
 Import `admissions.csv.gz` as a tibble `admissions_tble`.
+
+#### Q3.1 Answer
 
 ```{r,eval=T}
 admissions_tble<-read_csv("~/mimic/hosp/admissions.csv.gz")|>
@@ -281,6 +287,8 @@ Summarize the following information by graphics and explain any patterns you see
 According to the [MIMIC-IV documentation](https://mimic.mit.edu/docs/iv/about/concepts/#date-shifting),
 
 > All dates in the database have been shifted to protect patient confidentiality. Dates will be internally consistent for the same patient, but randomly distributed in the future. Dates of birth which occur in the present time are not true dates of birth. Furthermore, dates of birth which occur before the year 1900 occur if the patient is older than 89. In these cases, the patient's age at their first admission has been fixed to 300.
+
+#### Q3.1 Answer
 
 ```{r,eval=T}
 
@@ -331,12 +339,8 @@ admissions_tble %>%
   )
 
 ```
-According to the plots, most of the patients have 1 admission, and the number of patients with multiple admissions is decreasing as the number of admissions increases. 
-For the admission hour, most of the admissions occur from 3:00 pm to 12:00 pm, there are relatively fewer admissions from 12:00 am to 6:00 am. But the amount is unusually high around 7 am.
-For the admission hour, there are 4 time period that has unusually high amount of admissions, which are 0, 15, 30, 45. It's possible that the data is recorded in 15 minutes interval.
-For the length of hospital stay, most of the patients stay in the hospital for less than 10 days, and the number of patients with longer hospital stay is decreasing as the length of hospital stay increases.
 
-
+According to the plots, most of the patients have 1 admission, and the number of patients with multiple admissions is decreasing as the number of admissions increases. For the admission hour, most of the admissions occur from 3:00 pm to 12:00 pm, there are relatively fewer admissions from 12:00 am to 6:00 am. But the amount is unusually high around 7 am. For the admission hour, there are 4 time period that has unusually high amount of admissions, which are 0, 15, 30, 45. It's possible that the data is recorded in 15 minutes interval. For the length of hospital stay, most of the patients stay in the hospital for less than 10 days, and the number of patients with longer hospital stay is decreasing as the length of hospital stay increases.
 
 ## Q4. `patients` data
 
@@ -350,9 +354,29 @@ zcat < ~/mimic/hosp/patients.csv.gz | head
 
 Import `patients.csv.gz` (<https://mimic.mit.edu/docs/iv/modules/hosp/patients/>) as a tibble `patients_tble`.
 
+```{r, eval=T}
+patients_tble<-read_csv("~/mimic/hosp/patients.csv.gz")|>
+    print(width=Inf)
+```
+
 ### Q4.2 Summary and visualization
 
 Summarize variables `gender` and `anchor_age` by graphics, and explain any patterns you see.
+
+```{r, eval=T}
+ggplot(patients_tble, aes(x = anchor_age, fill = gender)) +
+  geom_bar(position = "stack", width = 0.5) +
+  labs(
+    x = "Age Group",
+    y = "Count",
+    title = "Distribution of Gender by Age Group"
+  ) +
+  scale_fill_manual(values = c("M" = "blue", "F" = "pink"))
+```
+
+According to the plot, for the age distribution, the younger age group(15 to 30) has a relatively higher amount. With the age increasing, the amount of patients is decreasing fist, and then slightly increasing before decreasing again. An unusual point is that the amount of 91 years old patients is very high. That might be caused by the date shifting.
+
+For gender distribution, there is few pattern shown. We can see that in some age groups, female patients are slightly more, but in most age groups the ratio is close to 1:1.
 
 ## Q5. Lab results
 
@@ -374,6 +398,33 @@ We are interested in the lab measurements of creatinine (50912), potassium (5097
 
 Hint: Use the Parquet format you generated in Homework 2. For reproducibility, make `labevents_pq` folder available at the current working directory `hw3`, for example, by a symbolic link.
 
+```{r, eval=T}
+labevents_tble<-read_parquet("~/mimic/hosp/labevents.parquet/part-0.parquet")|>
+  filter((subject_id %in% icustays_tble$subject_id)&(itemid %in% c(50912, 50971, 50983, 50902, 50882, 51221, 51301, 50931)))|>
+    print(width=Inf)
+```
+
+```{r, eval=T}
+labevents_d_tble<-read_csv("~/mimic/hosp/d_labitems.csv.gz")|>
+  filter(itemid %in% c(50912, 50971, 50983, 50902, 50882, 51221, 51301, 50931))|>
+  print(width=Inf)
+
+labevents_tble$measure<-labevents_d_tble$label[match(labevents_tble$itemid, labevents_d_tble$itemid)]
+```
+
+```{r, eval=T}
+labevents_tble<-labevents_tble%>%
+ left_join(select(icustays_tble,subject_id,stay_id,intime), by = "subject_id")%>%
+  filter(storetime < intime) 
+
+labevents_tble<-labevents_tble|>
+  group_by(subject_id,stay_id,measure)|>
+  filter(storetime==max(storetime))|>
+  select(subject_id,stay_id,measure,valuenum)|>
+  pivot_wider(names_from = measure, values_from = valuenum, values_fn = list(valuenum = last))|>
+  print(width=Inf)
+```
+
 ## Q6. Vitals from charted events
 
 `chartevents.csv.gz` (<https://mimic.mit.edu/docs/iv/modules/icu/chartevents/>) contains all the charted data available for a patient. During their ICU stay, the primary repository of a patient's information is their electronic chart. The `itemid` variable indicates a single measurement type in the database. The `value` variable is the value measured for `itemid`. The first 10 lines of `chartevents.csv.gz` are
@@ -389,6 +440,36 @@ zcat < ~/mimic/icu/d_items.csv.gz | head
 ```
 
 We are interested in the vitals for ICU patients: heart rate (220045), systolic non-invasive blood pressure (220179), diastolic non-invasive blood pressure (220180), body temperature in Fahrenheit (223761), and respiratory rate (220210). Retrieve a subset of `chartevents.csv.gz` only containing these items for the patients in `icustays_tble`. Further restrict to the first vital measurement within the ICU stay. The final `chartevents_tble` should have one row per ICU stay and columns for each vital measurement.
+
+```{r, eval=T}
+chartevents_tble<-read_parquet("~/mimic/icu/chartevents.parquet/part-0.parquet")|>
+  filter((subject_id %in% icustays_tble$subject_id)&(itemid %in% c(220045, 220179, 220180, 223761, 220210)))|>
+    print(width=Inf)
+```
+
+```{r, eval=T}
+chartevents_d_tble<-read_csv("~/mimic/icu/d_items.csv.gz")|>
+  filter(itemid %in% c(220045, 220179, 220180, 223761, 220210))|>
+  print(width=Inf)
+
+chartevents_tble$vital<-chartevents_d_tble$label[match(chartevents_tble$itemid, chartevents_d_tble$itemid)]
+```
+
+```{r, eval=T}
+chartevents_tble<-chartevents_tble%>%
+ left_join(select(icustays_tble,subject_id,intime,outtime), by = "subject_id")
+  
+chartevents_tble<-chartevents_tble%>%
+  filter(charttime >= intime & charttime <= outtime)
+
+chartevents_tble<-chartevents_tble|>
+  group_by(subject_id,stay_id,vital)|>
+  filter(charttime==min(charttime))|>
+  select(subject_id,stay_id,vital,value)|>
+  pivot_wider(names_from = vital, values_from = value, values_fn = list(value = last))|>
+  print(width=Inf)
+
+```
 
 ![](chartevents_tble.png)
 
@@ -407,6 +488,22 @@ Let us create a tibble `mimic_icu_cohort` for all ICU stays, where rows are all 
 The final `mimic_icu_cohort` should have one row per ICU stay and columns for each variable.
 
 ![](mimic_icu_cohort.png)
+
+```{r, eval=T}
+
+icustays_patient_join_tble<-icustays_tble%>%
+  left_join(patients_tble, by = "subject_id")
+
+temp<-icustays_patient_join_tble%>%
+  filter(anchor_age>=18)
+
+temp_t<-temp%>%
+  left_join(select(admissions_tble,-subject_id), by = "hadm_id")%>%
+  left_join(labevents_tble, by = c("subject_id","stay_id"))%>%
+  left_join(chartevents_tble, by = c("subject_id","stay_id"))%>%
+  print(width=Inf)
+
+```
 
 ## Q8. Exploratory data analysis (EDA)
 
