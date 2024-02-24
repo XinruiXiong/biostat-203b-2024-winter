@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.536">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Xinrui Xiong 806329308">
+
+<title>Biostat 203B Homework 3</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="hw3_files/libs/clipboard/clipboard.min.js"></script>
+<script src="hw3_files/libs/quarto-html/quarto.js"></script>
+<script src="hw3_files/libs/quarto-html/popper.min.js"></script>
+<script src="hw3_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="hw3_files/libs/quarto-html/anchor.min.js"></script>
+<link href="hw3_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="hw3_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="hw3_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="hw3_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="hw3_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Biostat 203B Homework 3</h1>
+<p class="subtitle lead">Due Feb 23 @ 11:59PM</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Xinrui Xiong 806329308 </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Display machine information for reproducibility:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R version 4.3.2 (2023-10-31)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Ventura 13.5
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRblas.0.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+time zone: America/Los_Angeles
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+loaded via a namespace (and not attached):
+ [1] htmlwidgets_1.6.4 compiler_4.3.2    fastmap_1.1.1     cli_3.6.1        
+ [5] tools_4.3.2       htmltools_0.5.7   rstudioapi_0.15.0 yaml_2.3.7       
+ [9] rmarkdown_2.25    knitr_1.45        jsonlite_1.8.7    xfun_0.41        
+[13] digest_0.6.33     rlang_1.1.2       evaluate_0.23    </code></pre>
+</div>
+</div>
+<p>Load necessary libraries (you can add more as needed).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'arrow'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:utils':
+
+    timestamp</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(memuse)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pryr)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(R.utils)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: R.oo</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: R.methodsS3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>R.methodsS3 v1.8.2 (2022-06-13 22:00:14 UTC) successfully loaded. See ?R.methodsS3 for help.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>R.oo v1.26.0 (2024-01-24 05:12:50 UTC) successfully loaded. See ?R.oo for help.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'R.oo'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:R.methodsS3':
+
+    throw</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:methods':
+
+    getClasses, getMethods</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    attach, detach, load, save</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>R.utils v2.12.3 (2023-11-18 01:00:02 UTC) successfully loaded. See ?R.utils for help.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'R.utils'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:arrow':
+
+    timestamp</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:utils':
+
+    timestamp</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    cat, commandArgs, getOption, isOpen, nullfile, parse, warnings</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.4.4     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ purrr::compose()      masks pryr::compose()
+✖ lubridate::duration() masks arrow::duration()
+✖ tidyr::extract()      masks R.utils::extract()
+✖ dplyr::filter()       masks stats::filter()
+✖ dplyr::lag()          masks stats::lag()
+✖ purrr::partial()      masks pryr::partial()
+✖ dplyr::where()        masks pryr::where()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+</div>
+<p>Display your machine memory.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>memuse<span class="sc">::</span><span class="fu">Sys.meminfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Totalram:  16.000 GiB 
+Freeram:    1.961 GiB </code></pre>
+</div>
+</div>
+<p>In this exercise, we use tidyverse (ggplot2, dplyr, etc) to explore the <a href="https://mimic.mit.edu/docs/iv/">MIMIC-IV</a> data introduced in <a href="https://ucla-biostat-203b.github.io/2024winter/hw/hw1/hw1.html">homework 1</a> and to build a cohort of ICU stays.</p>
+<section id="q1.-visualizing-patient-trajectory" class="level2">
+<h2 class="anchored" data-anchor-id="q1.-visualizing-patient-trajectory">Q1. Visualizing patient trajectory</h2>
+<p>Visualizing a patient’s encounters in a health care system is a common task in clinical data analysis. In this question, we will visualize a patient’s ADT (admission-discharge-transfer) history and ICU vitals in the MIMIC-IV data.</p>
+<section id="q1.1-adt-history" class="level3">
+<h3 class="anchored" data-anchor-id="q1.1-adt-history">Q1.1 ADT history</h3>
+<p>A patient’s ADT history records the time of admission, discharge, and transfer in the hospital. This figure shows the ADT history of the patient with <code>subject_id</code> 10001217 in the MIMIC-IV data. The x-axis is the calendar time, and the y-axis is the type of event (ADT, lab, procedure). The color of the line segment represents the care unit. The size of the line segment represents whether the care unit is an ICU/CCU. The crosses represent lab events, and the shape of the dots represents the type of procedure. The title of the figure shows the patient’s demographic information and the subtitle shows top 3 diagnoses.</p>
+<p><img src="10001217_adt.png" class="img-fluid"> Do a similar visualization for the patient with <code>subject_id</code> 10013310 using ggplot.</p>
+<p>Hint: We need to pull information from data files <code>patients.csv.gz</code>, <code>admissions.csv.gz</code>, <code>transfers.csv.gz</code>, <code>labevents.csv.gz</code>, <code>procedures_icd.csv.gz</code>, <code>diagnoses_icd.csv.gz</code>, <code>d_icd_procedures.csv.gz</code>, and <code>d_icd_diagnoses.csv.gz</code>. For the big file <code>labevents.csv.gz</code>, use the Parquet format you generated in Homework 2. For reproducibility, make the Parquet folder <code>labevents_pq</code> available at the current working directory <code>hw3</code>, for example, by a symbolic link. Make your code reproducible.</p>
+<section id="q1.1-answer" class="level4">
+<h4 class="anchored" data-anchor-id="q1.1-answer">Q1.1 Answer</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"~/mimic/hosp"</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># subject id</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>sid<span class="ot">&lt;-</span><span class="dv">10013310</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain the ADT data</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>sid_adt <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"transfers.csv.gz"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(subject_id <span class="sc">==</span> sid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 1890972 Columns: 7
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (2): eventtype, careunit
+dbl  (3): subject_id, hadm_id, transfer_id
+dttm (2): intime, outtime
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain the labevents data</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>sid_lab<span class="ot">&lt;-</span><span class="fu">read_parquet</span>(<span class="st">"labevents.parquet/part-0.parquet"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(subject_id <span class="sc">==</span> sid)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain the procedures data</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>sid_proc<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"procedures_icd.csv.gz"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(subject_id <span class="sc">==</span> sid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 669186 Columns: 6
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (1): icd_code
+dbl  (4): subject_id, hadm_id, seq_num, icd_version
+date (1): chartdate
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>sid_proc_d<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"d_icd_procedures.csv.gz"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(icd_version <span class="sc">%in%</span> sid_proc<span class="sc">$</span>icd_version)<span class="sc">|&gt;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(icd_code <span class="sc">%in%</span> sid_proc<span class="sc">$</span>icd_code)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 85257 Columns: 3
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (2): icd_code, long_title
+dbl (1): icd_version
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>sid_proc<span class="sc">$</span>type<span class="ot">&lt;-</span>sid_proc_d<span class="sc">$</span>long_title[<span class="fu">match</span>(sid_proc<span class="sc">$</span>icd_code, sid_proc_d<span class="sc">$</span>icd_code)]</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>sid_proc<span class="sc">$</span>chartdate <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(sid_proc<span class="sc">$</span>chartdate)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>sid_proc<span class="sc">$</span>type<span class="ot">&lt;-</span><span class="fu">substr</span>(sid_proc<span class="sc">$</span>type,<span class="dv">1</span>,<span class="dv">50</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>sid_diag<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"diagnoses_icd.csv.gz"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(subject_id <span class="sc">==</span> sid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 4756326 Columns: 5
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): icd_code
+dbl (4): subject_id, hadm_id, seq_num, icd_version
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>sid_diag_d<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"d_icd_diagnoses.csv.gz"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(icd_version <span class="sc">%in%</span> sid_diag<span class="sc">$</span>icd_version)<span class="sc">|&gt;</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(icd_code <span class="sc">%in%</span> sid_diag<span class="sc">$</span>icd_code)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 109775 Columns: 3
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (2): icd_code, long_title
+dbl (1): icd_version
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>sid_pat<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"patients.csv.gz"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(subject_id <span class="sc">==</span> sid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 299712 Columns: 6
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (2): gender, anchor_year_group
+dbl  (3): subject_id, anchor_age, anchor_year
+date (1): dod
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>sid_adm<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"admissions.csv.gz"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(subject_id <span class="sc">==</span> sid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 431231 Columns: 16
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (8): admission_type, admit_provider_id, admission_location, discharge_l...
+dbl  (3): subject_id, hadm_id, hospital_expire_flag
+dttm (5): admittime, dischtime, deathtime, edregtime, edouttime
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>sid_adt <span class="sc">%&gt;%</span><span class="fu">filter</span>(eventtype <span class="sc">!=</span> <span class="st">"discharge"</span>),</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> intime, </span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">xend =</span> outtime, </span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"ADT"</span>, </span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">yend =</span> <span class="st">"ADT"</span>, </span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> careunit,</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">linewidth =</span> <span class="fu">str_detect</span>(careunit, <span class="st">"(ICU|CCU)"</span>)</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> sid_lab,</span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> charttime, </span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Lab"</span></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">"+"</span>,</span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">size=</span><span class="dv">4</span></span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>(</span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> sid_proc,</span>
+<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> chartdate,</span>
+<span id="cb39-28"><a href="#cb39-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Procedure"</span>,</span>
+<span id="cb39-29"><a href="#cb39-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">shape =</span> type</span>
+<span id="cb39-30"><a href="#cb39-30" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb39-31"><a href="#cb39-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">size=</span><span class="dv">3</span></span>
+<span id="cb39-32"><a href="#cb39-32" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb39-33"><a href="#cb39-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="dv">15</span><span class="sc">:</span><span class="dv">24</span>)<span class="sc">+</span></span>
+<span id="cb39-34"><a href="#cb39-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb39-35"><a href="#cb39-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">""</span>, </span>
+<span id="cb39-36"><a href="#cb39-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">""</span>,</span>
+<span id="cb39-37"><a href="#cb39-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">str_c</span>(<span class="st">"Patient "</span>, sid, <span class="st">", "</span>, sid_pat<span class="sc">$</span>gender, <span class="st">", "</span>, sid_pat<span class="sc">$</span>anchor_age, <span class="st">" years old "</span>,sid_adm<span class="sc">$</span>race),</span>
+<span id="cb39-38"><a href="#cb39-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle=</span> <span class="fu">str_c</span>(sid_diag_d<span class="sc">$</span>long_title[<span class="fu">match</span>(sid_diag<span class="sc">$</span>icd_code, sid_diag_d<span class="sc">$</span>icd_code)][<span class="dv">1</span>],<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,sid_diag_d<span class="sc">$</span>long_title[<span class="fu">match</span>(sid_diag<span class="sc">$</span>icd_code, sid_diag_d<span class="sc">$</span>icd_code)][<span class="dv">2</span>],<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,sid_diag_d<span class="sc">$</span>long_title[<span class="fu">match</span>(sid_diag<span class="sc">$</span>icd_code, sid_diag_d<span class="sc">$</span>icd_code)][<span class="dv">3</span>]),</span>
+<span id="cb39-39"><a href="#cb39-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape=</span><span class="st">"Procedure"</span>,</span>
+<span id="cb39-40"><a href="#cb39-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">"Care Unit"</span></span>
+<span id="cb39-41"><a href="#cb39-41" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb39-42"><a href="#cb39-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">linewidth =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb39-43"><a href="#cb39-43" aria-hidden="true" tabindex="-1"></a>         <span class="at">color=</span><span class="fu">guide_legend</span>(<span class="at">ncol=</span><span class="dv">1</span>),</span>
+<span id="cb39-44"><a href="#cb39-44" aria-hidden="true" tabindex="-1"></a>         <span class="at">shape=</span><span class="fu">guide_legend</span>(<span class="at">ncol=</span><span class="dv">1</span>))<span class="sc">+</span></span>
+<span id="cb39-45"><a href="#cb39-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use "none" instead as
+of ggplot2 3.3.4.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using linewidth for a discrete variable is not advised.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="q1.2-icu-stays" class="level3">
+<h3 class="anchored" data-anchor-id="q1.2-icu-stays">Q1.2 ICU stays</h3>
+<p>ICU stays are a subset of ADT history. This figure shows the vitals of the patient <code>10001217</code> during ICU stays. The x-axis is the calendar time, and the y-axis is the value of the vital. The color of the line represents the type of vital. The facet grid shows the abbreviation of the vital and the stay ID.</p>
+<p><img src="10001217_icu.png" class="img-fluid"></p>
+<p>Do a similar visualization for the patient <code>10013310</code>.</p>
+<section id="q1.2-answer" class="level4">
+<h4 class="anchored" data-anchor-id="q1.2-answer">Q1.2 Answer</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># subject id</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>sid<span class="ot">&lt;-</span><span class="dv">10013310</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>sid_icu<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"~/mimic/icu/icustays.csv.gz"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(subject_id <span class="sc">==</span> sid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 73181 Columns: 8
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (2): first_careunit, last_careunit
+dbl  (4): subject_id, hadm_id, stay_id, los
+dttm (2): intime, outtime
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>sid_cht<span class="ot">&lt;-</span><span class="fu">read_parquet</span>(<span class="st">"~/mimic/icu/chartevents.parquet/part-0.parquet"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(stay_id <span class="sc">%in%</span> sid_icu<span class="sc">$</span>stay_id)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>sid_cht_d<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"~/mimic/icu/d_items.csv.gz"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(itemid <span class="sc">%in%</span> sid_cht<span class="sc">$</span>itemid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 4014 Columns: 9
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (6): label, abbreviation, linksto, category, unitname, param_type
+dbl (3): itemid, lownormalvalue, highnormalvalue
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>sid_cht<span class="sc">$</span>type<span class="ot">&lt;-</span>sid_cht_d<span class="sc">$</span>abbreviation[<span class="fu">match</span>(sid_cht<span class="sc">$</span>itemid, sid_cht_d<span class="sc">$</span>itemid)]</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>sid_cht<span class="ot">&lt;-</span><span class="fu">filter</span>(sid_cht, type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"HR"</span>,<span class="st">"NBPd"</span>,<span class="st">"NBPs"</span>,<span class="st">"RR"</span>,<span class="st">"Temperature F"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'scales'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:purrr':
+
+    discard</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:readr':
+
+    col_factor</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>sid_cht,</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">x=</span>charttime,</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">y=</span><span class="fu">as.numeric</span>(value),</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">color=</span>type</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>    ))<span class="sc">+</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="fl">0.5</span>)<span class="sc">+</span></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(type<span class="sc">~</span>stay_id, <span class="at">scales=</span><span class="st">"free_x"</span>, <span class="at">space =</span> <span class="st">"free_y"</span>)<span class="sc">+</span></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="st">""</span>,</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">""</span>,</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="fu">str_c</span>(<span class="st">"Patient "</span>, sid, <span class="st">" ICU Stays - Vital "</span>),</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">"Vital"</span></span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">5</span>))<span class="sc">+</span></span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">labels =</span> <span class="fu">date_format</span>(<span class="st">"%b %d</span><span class="sc">\n</span><span class="st">%H:%M:%S"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="q2.-icu-stays" class="level2">
+<h2 class="anchored" data-anchor-id="q2.-icu-stays">Q2. ICU stays</h2>
+<p><code>icustays.csv.gz</code> (<a href="https://mimic.mit.edu/docs/iv/modules/icu/icustays/" class="uri">https://mimic.mit.edu/docs/iv/modules/icu/icustays/</a>) contains data about Intensive Care Units (ICU) stays. The first 10 lines are</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="op">&lt;</span> ~/mimic/icu/icustays.csv.gz <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>subject_id,hadm_id,stay_id,first_careunit,last_careunit,intime,outtime,los
+10000032,29079034,39553978,Medical Intensive Care Unit (MICU),Medical Intensive Care Unit (MICU),2180-07-23 14:00:00,2180-07-23 23:50:47,0.4102662037037037
+10000980,26913865,39765666,Medical Intensive Care Unit (MICU),Medical Intensive Care Unit (MICU),2189-06-27 08:42:00,2189-06-27 20:38:27,0.4975347222222222
+10001217,24597018,37067082,Surgical Intensive Care Unit (SICU),Surgical Intensive Care Unit (SICU),2157-11-20 19:18:02,2157-11-21 22:08:00,1.1180324074074075
+10001217,27703517,34592300,Surgical Intensive Care Unit (SICU),Surgical Intensive Care Unit (SICU),2157-12-19 15:42:24,2157-12-20 14:27:41,0.9481134259259258
+10001725,25563031,31205490,Medical/Surgical Intensive Care Unit (MICU/SICU),Medical/Surgical Intensive Care Unit (MICU/SICU),2110-04-11 15:52:22,2110-04-12 23:59:56,1.338587962962963
+10001884,26184834,37510196,Medical Intensive Care Unit (MICU),Medical Intensive Care Unit (MICU),2131-01-11 04:20:05,2131-01-20 08:27:30,9.171817129629629
+10002013,23581541,39060235,Cardiac Vascular Intensive Care Unit (CVICU),Cardiac Vascular Intensive Care Unit (CVICU),2160-05-18 10:00:53,2160-05-19 17:33:33,1.3143518518518518
+10002155,20345487,32358465,Medical Intensive Care Unit (MICU),Medical Intensive Care Unit (MICU),2131-03-09 21:33:00,2131-03-10 18:09:21,0.8585763888888889
+10002155,23822395,33685454,Coronary Care Unit (CCU),Coronary Care Unit (CCU),2129-08-04 12:45:00,2129-08-10 17:02:38,6.178912037037037</code></pre>
+</div>
+</div>
+<section id="q2.1-ingestion" class="level3">
+<h3 class="anchored" data-anchor-id="q2.1-ingestion">Q2.1 Ingestion</h3>
+<p>Import <code>icustays.csv.gz</code> as a tibble <code>icustays_tble</code>.</p>
+<section id="q2.1-answer" class="level4">
+<h4 class="anchored" data-anchor-id="q2.1-answer">Q2.1 Answer</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>icustays_tble<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"~/mimic/icu/icustays.csv.gz"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="at">width=</span><span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 73181 Columns: 8
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (2): first_careunit, last_careunit
+dbl  (4): subject_id, hadm_id, stay_id, los
+dttm (2): intime, outtime
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 73,181 × 8
+   subject_id  hadm_id  stay_id first_careunit                                  
+        &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;                                           
+ 1   10000032 29079034 39553978 Medical Intensive Care Unit (MICU)              
+ 2   10000980 26913865 39765666 Medical Intensive Care Unit (MICU)              
+ 3   10001217 24597018 37067082 Surgical Intensive Care Unit (SICU)             
+ 4   10001217 27703517 34592300 Surgical Intensive Care Unit (SICU)             
+ 5   10001725 25563031 31205490 Medical/Surgical Intensive Care Unit (MICU/SICU)
+ 6   10001884 26184834 37510196 Medical Intensive Care Unit (MICU)              
+ 7   10002013 23581541 39060235 Cardiac Vascular Intensive Care Unit (CVICU)    
+ 8   10002155 20345487 32358465 Medical Intensive Care Unit (MICU)              
+ 9   10002155 23822395 33685454 Coronary Care Unit (CCU)                        
+10   10002155 28994087 31090461 Medical/Surgical Intensive Care Unit (MICU/SICU)
+   last_careunit                                    intime             
+   &lt;chr&gt;                                            &lt;dttm&gt;             
+ 1 Medical Intensive Care Unit (MICU)               2180-07-23 14:00:00
+ 2 Medical Intensive Care Unit (MICU)               2189-06-27 08:42:00
+ 3 Surgical Intensive Care Unit (SICU)              2157-11-20 19:18:02
+ 4 Surgical Intensive Care Unit (SICU)              2157-12-19 15:42:24
+ 5 Medical/Surgical Intensive Care Unit (MICU/SICU) 2110-04-11 15:52:22
+ 6 Medical Intensive Care Unit (MICU)               2131-01-11 04:20:05
+ 7 Cardiac Vascular Intensive Care Unit (CVICU)     2160-05-18 10:00:53
+ 8 Medical Intensive Care Unit (MICU)               2131-03-09 21:33:00
+ 9 Coronary Care Unit (CCU)                         2129-08-04 12:45:00
+10 Medical/Surgical Intensive Care Unit (MICU/SICU) 2130-09-24 00:50:00
+   outtime               los
+   &lt;dttm&gt;              &lt;dbl&gt;
+ 1 2180-07-23 23:50:47 0.410
+ 2 2189-06-27 20:38:27 0.498
+ 3 2157-11-21 22:08:00 1.12 
+ 4 2157-12-20 14:27:41 0.948
+ 5 2110-04-12 23:59:56 1.34 
+ 6 2131-01-20 08:27:30 9.17 
+ 7 2160-05-19 17:33:33 1.31 
+ 8 2131-03-10 18:09:21 0.859
+ 9 2129-08-10 17:02:38 6.18 
+10 2130-09-27 22:13:41 3.89 
+# ℹ 73,171 more rows</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="q2.2-summary-and-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="q2.2-summary-and-visualization">Q2.2 Summary and visualization</h3>
+<p>How many unique <code>subject_id</code>? Can a <code>subject_id</code> have multiple ICU stays? Summarize the number of ICU stays per <code>subject_id</code> by graphs.</p>
+<section id="q2.2-answer" class="level4">
+<h4 class="anchored" data-anchor-id="q2.2-answer">Q2.2 Answer</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>uniq_sid<span class="ot">&lt;-</span><span class="fu">length</span>(<span class="fu">unique</span>(icustays_tble<span class="sc">$</span>subject_id))</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>uniq_sid</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 50920</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>uniq_stayid<span class="ot">&lt;-</span><span class="fu">length</span>(<span class="fu">unique</span>(icustays_tble<span class="sc">$</span>stay_id))</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>uniq_stayid</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 73181</code></pre>
+</div>
+</div>
+<p>So there are 50920 unique subject_ids. Since it’s less than uniqe stayid 73181, we can know that one subject_id can have multiple ICU stays</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>count_data <span class="ot">&lt;-</span> icustays_tble <span class="sc">%&gt;%</span> </span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(subject_id)</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(count_data, <span class="fu">aes</span>(<span class="at">x =</span> n)) <span class="sc">+</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"patients's ICU stays count"</span>,</span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Histogram of patients with multiple ICU stays"</span></span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>According to the histogram, most of the patients have 1 ICU stay, and the number of patients with multiple ICU stays is decreasing as the number of ICU stays increases.</p>
+</section>
+</section>
+</section>
+<section id="q3.-admissions-data" class="level2">
+<h2 class="anchored" data-anchor-id="q3.-admissions-data">Q3. <code>admissions</code> data</h2>
+<p>Information of the patients admitted into hospital is available in <code>admissions.csv.gz</code>. See <a href="https://mimic.mit.edu/docs/iv/modules/hosp/admissions/" class="uri">https://mimic.mit.edu/docs/iv/modules/hosp/admissions/</a> for details of each field in this file. The first 10 lines are</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="op">&lt;</span> ~/mimic/hosp/admissions.csv.gz <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>subject_id,hadm_id,admittime,dischtime,deathtime,admission_type,admit_provider_id,admission_location,discharge_location,insurance,language,marital_status,race,edregtime,edouttime,hospital_expire_flag
+10000032,22595853,2180-05-06 22:23:00,2180-05-07 17:15:00,,URGENT,P874LG,TRANSFER FROM HOSPITAL,HOME,Other,ENGLISH,WIDOWED,WHITE,2180-05-06 19:17:00,2180-05-06 23:30:00,0
+10000032,22841357,2180-06-26 18:27:00,2180-06-27 18:49:00,,EW EMER.,P09Q6Y,EMERGENCY ROOM,HOME,Medicaid,ENGLISH,WIDOWED,WHITE,2180-06-26 15:54:00,2180-06-26 21:31:00,0
+10000032,25742920,2180-08-05 23:44:00,2180-08-07 17:50:00,,EW EMER.,P60CC5,EMERGENCY ROOM,HOSPICE,Medicaid,ENGLISH,WIDOWED,WHITE,2180-08-05 20:58:00,2180-08-06 01:44:00,0
+10000032,29079034,2180-07-23 12:35:00,2180-07-25 17:55:00,,EW EMER.,P30KEH,EMERGENCY ROOM,HOME,Medicaid,ENGLISH,WIDOWED,WHITE,2180-07-23 05:54:00,2180-07-23 14:00:00,0
+10000068,25022803,2160-03-03 23:16:00,2160-03-04 06:26:00,,EU OBSERVATION,P51VDL,EMERGENCY ROOM,,Other,ENGLISH,SINGLE,WHITE,2160-03-03 21:55:00,2160-03-04 06:26:00,0
+10000084,23052089,2160-11-21 01:56:00,2160-11-25 14:52:00,,EW EMER.,P6957U,WALK-IN/SELF REFERRAL,HOME HEALTH CARE,Medicare,ENGLISH,MARRIED,WHITE,2160-11-20 20:36:00,2160-11-21 03:20:00,0
+10000084,29888819,2160-12-28 05:11:00,2160-12-28 16:07:00,,EU OBSERVATION,P63AD6,PHYSICIAN REFERRAL,,Medicare,ENGLISH,MARRIED,WHITE,2160-12-27 18:32:00,2160-12-28 16:07:00,0
+10000108,27250926,2163-09-27 23:17:00,2163-09-28 09:04:00,,EU OBSERVATION,P38XXV,EMERGENCY ROOM,,Other,ENGLISH,SINGLE,WHITE,2163-09-27 16:18:00,2163-09-28 09:04:00,0
+10000117,22927623,2181-11-15 02:05:00,2181-11-15 14:52:00,,EU OBSERVATION,P2358X,EMERGENCY ROOM,,Other,ENGLISH,DIVORCED,WHITE,2181-11-14 21:51:00,2181-11-15 09:57:00,0</code></pre>
+</div>
+</div>
+<section id="q3.1-ingestion" class="level3">
+<h3 class="anchored" data-anchor-id="q3.1-ingestion">Q3.1 Ingestion</h3>
+<p>Import <code>admissions.csv.gz</code> as a tibble <code>admissions_tble</code>.</p>
+<section id="q3.1-answer" class="level4">
+<h4 class="anchored" data-anchor-id="q3.1-answer">Q3.1 Answer</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>admissions_tble<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"~/mimic/hosp/admissions.csv.gz"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="at">width=</span><span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 431231 Columns: 16
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (8): admission_type, admit_provider_id, admission_location, discharge_l...
+dbl  (3): subject_id, hadm_id, hospital_expire_flag
+dttm (5): admittime, dischtime, deathtime, edregtime, edouttime
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 431,231 × 16
+   subject_id  hadm_id admittime           dischtime           deathtime
+        &lt;dbl&gt;    &lt;dbl&gt; &lt;dttm&gt;              &lt;dttm&gt;              &lt;dttm&gt;   
+ 1   10000032 22595853 2180-05-06 22:23:00 2180-05-07 17:15:00 NA       
+ 2   10000032 22841357 2180-06-26 18:27:00 2180-06-27 18:49:00 NA       
+ 3   10000032 25742920 2180-08-05 23:44:00 2180-08-07 17:50:00 NA       
+ 4   10000032 29079034 2180-07-23 12:35:00 2180-07-25 17:55:00 NA       
+ 5   10000068 25022803 2160-03-03 23:16:00 2160-03-04 06:26:00 NA       
+ 6   10000084 23052089 2160-11-21 01:56:00 2160-11-25 14:52:00 NA       
+ 7   10000084 29888819 2160-12-28 05:11:00 2160-12-28 16:07:00 NA       
+ 8   10000108 27250926 2163-09-27 23:17:00 2163-09-28 09:04:00 NA       
+ 9   10000117 22927623 2181-11-15 02:05:00 2181-11-15 14:52:00 NA       
+10   10000117 27988844 2183-09-18 18:10:00 2183-09-21 16:30:00 NA       
+   admission_type    admit_provider_id admission_location     discharge_location
+   &lt;chr&gt;             &lt;chr&gt;             &lt;chr&gt;                  &lt;chr&gt;             
+ 1 URGENT            P874LG            TRANSFER FROM HOSPITAL HOME              
+ 2 EW EMER.          P09Q6Y            EMERGENCY ROOM         HOME              
+ 3 EW EMER.          P60CC5            EMERGENCY ROOM         HOSPICE           
+ 4 EW EMER.          P30KEH            EMERGENCY ROOM         HOME              
+ 5 EU OBSERVATION    P51VDL            EMERGENCY ROOM         &lt;NA&gt;              
+ 6 EW EMER.          P6957U            WALK-IN/SELF REFERRAL  HOME HEALTH CARE  
+ 7 EU OBSERVATION    P63AD6            PHYSICIAN REFERRAL     &lt;NA&gt;              
+ 8 EU OBSERVATION    P38XXV            EMERGENCY ROOM         &lt;NA&gt;              
+ 9 EU OBSERVATION    P2358X            EMERGENCY ROOM         &lt;NA&gt;              
+10 OBSERVATION ADMIT P75S70            WALK-IN/SELF REFERRAL  HOME HEALTH CARE  
+   insurance language marital_status race  edregtime          
+   &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;          &lt;chr&gt; &lt;dttm&gt;             
+ 1 Other     ENGLISH  WIDOWED        WHITE 2180-05-06 19:17:00
+ 2 Medicaid  ENGLISH  WIDOWED        WHITE 2180-06-26 15:54:00
+ 3 Medicaid  ENGLISH  WIDOWED        WHITE 2180-08-05 20:58:00
+ 4 Medicaid  ENGLISH  WIDOWED        WHITE 2180-07-23 05:54:00
+ 5 Other     ENGLISH  SINGLE         WHITE 2160-03-03 21:55:00
+ 6 Medicare  ENGLISH  MARRIED        WHITE 2160-11-20 20:36:00
+ 7 Medicare  ENGLISH  MARRIED        WHITE 2160-12-27 18:32:00
+ 8 Other     ENGLISH  SINGLE         WHITE 2163-09-27 16:18:00
+ 9 Other     ENGLISH  DIVORCED       WHITE 2181-11-14 21:51:00
+10 Other     ENGLISH  DIVORCED       WHITE 2183-09-18 08:41:00
+   edouttime           hospital_expire_flag
+   &lt;dttm&gt;                             &lt;dbl&gt;
+ 1 2180-05-06 23:30:00                    0
+ 2 2180-06-26 21:31:00                    0
+ 3 2180-08-06 01:44:00                    0
+ 4 2180-07-23 14:00:00                    0
+ 5 2160-03-04 06:26:00                    0
+ 6 2160-11-21 03:20:00                    0
+ 7 2160-12-28 16:07:00                    0
+ 8 2163-09-28 09:04:00                    0
+ 9 2181-11-15 09:57:00                    0
+10 2183-09-18 20:20:00                    0
+# ℹ 431,221 more rows</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="q3.2-summary-and-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="q3.2-summary-and-visualization">Q3.2 Summary and visualization</h3>
+<p>Summarize the following information by graphics and explain any patterns you see.</p>
+<ul>
+<li>number of admissions per patient<br>
+</li>
+<li>admission hour (anything unusual?)<br>
+</li>
+<li>admission minute (anything unusual?)<br>
+</li>
+<li>length of hospital stay (from admission to discharge) (anything unusual?)</li>
+</ul>
+<p>According to the <a href="https://mimic.mit.edu/docs/iv/about/concepts/#date-shifting">MIMIC-IV documentation</a>,</p>
+<blockquote class="blockquote">
+<p>All dates in the database have been shifted to protect patient confidentiality. Dates will be internally consistent for the same patient, but randomly distributed in the future. Dates of birth which occur in the present time are not true dates of birth. Furthermore, dates of birth which occur before the year 1900 occur if the patient is older than 89. In these cases, the patient’s age at their first admission has been fixed to 300.</p>
+</blockquote>
+<section id="q3.1-answer-1" class="level4">
+<h4 class="anchored" data-anchor-id="q3.1-answer-1">Q3.1 Answer</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>admissions_tble<span class="sc">$</span>admittime_hour <span class="ot">&lt;-</span> <span class="fu">hour</span>(admissions_tble<span class="sc">$</span>admittime)</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>admissions_tble<span class="sc">$</span>admittime_min <span class="ot">&lt;-</span> <span class="fu">minute</span>(admissions_tble<span class="sc">$</span>admittime)</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>admissions_tble<span class="sc">$</span>length <span class="ot">&lt;-</span> admissions_tble<span class="sc">$</span>dischtime <span class="sc">-</span> admissions_tble<span class="sc">$</span>admittime</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a><span class="co"># number of admissions per patient:</span></span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>count_adm <span class="ot">&lt;-</span> admissions_tble <span class="sc">%&gt;%</span> </span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(subject_id)</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(count_adm, <span class="fu">aes</span>(<span class="at">x =</span> n)) <span class="sc">+</span></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">10</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"patients's admissions count"</span>,</span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Histogram of patients with multiple admissions"</span></span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># admission hour:</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>admissions_tble <span class="sc">%&gt;%</span> </span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(admittime_hour) <span class="sc">%&gt;%</span> </span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> admittime_hour, <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"green"</span>) <span class="sc">+</span></span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"admission hour"</span>,</span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"count"</span>,</span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Admission hour distribution"</span></span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># admission minute:</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>admissions_tble <span class="sc">%&gt;%</span> </span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(admittime_min) <span class="sc">%&gt;%</span> </span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> admittime_min, <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"pink"</span>) <span class="sc">+</span></span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"admission minute"</span>,</span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"count"</span>,</span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Admission minute distribution"</span></span>
+<span id="cb69-10"><a href="#cb69-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-13-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># length of hospital stay:</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>admissions_tble <span class="sc">%&gt;%</span> </span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(length, <span class="at">units =</span> <span class="st">"days"</span>))) <span class="sc">+</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">10</span>, <span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"length of hospital stay"</span>,</span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Histogram of length of hospital stay"</span></span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-13-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>According to the plots, most of the patients have 1 admission, and the number of patients with multiple admissions is decreasing as the number of admissions increases. For the admission hour, most of the admissions occur from 3:00 pm to 12:00 pm, there are relatively fewer admissions from 12:00 am to 6:00 am. But the amount is unusually high around 7 am. For the admission hour, there are 4 time period that has unusually high amount of admissions, which are 0, 15, 30, 45. It’s possible that the data is recorded in 15 minutes interval. For the length of hospital stay, most of the patients stay in the hospital for less than 10 days, and the number of patients with longer hospital stay is decreasing as the length of hospital stay increases.</p>
+</section>
+</section>
+</section>
+<section id="q4.-patients-data" class="level2">
+<h2 class="anchored" data-anchor-id="q4.-patients-data">Q4. <code>patients</code> data</h2>
+<p>Patient information is available in <code>patients.csv.gz</code>. See <a href="https://mimic.mit.edu/docs/iv/modules/hosp/patients/" class="uri">https://mimic.mit.edu/docs/iv/modules/hosp/patients/</a> for details of each field in this file. The first 10 lines are</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="op">&lt;</span> ~/mimic/hosp/patients.csv.gz <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>subject_id,gender,anchor_age,anchor_year,anchor_year_group,dod
+10000032,F,52,2180,2014 - 2016,2180-09-09
+10000048,F,23,2126,2008 - 2010,
+10000068,F,19,2160,2008 - 2010,
+10000084,M,72,2160,2017 - 2019,2161-02-13
+10000102,F,27,2136,2008 - 2010,
+10000108,M,25,2163,2014 - 2016,
+10000115,M,24,2154,2017 - 2019,
+10000117,F,48,2174,2008 - 2010,
+10000178,F,59,2157,2017 - 2019,</code></pre>
+</div>
+</div>
+<section id="q4.1-ingestion" class="level3">
+<h3 class="anchored" data-anchor-id="q4.1-ingestion">Q4.1 Ingestion</h3>
+<p>Import <code>patients.csv.gz</code> (<a href="https://mimic.mit.edu/docs/iv/modules/hosp/patients/" class="uri">https://mimic.mit.edu/docs/iv/modules/hosp/patients/</a>) as a tibble <code>patients_tble</code>.</p>
+<section id="q4.1-answer" class="level4">
+<h4 class="anchored" data-anchor-id="q4.1-answer">Q4.1 Answer</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>patients_tble<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"~/mimic/hosp/patients.csv.gz"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="at">width=</span><span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 299712 Columns: 6
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (2): gender, anchor_year_group
+dbl  (3): subject_id, anchor_age, anchor_year
+date (1): dod
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 299,712 × 6
+   subject_id gender anchor_age anchor_year anchor_year_group dod       
+        &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;             &lt;date&gt;    
+ 1   10000032 F              52        2180 2014 - 2016       2180-09-09
+ 2   10000048 F              23        2126 2008 - 2010       NA        
+ 3   10000068 F              19        2160 2008 - 2010       NA        
+ 4   10000084 M              72        2160 2017 - 2019       2161-02-13
+ 5   10000102 F              27        2136 2008 - 2010       NA        
+ 6   10000108 M              25        2163 2014 - 2016       NA        
+ 7   10000115 M              24        2154 2017 - 2019       NA        
+ 8   10000117 F              48        2174 2008 - 2010       NA        
+ 9   10000178 F              59        2157 2017 - 2019       NA        
+10   10000248 M              34        2192 2014 - 2016       NA        
+# ℹ 299,702 more rows</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="q4.2-summary-and-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="q4.2-summary-and-visualization">Q4.2 Summary and visualization</h3>
+<p>Summarize variables <code>gender</code> and <code>anchor_age</code> by graphics, and explain any patterns you see.</p>
+<section id="q4.2-answer" class="level4">
+<h4 class="anchored" data-anchor-id="q4.2-answer">Q4.2 Answer</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(patients_tble, <span class="fu">aes</span>(<span class="at">x =</span> anchor_age, <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"stack"</span>, <span class="at">width =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Age Group"</span>,</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Count"</span>,</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribution of Gender by Age Group"</span></span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"M"</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">"F"</span> <span class="ot">=</span> <span class="st">"pink"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>According to the plot, for the age distribution, the younger age group(15 to 30) has a relatively higher amount. With the age increasing, the amount of patients is decreasing fist, and then slightly increasing before decreasing again. An unusual point is that the amount of 91 years old patients is very high. That might be caused by the date shifting.</p>
+<p>For gender distribution, there is few pattern shown. We can see that in some age groups, female patients are slightly more, but in most age groups the ratio is close to 1:1.</p>
+</section>
+</section>
+</section>
+<section id="q5.-lab-results" class="level2">
+<h2 class="anchored" data-anchor-id="q5.-lab-results">Q5. Lab results</h2>
+<p><code>labevents.csv.gz</code> (<a href="https://mimic.mit.edu/docs/iv/modules/hosp/labevents/" class="uri">https://mimic.mit.edu/docs/iv/modules/hosp/labevents/</a>) contains all laboratory measurements for patients. The first 10 lines are</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="op">&lt;</span> ~/mimic/hosp/labevents.csv.gz <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>labevent_id,subject_id,hadm_id,specimen_id,itemid,order_provider_id,charttime,storetime,value,valuenum,valueuom,ref_range_lower,ref_range_upper,flag,priority,comments
+1,10000032,,45421181,51237,P28Z0X,2180-03-23 11:51:00,2180-03-23 15:15:00,1.4,1.4,,0.9,1.1,abnormal,ROUTINE,
+2,10000032,,45421181,51274,P28Z0X,2180-03-23 11:51:00,2180-03-23 15:15:00,___,15.1,sec,9.4,12.5,abnormal,ROUTINE,VERIFIED.
+3,10000032,,52958335,50853,P28Z0X,2180-03-23 11:51:00,2180-03-25 11:06:00,___,15,ng/mL,30,60,abnormal,ROUTINE,NEW ASSAY IN USE ___: DETECTS D2 AND D3 25-OH ACCURATELY.
+4,10000032,,52958335,50861,P28Z0X,2180-03-23 11:51:00,2180-03-23 16:40:00,102,102,IU/L,0,40,abnormal,ROUTINE,
+5,10000032,,52958335,50862,P28Z0X,2180-03-23 11:51:00,2180-03-23 16:40:00,3.3,3.3,g/dL,3.5,5.2,abnormal,ROUTINE,
+6,10000032,,52958335,50863,P28Z0X,2180-03-23 11:51:00,2180-03-23 16:40:00,109,109,IU/L,35,105,abnormal,ROUTINE,
+7,10000032,,52958335,50864,P28Z0X,2180-03-23 11:51:00,2180-03-23 16:40:00,___,8,ng/mL,0,8.7,,ROUTINE,MEASURED BY ___.
+8,10000032,,52958335,50868,P28Z0X,2180-03-23 11:51:00,2180-03-23 16:40:00,12,12,mEq/L,8,20,,ROUTINE,
+9,10000032,,52958335,50878,P28Z0X,2180-03-23 11:51:00,2180-03-23 16:40:00,143,143,IU/L,0,40,abnormal,ROUTINE,</code></pre>
+</div>
+</div>
+<p><code>d_labitems.csv.gz</code> (<a href="https://mimic.mit.edu/docs/iv/modules/hosp/d_labitems/" class="uri">https://mimic.mit.edu/docs/iv/modules/hosp/d_labitems/</a>) is the dictionary of lab measurements.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="op">&lt;</span> ~/mimic/hosp/d_labitems.csv.gz <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>itemid,label,fluid,category
+50801,Alveolar-arterial Gradient,Blood,Blood Gas
+50802,Base Excess,Blood,Blood Gas
+50803,"Calculated Bicarbonate, Whole Blood",Blood,Blood Gas
+50804,Calculated Total CO2,Blood,Blood Gas
+50805,Carboxyhemoglobin,Blood,Blood Gas
+50806,"Chloride, Whole Blood",Blood,Blood Gas
+50808,Free Calcium,Blood,Blood Gas
+50809,Glucose,Blood,Blood Gas
+50810,"Hematocrit, Calculated",Blood,Blood Gas</code></pre>
+</div>
+</div>
+<p>We are interested in the lab measurements of creatinine (50912), potassium (50971), sodium (50983), chloride (50902), bicarbonate (50882), hematocrit (51221), white blood cell count (51301), and glucose (50931). Retrieve a subset of <code>labevents.csv.gz</code> that only containing these items for the patients in <code>icustays_tble</code>. Further restrict to the last available measurement (by <code>storetime</code>) before the ICU stay. The final <code>labevents_tble</code> should have one row per ICU stay and columns for each lab measurement.</p>
+<p><img src="labevents_tble.png" class="img-fluid"></p>
+<p>Hint: Use the Parquet format you generated in Homework 2. For reproducibility, make <code>labevents_pq</code> folder available at the current working directory <code>hw3</code>, for example, by a symbolic link.</p>
+<section id="q5-answer" class="level4">
+<h4 class="anchored" data-anchor-id="q5-answer">Q5 Answer</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>labevents_tble<span class="ot">&lt;-</span><span class="fu">read_parquet</span>(<span class="st">"~/mimic/hosp/labevents.parquet/part-0.parquet"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>((subject_id <span class="sc">%in%</span> icustays_tble<span class="sc">$</span>subject_id)<span class="sc">&amp;</span>(itemid <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">50912</span>, <span class="dv">50971</span>, <span class="dv">50983</span>, <span class="dv">50902</span>, <span class="dv">50882</span>, <span class="dv">51221</span>, <span class="dv">51301</span>, <span class="dv">50931</span>)))<span class="sc">|&gt;</span></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="at">width=</span><span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 13,473,870 × 16
+   labevent_id subject_id hadm_id specimen_id itemid order_provider_id
+         &lt;int&gt;      &lt;int&gt;   &lt;int&gt;       &lt;int&gt;  &lt;int&gt; &lt;chr&gt;            
+ 1          10   10000032      NA    52958335  50882 "P28Z0X"         
+ 2          14   10000032      NA    52958335  50902 "P28Z0X"         
+ 3          19   10000032      NA    52958335  50912 "P28Z0X"         
+ 4          33   10000032      NA    52958335  50971 "P28Z0X"         
+ 5          34   10000032      NA    52958335  50983 "P28Z0X"         
+ 6          60   10000032      NA    73913913  50931 "P28Z0X"         
+ 7          63   10000032      NA    81886159  51221 "P28Z0X"         
+ 8          75   10000032      NA    81886159  51301 "P28Z0X"         
+ 9          78   10000032      NA    31644093  51221 ""               
+10          89   10000032      NA    31644093  51301 ""               
+   charttime           storetime           value valuenum valueuom
+   &lt;dttm&gt;              &lt;dttm&gt;              &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;   
+ 1 2180-03-23 04:51:00 2180-03-23 09:40:00 27        27   mEq/L   
+ 2 2180-03-23 04:51:00 2180-03-23 09:40:00 101      101   mEq/L   
+ 3 2180-03-23 04:51:00 2180-03-23 09:40:00 0.4        0.4 mg/dL   
+ 4 2180-03-23 04:51:00 2180-03-23 09:40:00 3.7        3.7 mEq/L   
+ 5 2180-03-23 04:51:00 2180-03-23 09:40:00 136      136   mEq/L   
+ 6 2180-03-23 04:51:00 2180-03-23 08:56:00 ___       95   mg/dL   
+ 7 2180-03-23 04:51:00 2180-03-23 08:19:00 45.4      45.4 %       
+ 8 2180-03-23 04:51:00 2180-03-23 08:19:00 3.0        3   K/uL    
+ 9 2180-05-06 15:25:00 2180-05-06 15:42:00 42.6      42.6 %       
+10 2180-05-06 15:25:00 2180-05-06 15:42:00 5.0        5   K/uL    
+   ref_range_lower ref_range_upper flag       priority
+             &lt;dbl&gt;           &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;   
+ 1            22              32   ""         ROUTINE 
+ 2            96             108   ""         ROUTINE 
+ 3             0.4             1.1 ""         ROUTINE 
+ 4             3.3             5.1 ""         ROUTINE 
+ 5           133             145   ""         ROUTINE 
+ 6            70             100   ""         ROUTINE 
+ 7            36              48   ""         ROUTINE 
+ 8             4              11   "abnormal" ROUTINE 
+ 9            36              48   ""         STAT    
+10             4              11   ""         STAT    
+   comments                                               
+   &lt;chr&gt;                                                  
+ 1 ""                                                     
+ 2 ""                                                     
+ 3 ""                                                     
+ 4 ""                                                     
+ 5 ""                                                     
+ 6 "IF FASTING, 70-100 NORMAL, &gt;125 PROVISIONAL DIABETES."
+ 7 ""                                                     
+ 8 ""                                                     
+ 9 ""                                                     
+10 ""                                                     
+# ℹ 13,473,860 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>labevents_d_tble<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"~/mimic/hosp/d_labitems.csv.gz"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(itemid <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">50912</span>, <span class="dv">50971</span>, <span class="dv">50983</span>, <span class="dv">50902</span>, <span class="dv">50882</span>, <span class="dv">51221</span>, <span class="dv">51301</span>, <span class="dv">50931</span>))<span class="sc">|&gt;</span></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">width=</span><span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 1622 Columns: 4
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (3): label, fluid, category
+dbl (1): itemid
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 4
+  itemid label             fluid category  
+   &lt;dbl&gt; &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt;     
+1  50882 Bicarbonate       Blood Chemistry 
+2  50902 Chloride          Blood Chemistry 
+3  50912 Creatinine        Blood Chemistry 
+4  50931 Glucose           Blood Chemistry 
+5  50971 Potassium         Blood Chemistry 
+6  50983 Sodium            Blood Chemistry 
+7  51221 Hematocrit        Blood Hematology
+8  51301 White Blood Cells Blood Hematology</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>labevents_tble<span class="sc">$</span>measure<span class="ot">&lt;-</span>labevents_d_tble<span class="sc">$</span>label[<span class="fu">match</span>(labevents_tble<span class="sc">$</span>itemid, labevents_d_tble<span class="sc">$</span>itemid)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>labevents_tble<span class="ot">&lt;-</span>labevents_tble<span class="sc">%&gt;%</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">left_join</span>(<span class="fu">select</span>(icustays_tble,subject_id,stay_id,intime), <span class="at">by =</span> <span class="st">"subject_id"</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(storetime <span class="sc">&lt;</span> intime) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in left_join(., select(icustays_tble, subject_id, stay_id, intime), : Detected an unexpected many-to-many relationship between `x` and `y`.
+ℹ Row 845 of `x` matches multiple rows in `y`.
+ℹ Row 1 of `y` matches multiple rows in `x`.
+ℹ If a many-to-many relationship is expected, set `relationship =
+  "many-to-many"` to silence this warning.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>labevents_tble<span class="ot">&lt;-</span>labevents_tble<span class="sc">|&gt;</span></span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(subject_id,stay_id,measure)<span class="sc">|&gt;</span></span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(storetime<span class="sc">==</span><span class="fu">max</span>(storetime))<span class="sc">|&gt;</span></span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subject_id,stay_id,measure,valuenum)<span class="sc">|&gt;</span></span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> measure, <span class="at">values_from =</span> valuenum, <span class="at">values_fn =</span> <span class="fu">list</span>(<span class="at">valuenum =</span> last))<span class="sc">|&gt;</span></span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">width=</span><span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 68,467 × 10
+# Groups:   subject_id, stay_id [68,467]
+   subject_id  stay_id Hematocrit `White Blood Cells` Bicarbonate Chloride
+        &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;               &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+ 1   10000032 39553978       41.1                 6.9          25       95
+ 2   10000980 39765666       27.3                 5.3          21      109
+ 3   10001217 37067082       38.1                15.7          22      108
+ 4   10001217 34592300       37.4                 5.4          30      104
+ 5   10001725 31205490       NA                  NA            NA       98
+ 6   10001884 37510196       39.7                12.2          30       88
+ 7   10002013 39060235       34.9                 7.2          24      102
+ 8   10002155 33685454       39.7                 7.9          24      105
+ 9   10002155 31090461       25.5                17.9          23       98
+10   10002155 32358465       22.4                 9.8          26       85
+   Creatinine Glucose Potassium Sodium
+        &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;
+ 1        0.7     102       6.7    126
+ 2        2.3      89       3.9    144
+ 3        0.6     112       4.2    142
+ 4        0.5      87       4.1    142
+ 5       NA        NA       4.1    139
+ 6        1.1     141       4.5    130
+ 7        0.9     288       3.5    137
+ 8        1.1     138       4.6    139
+ 9        2.8     117       4.9    135
+10        1.4     133       5.7    120
+# ℹ 68,457 more rows</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="q6.-vitals-from-charted-events" class="level2">
+<h2 class="anchored" data-anchor-id="q6.-vitals-from-charted-events">Q6. Vitals from charted events</h2>
+<p><code>chartevents.csv.gz</code> (<a href="https://mimic.mit.edu/docs/iv/modules/icu/chartevents/" class="uri">https://mimic.mit.edu/docs/iv/modules/icu/chartevents/</a>) contains all the charted data available for a patient. During their ICU stay, the primary repository of a patient’s information is their electronic chart. The <code>itemid</code> variable indicates a single measurement type in the database. The <code>value</code> variable is the value measured for <code>itemid</code>. The first 10 lines of <code>chartevents.csv.gz</code> are</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="op">&lt;</span> ~/mimic/icu/chartevents.csv.gz <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>subject_id,hadm_id,stay_id,caregiver_id,charttime,storetime,itemid,value,valuenum,valueuom,warning
+10000032,29079034,39553978,47007,2180-07-23 21:01:00,2180-07-23 22:15:00,220179,82,82,mmHg,0
+10000032,29079034,39553978,47007,2180-07-23 21:01:00,2180-07-23 22:15:00,220180,59,59,mmHg,0
+10000032,29079034,39553978,47007,2180-07-23 21:01:00,2180-07-23 22:15:00,220181,63,63,mmHg,0
+10000032,29079034,39553978,47007,2180-07-23 22:00:00,2180-07-23 22:15:00,220045,94,94,bpm,0
+10000032,29079034,39553978,47007,2180-07-23 22:00:00,2180-07-23 22:15:00,220179,85,85,mmHg,0
+10000032,29079034,39553978,47007,2180-07-23 22:00:00,2180-07-23 22:15:00,220180,55,55,mmHg,0
+10000032,29079034,39553978,47007,2180-07-23 22:00:00,2180-07-23 22:15:00,220181,62,62,mmHg,0
+10000032,29079034,39553978,47007,2180-07-23 22:00:00,2180-07-23 22:15:00,220210,20,20,insp/min,0
+10000032,29079034,39553978,47007,2180-07-23 22:00:00,2180-07-23 22:15:00,220277,95,95,%,0</code></pre>
+</div>
+</div>
+<p><code>d_items.csv.gz</code> (<a href="https://mimic.mit.edu/docs/iv/modules/icu/d_items/" class="uri">https://mimic.mit.edu/docs/iv/modules/icu/d_items/</a>) is the dictionary for the <code>itemid</code> in <code>chartevents.csv.gz</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> <span class="op">&lt;</span> ~/mimic/icu/d_items.csv.gz <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>itemid,label,abbreviation,linksto,category,unitname,param_type,lownormalvalue,highnormalvalue
+220001,Problem List,Problem List,chartevents,General,,Text,,
+220003,ICU Admission date,ICU Admission date,datetimeevents,ADT,,Date and time,,
+220045,Heart Rate,HR,chartevents,Routine Vital Signs,bpm,Numeric,,
+220046,Heart rate Alarm - High,HR Alarm - High,chartevents,Alarms,bpm,Numeric,,
+220047,Heart Rate Alarm - Low,HR Alarm - Low,chartevents,Alarms,bpm,Numeric,,
+220048,Heart Rhythm,Heart Rhythm,chartevents,Routine Vital Signs,,Text,,
+220050,Arterial Blood Pressure systolic,ABPs,chartevents,Routine Vital Signs,mmHg,Numeric,90,140
+220051,Arterial Blood Pressure diastolic,ABPd,chartevents,Routine Vital Signs,mmHg,Numeric,60,90
+220052,Arterial Blood Pressure mean,ABPm,chartevents,Routine Vital Signs,mmHg,Numeric,,</code></pre>
+</div>
+</div>
+<p>We are interested in the vitals for ICU patients: heart rate (220045), systolic non-invasive blood pressure (220179), diastolic non-invasive blood pressure (220180), body temperature in Fahrenheit (223761), and respiratory rate (220210). Retrieve a subset of <code>chartevents.csv.gz</code> only containing these items for the patients in <code>icustays_tble</code>. Further restrict to the first vital measurement within the ICU stay. The final <code>chartevents_tble</code> should have one row per ICU stay and columns for each vital measurement.</p>
+<section id="q6-answer" class="level4">
+<h4 class="anchored" data-anchor-id="q6-answer">Q6 Answer</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>chartevents_tble<span class="ot">&lt;-</span><span class="fu">read_parquet</span>(<span class="st">"~/mimic/icu/chartevents.parquet/part-0.parquet"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>((subject_id <span class="sc">%in%</span> icustays_tble<span class="sc">$</span>subject_id)<span class="sc">&amp;</span>(itemid <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">220045</span>, <span class="dv">220179</span>, <span class="dv">220180</span>, <span class="dv">223761</span>, <span class="dv">220210</span>)))<span class="sc">|&gt;</span></span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="at">width=</span><span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 22,504,119 × 11
+   subject_id  hadm_id  stay_id caregiver_id charttime          
+        &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;        &lt;dbl&gt; &lt;dttm&gt;             
+ 1   10000032 29079034 39553978        47007 2180-07-23 21:01:00
+ 2   10000032 29079034 39553978        47007 2180-07-23 21:01:00
+ 3   10000032 29079034 39553978        47007 2180-07-23 22:00:00
+ 4   10000032 29079034 39553978        47007 2180-07-23 22:00:00
+ 5   10000032 29079034 39553978        47007 2180-07-23 22:00:00
+ 6   10000032 29079034 39553978        47007 2180-07-23 22:00:00
+ 7   10000032 29079034 39553978        66056 2180-07-23 19:00:00
+ 8   10000032 29079034 39553978        66056 2180-07-23 19:00:00
+ 9   10000032 29079034 39553978        66056 2180-07-23 19:00:00
+10   10000032 29079034 39553978        66056 2180-07-23 19:00:00
+   storetime           itemid value valuenum valueuom warning
+   &lt;dttm&gt;               &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt;
+ 1 2180-07-23 22:15:00 220179 82          82 mmHg           0
+ 2 2180-07-23 22:15:00 220180 59          59 mmHg           0
+ 3 2180-07-23 22:15:00 220045 94          94 bpm            0
+ 4 2180-07-23 22:15:00 220179 85          85 mmHg           0
+ 5 2180-07-23 22:15:00 220180 55          55 mmHg           0
+ 6 2180-07-23 22:15:00 220210 20          20 insp/min       0
+ 7 2180-07-23 19:59:00 220045 97          97 bpm            0
+ 8 2180-07-23 19:59:00 220179 93          93 mmHg           0
+ 9 2180-07-23 19:59:00 220180 41          41 mmHg           0
+10 2180-07-23 19:59:00 220210 16          16 insp/min       0
+# ℹ 22,504,109 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>chartevents_d_tble<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"~/mimic/icu/d_items.csv.gz"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(itemid <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">220045</span>, <span class="dv">220179</span>, <span class="dv">220180</span>, <span class="dv">223761</span>, <span class="dv">220210</span>))<span class="sc">|&gt;</span></span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">width=</span><span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 4014 Columns: 9
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (6): label, abbreviation, linksto, category, unitname, param_type
+dbl (3): itemid, lownormalvalue, highnormalvalue
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 9
+  itemid label                                 abbreviation  linksto    
+   &lt;dbl&gt; &lt;chr&gt;                                 &lt;chr&gt;         &lt;chr&gt;      
+1 220045 Heart Rate                            HR            chartevents
+2 220179 Non Invasive Blood Pressure systolic  NBPs          chartevents
+3 220180 Non Invasive Blood Pressure diastolic NBPd          chartevents
+4 220210 Respiratory Rate                      RR            chartevents
+5 223761 Temperature Fahrenheit                Temperature F chartevents
+  category            unitname param_type lownormalvalue highnormalvalue
+  &lt;chr&gt;               &lt;chr&gt;    &lt;chr&gt;               &lt;dbl&gt;           &lt;dbl&gt;
+1 Routine Vital Signs bpm      Numeric                NA              NA
+2 Routine Vital Signs mmHg     Numeric                NA              NA
+3 Routine Vital Signs mmHg     Numeric                NA              NA
+4 Respiratory         insp/min Numeric                NA              NA
+5 Routine Vital Signs °F       Numeric                NA              NA</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>chartevents_tble<span class="sc">$</span>vital<span class="ot">&lt;-</span>chartevents_d_tble<span class="sc">$</span>label[<span class="fu">match</span>(chartevents_tble<span class="sc">$</span>itemid, chartevents_d_tble<span class="sc">$</span>itemid)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>chartevents_tble<span class="ot">&lt;-</span>chartevents_tble<span class="sc">%&gt;%</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">left_join</span>(<span class="fu">select</span>(icustays_tble,subject_id,intime,outtime), <span class="at">by =</span> <span class="st">"subject_id"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in left_join(., select(icustays_tble, subject_id, intime, outtime), : Detected an unexpected many-to-many relationship between `x` and `y`.
+ℹ Row 91 of `x` matches multiple rows in `y`.
+ℹ Row 1 of `y` matches multiple rows in `x`.
+ℹ If a many-to-many relationship is expected, set `relationship =
+  "many-to-many"` to silence this warning.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>chartevents_tble<span class="ot">&lt;-</span>chartevents_tble<span class="sc">%&gt;%</span></span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(charttime <span class="sc">&gt;=</span> intime <span class="sc">&amp;</span> charttime <span class="sc">&lt;=</span> outtime)</span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a>chartevents_tble<span class="ot">&lt;-</span>chartevents_tble<span class="sc">|&gt;</span></span>
+<span id="cb103-5"><a href="#cb103-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(subject_id,stay_id,vital)<span class="sc">|&gt;</span></span>
+<span id="cb103-6"><a href="#cb103-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(charttime<span class="sc">==</span><span class="fu">min</span>(charttime))<span class="sc">|&gt;</span></span>
+<span id="cb103-7"><a href="#cb103-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subject_id,stay_id,vital,value)<span class="sc">|&gt;</span></span>
+<span id="cb103-8"><a href="#cb103-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> vital, <span class="at">values_from =</span> value, <span class="at">values_fn =</span> <span class="fu">list</span>(<span class="at">value =</span> last))<span class="sc">|&gt;</span></span>
+<span id="cb103-9"><a href="#cb103-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">width=</span><span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 73,164 × 7
+# Groups:   subject_id, stay_id [73,164]
+   subject_id  stay_id `Temperature Fahrenheit`
+        &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;                   
+ 1   10000032 39553978 98.7                    
+ 2   10000980 39765666 98                      
+ 3   10001217 37067082 98.5                    
+ 4   10001217 34592300 97.6                    
+ 5   10001725 31205490 97.7                    
+ 6   10001884 37510196 98.1                    
+ 7   10002013 39060235 97.2                    
+ 8   10002155 32358465 97.7                    
+ 9   10002155 33685454 95.9                    
+10   10002155 31090461 96.9                    
+   `Non Invasive Blood Pressure systolic`
+   &lt;chr&gt;                                 
+ 1 84                                    
+ 2 150                                   
+ 3 151                                   
+ 4 167                                   
+ 5 73                                    
+ 6 180                                   
+ 7 104                                   
+ 8 109                                   
+ 9 126                                   
+10 118                                   
+   `Non Invasive Blood Pressure diastolic` `Heart Rate` `Respiratory Rate`
+   &lt;chr&gt;                                   &lt;chr&gt;        &lt;chr&gt;             
+ 1 48                                      91           24                
+ 2 77                                      77           23                
+ 3 90                                      86           18                
+ 4 95                                      96           11                
+ 5 56                                      55           19                
+ 6 12                                      38           10                
+ 7 70                                      80           14                
+ 8 65                                      98           23                
+ 9 61                                      68           18                
+10 51                                      94           18                
+# ℹ 73,154 more rows</code></pre>
+</div>
+</div>
+<p><img src="chartevents_tble.png" class="img-fluid"></p>
+<p>Hint: Use the Parquet format you generated in Homework 2. For reproducibility, make <code>chartevents_pq</code> folder available at the current working directory, for example, by a symbolic link.</p>
+</section>
+</section>
+<section id="q7.-putting-things-together" class="level2">
+<h2 class="anchored" data-anchor-id="q7.-putting-things-together">Q7. Putting things together</h2>
+<p>Let us create a tibble <code>mimic_icu_cohort</code> for all ICU stays, where rows are all ICU stays of adults (age at <code>intime</code> &gt;= 18) and columns contain at least following variables</p>
+<ul>
+<li>all variables in <code>icustays_tble</code><br>
+</li>
+<li>all variables in <code>admissions_tble</code><br>
+</li>
+<li>all variables in <code>patients_tble</code></li>
+<li>the last lab measurements before the ICU stay in <code>labevents_tble</code></li>
+<li>the first vital measurements during the ICU stay in <code>chartevents_tble</code></li>
+</ul>
+<p>The final <code>mimic_icu_cohort</code> should have one row per ICU stay and columns for each variable.</p>
+<p><img src="mimic_icu_cohort.png" class="img-fluid"></p>
+<section id="q7-answer" class="level4">
+<h4 class="anchored" data-anchor-id="q7-answer">Q7 Answer</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>icustays_patient_join_tble<span class="ot">&lt;-</span>icustays_tble<span class="sc">%&gt;%</span></span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(patients_tble, <span class="at">by =</span> <span class="st">"subject_id"</span>)</span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-4"><a href="#cb105-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-5"><a href="#cb105-5" aria-hidden="true" tabindex="-1"></a>icustays_patient_join_tble <span class="ot">&lt;-</span> icustays_patient_join_tble <span class="sc">%&gt;%</span></span>
+<span id="cb105-6"><a href="#cb105-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age_intime =</span> <span class="fu">year</span>(intime) <span class="sc">-</span> anchor_year <span class="sc">+</span> anchor_age)</span>
+<span id="cb105-7"><a href="#cb105-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-8"><a href="#cb105-8" aria-hidden="true" tabindex="-1"></a>temp<span class="ot">&lt;-</span>icustays_patient_join_tble<span class="sc">%&gt;%</span></span>
+<span id="cb105-9"><a href="#cb105-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(age_intime<span class="sc">&gt;</span><span class="dv">18</span>)</span>
+<span id="cb105-10"><a href="#cb105-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-11"><a href="#cb105-11" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="ot">&lt;-</span>temp<span class="sc">%&gt;%</span></span>
+<span id="cb105-12"><a href="#cb105-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(admissions_tble,<span class="sc">-</span>subject_id), <span class="at">by =</span> <span class="st">"hadm_id"</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb105-13"><a href="#cb105-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(labevents_tble, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"subject_id"</span>,<span class="st">"stay_id"</span>))<span class="sc">%&gt;%</span></span>
+<span id="cb105-14"><a href="#cb105-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(chartevents_tble, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"subject_id"</span>,<span class="st">"stay_id"</span>))<span class="sc">%&gt;%</span></span>
+<span id="cb105-15"><a href="#cb105-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">width=</span><span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 73,097 × 44
+   subject_id  hadm_id  stay_id first_careunit                                  
+        &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;                                           
+ 1   10000032 29079034 39553978 Medical Intensive Care Unit (MICU)              
+ 2   10000980 26913865 39765666 Medical Intensive Care Unit (MICU)              
+ 3   10001217 24597018 37067082 Surgical Intensive Care Unit (SICU)             
+ 4   10001217 27703517 34592300 Surgical Intensive Care Unit (SICU)             
+ 5   10001725 25563031 31205490 Medical/Surgical Intensive Care Unit (MICU/SICU)
+ 6   10001884 26184834 37510196 Medical Intensive Care Unit (MICU)              
+ 7   10002013 23581541 39060235 Cardiac Vascular Intensive Care Unit (CVICU)    
+ 8   10002155 20345487 32358465 Medical Intensive Care Unit (MICU)              
+ 9   10002155 23822395 33685454 Coronary Care Unit (CCU)                        
+10   10002155 28994087 31090461 Medical/Surgical Intensive Care Unit (MICU/SICU)
+   last_careunit                                    intime             
+   &lt;chr&gt;                                            &lt;dttm&gt;             
+ 1 Medical Intensive Care Unit (MICU)               2180-07-23 14:00:00
+ 2 Medical Intensive Care Unit (MICU)               2189-06-27 08:42:00
+ 3 Surgical Intensive Care Unit (SICU)              2157-11-20 19:18:02
+ 4 Surgical Intensive Care Unit (SICU)              2157-12-19 15:42:24
+ 5 Medical/Surgical Intensive Care Unit (MICU/SICU) 2110-04-11 15:52:22
+ 6 Medical Intensive Care Unit (MICU)               2131-01-11 04:20:05
+ 7 Cardiac Vascular Intensive Care Unit (CVICU)     2160-05-18 10:00:53
+ 8 Medical Intensive Care Unit (MICU)               2131-03-09 21:33:00
+ 9 Coronary Care Unit (CCU)                         2129-08-04 12:45:00
+10 Medical/Surgical Intensive Care Unit (MICU/SICU) 2130-09-24 00:50:00
+   outtime               los gender anchor_age anchor_year anchor_year_group
+   &lt;dttm&gt;              &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;            
+ 1 2180-07-23 23:50:47 0.410 F              52        2180 2014 - 2016      
+ 2 2189-06-27 20:38:27 0.498 F              73        2186 2008 - 2010      
+ 3 2157-11-21 22:08:00 1.12  F              55        2157 2011 - 2013      
+ 4 2157-12-20 14:27:41 0.948 F              55        2157 2011 - 2013      
+ 5 2110-04-12 23:59:56 1.34  F              46        2110 2011 - 2013      
+ 6 2131-01-20 08:27:30 9.17  F              68        2122 2008 - 2010      
+ 7 2160-05-19 17:33:33 1.31  F              53        2156 2008 - 2010      
+ 8 2131-03-10 18:09:21 0.859 F              80        2128 2008 - 2010      
+ 9 2129-08-10 17:02:38 6.18  F              80        2128 2008 - 2010      
+10 2130-09-27 22:13:41 3.89  F              80        2128 2008 - 2010      
+   dod        age_intime admittime           dischtime          
+   &lt;date&gt;          &lt;dbl&gt; &lt;dttm&gt;              &lt;dttm&gt;             
+ 1 2180-09-09         52 2180-07-23 12:35:00 2180-07-25 17:55:00
+ 2 2193-08-26         76 2189-06-27 07:38:00 2189-07-03 03:00:00
+ 3 NA                 55 2157-11-18 22:56:00 2157-11-25 18:00:00
+ 4 NA                 55 2157-12-18 16:58:00 2157-12-24 14:55:00
+ 5 NA                 46 2110-04-11 15:08:00 2110-04-14 15:00:00
+ 6 2131-01-20         77 2131-01-07 20:39:00 2131-01-20 05:15:00
+ 7 NA                 57 2160-05-18 07:45:00 2160-05-23 13:30:00
+ 8 2131-03-10         83 2131-03-09 20:33:00 2131-03-10 01:55:00
+ 9 2131-03-10         81 2129-08-04 12:44:00 2129-08-18 16:53:00
+10 2131-03-10         82 2130-09-23 21:59:00 2130-09-29 18:55:00
+   deathtime           admission_type              admit_provider_id
+   &lt;dttm&gt;              &lt;chr&gt;                       &lt;chr&gt;            
+ 1 NA                  EW EMER.                    P30KEH           
+ 2 NA                  EW EMER.                    P30KEH           
+ 3 NA                  EW EMER.                    P4645A           
+ 4 NA                  DIRECT EMER.                P99698           
+ 5 NA                  EW EMER.                    P35SU0           
+ 6 2131-01-20 05:15:00 OBSERVATION ADMIT           P874LG           
+ 7 NA                  SURGICAL SAME DAY ADMISSION P47E1G           
+ 8 2131-03-10 21:53:00 EW EMER.                    P80515           
+ 9 NA                  EW EMER.                    P05HUO           
+10 NA                  EW EMER.                    P3529J           
+   admission_location discharge_location           insurance language
+   &lt;chr&gt;              &lt;chr&gt;                        &lt;chr&gt;     &lt;chr&gt;   
+ 1 EMERGENCY ROOM     HOME                         Medicaid  ENGLISH 
+ 2 EMERGENCY ROOM     HOME HEALTH CARE             Medicare  ENGLISH 
+ 3 EMERGENCY ROOM     HOME HEALTH CARE             Other     ?       
+ 4 PHYSICIAN REFERRAL HOME HEALTH CARE             Other     ?       
+ 5 PACU               HOME                         Other     ENGLISH 
+ 6 EMERGENCY ROOM     DIED                         Medicare  ENGLISH 
+ 7 PHYSICIAN REFERRAL HOME HEALTH CARE             Medicare  ENGLISH 
+ 8 EMERGENCY ROOM     DIED                         Other     ENGLISH 
+ 9 PROCEDURE SITE     CHRONIC/LONG TERM ACUTE CARE Other     ENGLISH 
+10 EMERGENCY ROOM     HOME HEALTH CARE             Other     ENGLISH 
+   marital_status race                   edregtime           edouttime          
+   &lt;chr&gt;          &lt;chr&gt;                  &lt;dttm&gt;              &lt;dttm&gt;             
+ 1 WIDOWED        WHITE                  2180-07-23 05:54:00 2180-07-23 14:00:00
+ 2 MARRIED        BLACK/AFRICAN AMERICAN 2189-06-27 06:25:00 2189-06-27 08:42:00
+ 3 MARRIED        WHITE                  2157-11-18 17:38:00 2157-11-19 01:24:00
+ 4 MARRIED        WHITE                  NA                  NA                 
+ 5 MARRIED        WHITE                  NA                  NA                 
+ 6 MARRIED        BLACK/AFRICAN AMERICAN 2131-01-07 13:36:00 2131-01-07 22:13:00
+ 7 SINGLE         OTHER                  NA                  NA                 
+ 8 MARRIED        WHITE                  2131-03-09 19:14:00 2131-03-09 21:33:00
+ 9 MARRIED        WHITE                  2129-08-04 11:00:00 2129-08-04 12:35:00
+10 MARRIED        WHITE                  2130-09-23 19:59:00 2130-09-24 00:50:00
+   hospital_expire_flag admittime_hour admittime_min length       Hematocrit
+                  &lt;dbl&gt;          &lt;int&gt;         &lt;int&gt; &lt;drtn&gt;            &lt;dbl&gt;
+ 1                    0             12            35  192000 secs       41.1
+ 2                    0              7            38  501720 secs       27.3
+ 3                    0             22            56  587040 secs       38.1
+ 4                    0             16            58  511020 secs       37.4
+ 5                    0             15             8  258720 secs       NA  
+ 6                    1             20            39 1067760 secs       39.7
+ 7                    0              7            45  452700 secs       34.9
+ 8                    1             20            33   19320 secs       22.4
+ 9                    0             12            44 1224540 secs       39.7
+10                    0             21            59  507360 secs       25.5
+   `White Blood Cells` Bicarbonate Chloride Creatinine Glucose Potassium Sodium
+                 &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;
+ 1                 6.9          25       95        0.7     102       6.7    126
+ 2                 5.3          21      109        2.3      89       3.9    144
+ 3                15.7          22      108        0.6     112       4.2    142
+ 4                 5.4          30      104        0.5      87       4.1    142
+ 5                NA            NA       98       NA        NA       4.1    139
+ 6                12.2          30       88        1.1     141       4.5    130
+ 7                 7.2          24      102        0.9     288       3.5    137
+ 8                 9.8          26       85        1.4     133       5.7    120
+ 9                 7.9          24      105        1.1     138       4.6    139
+10                17.9          23       98        2.8     117       4.9    135
+   `Temperature Fahrenheit` `Non Invasive Blood Pressure systolic`
+   &lt;chr&gt;                    &lt;chr&gt;                                 
+ 1 98.7                     84                                    
+ 2 98                       150                                   
+ 3 98.5                     151                                   
+ 4 97.6                     167                                   
+ 5 97.7                     73                                    
+ 6 98.1                     180                                   
+ 7 97.2                     104                                   
+ 8 97.7                     109                                   
+ 9 95.9                     126                                   
+10 96.9                     118                                   
+   `Non Invasive Blood Pressure diastolic` `Heart Rate` `Respiratory Rate`
+   &lt;chr&gt;                                   &lt;chr&gt;        &lt;chr&gt;             
+ 1 48                                      91           24                
+ 2 77                                      77           23                
+ 3 90                                      86           18                
+ 4 95                                      96           11                
+ 5 56                                      55           19                
+ 6 12                                      38           10                
+ 7 70                                      80           14                
+ 8 65                                      98           23                
+ 9 61                                      68           18                
+10 51                                      94           18                
+# ℹ 73,087 more rows</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="q8.-exploratory-data-analysis-eda" class="level2">
+<h2 class="anchored" data-anchor-id="q8.-exploratory-data-analysis-eda">Q8. Exploratory data analysis (EDA)</h2>
+<p>Summarize the following information about the ICU stay cohort <code>mimic_icu_cohort</code> using appropriate numerics or graphs:</p>
+<section id="q8-answer" class="level4">
+<h4 class="anchored" data-anchor-id="q8-answer">Q8 Answer</h4>
+<ul>
+<li>Length of ICU stay <code>los</code> vs demographic variables (race, insurance, marital_status, gender, age at intime)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> age_intime, <span class="at">y =</span> los)) <span class="sc">+</span></span>
+<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb107-4"><a href="#cb107-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs Age at intime"</span>,</span>
+<span id="cb107-5"><a href="#cb107-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Age at intime"</span>,</span>
+<span id="cb107-6"><a href="#cb107-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As we can see from the plot, for patients with most age_intime, they have a los under 30. There are some outliers with los over 30, but the number of these outliers is small. For elderly patients, the los is generally shorter, that might because the cardinality of the elderly patients is smaller than the younger patients.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> race,<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Race Group"</span>,</span>
+<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Los"</span>,</span>
+<span id="cb108-7"><a href="#cb108-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribution of Los in Race Group"</span></span>
+<span id="cb108-8"><a href="#cb108-8" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Since the box plot is not very clear, we can use the following code to get the summary:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(race)<span class="sc">%&gt;%</span></span>
+<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(los),</span>
+<span id="cb109-4"><a href="#cb109-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">median_value =</span> <span class="fu">median</span>(los),</span>
+<span id="cb109-5"><a href="#cb109-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">min_value =</span> <span class="fu">min</span>(los),</span>
+<span id="cb109-6"><a href="#cb109-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">max_value =</span> <span class="fu">max</span>(los),</span>
+<span id="cb109-7"><a href="#cb109-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">range=</span> max_value <span class="sc">-</span> min_value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 33 × 6
+   race                        mean_value median_value min_value max_value range
+   &lt;chr&gt;                            &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;
+ 1 AMERICAN INDIAN/ALASKA NAT…       4.46         2.09   0.0879       49.9  49.8
+ 2 ASIAN                             3.49         1.93   0.0631       59.5  59.4
+ 3 ASIAN - ASIAN INDIAN              4.20         1.95   0.160        66.3  66.1
+ 4 ASIAN - CHINESE                   3.36         1.86   0.0206       77.7  77.7
+ 5 ASIAN - KOREAN                    4.23         2.08   0.211        39.4  39.2
+ 6 ASIAN - SOUTH EAST ASIAN          3.05         1.83   0.0784       76.1  76.0
+ 7 BLACK/AFRICAN                     3.82         2.02   0.0345       54.8  54.8
+ 8 BLACK/AFRICAN AMERICAN            3.28         1.85   0.00346      95.8  95.8
+ 9 BLACK/CAPE VERDEAN                3.22         1.70   0.0296       51.7  51.6
+10 BLACK/CARIBBEAN ISLAND            3.61         1.95   0.0445       38.2  38.2
+# ℹ 23 more rows</code></pre>
+</div>
+</div>
+<p>According to the summary, the AMERICAN INDIAN/ALASKA NATIVE group has the highest mean los, while the HISPANIC/LATINO - MEXICAN group has the lowest mean los. The distribution of los in the White group is the most concentrated, with the smallest range. The distribution of los in the SOUTH AMERICAN group is the most dispersed, with the largest range.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> insurance,<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs insurance"</span>,</span>
+<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Insurance"</span>,</span>
+<span id="cb111-6"><a href="#cb111-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>According to the plot, the los of patients with insurance type “Medicare” is generally longer than other insurance types. The los of patients with insurance type “Medicaid” is generally shorter than other insurance types.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> marital_status,<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb112-4"><a href="#cb112-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs marital_status"</span>,</span>
+<span id="cb112-5"><a href="#cb112-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Marital Status"</span>,</span>
+<span id="cb112-6"><a href="#cb112-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>According to the box plot, the los of patients with marital status “WIDOWED” is generally longer than other marital status. The los of patients with marital status “LIFE PARTNER” is generally shorter than other marital status.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span>gender,<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs gender"</span>,</span>
+<span id="cb113-5"><a href="#cb113-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span><span class="st">"Gender"</span>,</span>
+<span id="cb113-6"><a href="#cb113-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>According to the box plot, the Female patients group has a higher longest los than the male patients Group. And both of the groups’ majority of the outliers’ los are under 60 days.</p>
+<ul>
+<li>Length of ICU stay <code>los</code> vs the last available lab measurements before ICU stay</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Hematocrit,<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs Hematocrit"</span>,</span>
+<span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Hematocrit"</span>,</span>
+<span id="cb114-6"><a href="#cb114-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5013 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">White Blood Cells</span><span class="st">`</span>,<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb116-4"><a href="#cb116-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs White Blood Cells"</span>,</span>
+<span id="cb116-5"><a href="#cb116-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"White Blood Cells"</span>,</span>
+<span id="cb116-6"><a href="#cb116-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5090 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-34-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Bicarbonate,<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs Bicarbonate"</span>,</span>
+<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Bicarbonate"</span>,</span>
+<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 9028 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-34-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Chloride,<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb120-4"><a href="#cb120-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs Chloride"</span>,</span>
+<span id="cb120-5"><a href="#cb120-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Chloride"</span>,</span>
+<span id="cb120-6"><a href="#cb120-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 8859 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-34-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Creatinine,<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb122-4"><a href="#cb122-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs Creatinine"</span>,</span>
+<span id="cb122-5"><a href="#cb122-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Creatinine"</span>,</span>
+<span id="cb122-6"><a href="#cb122-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5764 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-34-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Potassium,<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb124-3"><a href="#cb124-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb124-4"><a href="#cb124-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs Potassium"</span>,</span>
+<span id="cb124-5"><a href="#cb124-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Potassium"</span>,</span>
+<span id="cb124-6"><a href="#cb124-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 8877 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-34-6.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Glucose,<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb126-3"><a href="#cb126-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb126-4"><a href="#cb126-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs glucose"</span>,</span>
+<span id="cb126-5"><a href="#cb126-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Glucose"</span>,</span>
+<span id="cb126-6"><a href="#cb126-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 9075 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-34-7.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb128"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb128-2"><a href="#cb128-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Sodium,<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb128-3"><a href="#cb128-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb128-4"><a href="#cb128-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs Sodium"</span>,</span>
+<span id="cb128-5"><a href="#cb128-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Sodium"</span>,</span>
+<span id="cb128-6"><a href="#cb128-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 8848 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-34-8.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>For white blood cells, creatinine, glucose, we can see the patients with higher this value have a shorter los (perhaps because the amount is small). For the rest of the lab measurements, we can see most patietns have a middle value of the lab measurements, and the los is not very different.</p>
+<ul>
+<li>Length of ICU stay <code>los</code> vs the average vital measurements within the first hour of ICU stay</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb130"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb130-2"><a href="#cb130-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(<span class="st">`</span><span class="at">Heart Rate</span><span class="st">`</span>),<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb130-3"><a href="#cb130-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb130-4"><a href="#cb130-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs Heart Rate"</span>,</span>
+<span id="cb130-5"><a href="#cb130-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Heart Rate"</span>,</span>
+<span id="cb130-6"><a href="#cb130-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 18 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb132"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb132-2"><a href="#cb132-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(<span class="st">`</span><span class="at">Respiratory Rate</span><span class="st">`</span>),<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb132-3"><a href="#cb132-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb132-4"><a href="#cb132-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs Respiratory Rate"</span>,</span>
+<span id="cb132-5"><a href="#cb132-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Respiratory Rate"</span>,</span>
+<span id="cb132-6"><a href="#cb132-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 98 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-35-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb134-2"><a href="#cb134-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(<span class="st">`</span><span class="at">Temperature Fahrenheit</span><span class="st">`</span>),<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb134-3"><a href="#cb134-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb134-4"><a href="#cb134-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs Temperature Fahrenheit"</span>,</span>
+<span id="cb134-5"><a href="#cb134-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Temperature Fahrenheit"</span>,</span>
+<span id="cb134-6"><a href="#cb134-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1360 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-35-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb136"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb136-2"><a href="#cb136-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(<span class="st">`</span><span class="at">Non Invasive Blood Pressure diastolic</span><span class="st">`</span>),<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb136-3"><a href="#cb136-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb136-4"><a href="#cb136-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs Non Invasive Blood Pressure diastolic"</span>,</span>
+<span id="cb136-5"><a href="#cb136-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Non Invasive Blood Pressure diastolic"</span>,</span>
+<span id="cb136-6"><a href="#cb136-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 983 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-35-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb138-2"><a href="#cb138-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(<span class="st">`</span><span class="at">Non Invasive Blood Pressure systolic</span><span class="st">`</span>),<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb138-3"><a href="#cb138-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb138-4"><a href="#cb138-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs Non Invasive Blood Pressure systolic"</span>,</span>
+<span id="cb138-5"><a href="#cb138-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Non Invasive Blood Pressure systolic"</span>,</span>
+<span id="cb138-6"><a href="#cb138-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 979 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-35-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>For all these vital measurements, we can see there are some outliers with a very high value of the vital measurements, perhaps due to the measurement error. And the los of these patients are not very different from the majority of rest of the patients (who tends to have a short los).</p>
+<ul>
+<li>Length of ICU stay <code>los</code> vs the first ICU unit</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb140-2"><a href="#cb140-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> first_careunit,<span class="at">y=</span>los)) <span class="sc">+</span></span>
+<span id="cb140-3"><a href="#cb140-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb140-4"><a href="#cb140-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Length of ICU stay vs first_careunit"</span>,</span>
+<span id="cb140-5"><a href="#cb140-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"First Care Unit"</span>,</span>
+<span id="cb140-6"><a href="#cb140-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Length of ICU stay (days)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="hw3_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Similarly, due to the unclearity of the plot, we can’t see the pattern of los between different first care units directly from the box plot.</p>
+<p>we can use the following code to get the summary:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb141"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb141-1"><a href="#cb141-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="sc">%&gt;%</span></span>
+<span id="cb141-2"><a href="#cb141-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(first_careunit)<span class="sc">%&gt;%</span></span>
+<span id="cb141-3"><a href="#cb141-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_los =</span> <span class="fu">mean</span>(los),</span>
+<span id="cb141-4"><a href="#cb141-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">median_los =</span> <span class="fu">median</span>(los),</span>
+<span id="cb141-5"><a href="#cb141-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">min_los =</span> <span class="fu">min</span>(los),</span>
+<span id="cb141-6"><a href="#cb141-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">max_los =</span> <span class="fu">max</span>(los),</span>
+<span id="cb141-7"><a href="#cb141-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_los =</span> <span class="fu">sd</span>(los))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 9 × 6
+  first_careunit                      mean_los median_los min_los max_los sd_los
+  &lt;chr&gt;                                  &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+1 Cardiac Vascular Intensive Care Un…     3.29       1.99 0.00352   103.    4.89
+2 Coronary Care Unit (CCU)                3.19       2.02 0.00125    66.6   4.00
+3 Medical Intensive Care Unit (MICU)      3.27       1.83 0.00227   110.    4.61
+4 Medical/Surgical Intensive Care Un…     3.09       1.81 0.00145    67.9   4.30
+5 Neuro Intermediate                      3.42       2.33 0.00346    43.5   3.73
+6 Neuro Stepdown                          2.59       1.69 0.0570     29.1   2.89
+7 Neuro Surgical Intensive Care Unit…     6.30       3.65 0.0216     59.6   7.46
+8 Surgical Intensive Care Unit (SICU)     3.84       1.97 0.00745   102.    5.76
+9 Trauma SICU (TSICU)                     3.84       1.94 0.00218    99.6   5.53</code></pre>
+</div>
+</div>
+<p>According to the summary, the mean and median los of the SICU is the highest, and the median los of the MICU is the lowest. The sd of the los of the SICU is the highest, and the sd of the los of the MICU is the lowest.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
