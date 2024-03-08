@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.536">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Your Name and UID">
+
+<title>Biostat 203B Homework 4</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="hw4_files/libs/clipboard/clipboard.min.js"></script>
+<script src="hw4_files/libs/quarto-html/quarto.js"></script>
+<script src="hw4_files/libs/quarto-html/popper.min.js"></script>
+<script src="hw4_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="hw4_files/libs/quarto-html/anchor.min.js"></script>
+<link href="hw4_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="hw4_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="hw4_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="hw4_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="hw4_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Biostat 203B Homework 4</h1>
+<p class="subtitle lead">Due Mar 8 @ 11:59PM</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Your Name and UID </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Display machine information:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R version 4.3.2 (2023-10-31)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Ventura 13.5
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRblas.0.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+time zone: America/Los_Angeles
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+loaded via a namespace (and not attached):
+ [1] htmlwidgets_1.6.4 compiler_4.3.2    fastmap_1.1.1     cli_3.6.1        
+ [5] tools_4.3.2       htmltools_0.5.7   rstudioapi_0.15.0 yaml_2.3.7       
+ [9] rmarkdown_2.25    knitr_1.45        jsonlite_1.8.7    xfun_0.41        
+[13] digest_0.6.33     rlang_1.1.2       evaluate_0.23    </code></pre>
+</div>
+</div>
+<p>Display my machine memory.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>memuse<span class="sc">::</span><span class="fu">Sys.meminfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Totalram:   16.000 GiB 
+Freeram:   417.484 MiB </code></pre>
+</div>
+</div>
+<p>Load database libraries and the tidyverse frontend:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bigrquery)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dbplyr)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtsummary)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.4.4     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::ident()  masks dbplyr::ident()
+✖ dplyr::lag()    masks stats::lag()
+✖ dplyr::sql()    masks dbplyr::sql()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="q1.-compile-the-icu-cohort-in-hw3-from-the-google-bigquery-database" class="level2">
+<h2 class="anchored" data-anchor-id="q1.-compile-the-icu-cohort-in-hw3-from-the-google-bigquery-database">Q1. Compile the ICU cohort in HW3 from the Google BigQuery database</h2>
+<p>Below is an outline of steps. In this homework, we exclusively work with the BigQuery database and should not use any MIMIC data files stored on our local computer. Transform data as much as possible in BigQuery database and <code>collect()</code> the tibble only at the end of Q1.7.</p>
+<section id="q1.1-connect-to-bigquery" class="level3">
+<h3 class="anchored" data-anchor-id="q1.1-connect-to-bigquery">Q1.1 Connect to BigQuery</h3>
+<p>Authenticate with BigQuery using the service account token. Please place the service account token (shared via BruinLearn) in the working directory (same folder as your qmd file). Do <strong>not</strong> add this token to your git repository.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># path to the service account token </span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>satoken <span class="ot">&lt;-</span> <span class="st">"biostat-203b-2024-winter-313290ce47a6.json"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># BigQuery authentication using service account</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">bq_auth</span>(<span class="at">path =</span> satoken)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Connect to BigQuery database <code>mimic4_v2_2</code> in GCP (Google Cloud Platform), using the project billing account <code>biostat-203b-2024-winter</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># connect to the BigQuery database `biostat-203b-2024-winter.mimic4_v2_2`</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>con_bq <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    bigrquery<span class="sc">::</span><span class="fu">bigquery</span>(),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">project =</span> <span class="st">"biostat-203b-2024-winter"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">dataset =</span> <span class="st">"mimic4_v2_2"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">billing =</span> <span class="st">"biostat-203b-2024-winter"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>con_bq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;BigQueryConnection&gt;
+  Dataset: biostat-203b-2024-winter.mimic4_v2_2
+  Billing: biostat-203b-2024-winter</code></pre>
+</div>
+</div>
+<p>List all tables in the <code>mimic4_v2_2</code> database.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListTables</span>(con_bq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "admissions"         "caregiver"          "chartevents"       
+ [4] "d_hcpcs"            "d_icd_diagnoses"    "d_icd_procedures"  
+ [7] "d_items"            "d_labitems"         "datetimeevents"    
+[10] "diagnoses_icd"      "drgcodes"           "emar"              
+[13] "emar_detail"        "hcpcsevents"        "icustays"          
+[16] "ingredientevents"   "inputevents"        "labevents"         
+[19] "microbiologyevents" "omr"                "outputevents"      
+[22] "patients"           "pharmacy"           "poe"               
+[25] "poe_detail"         "prescriptions"      "procedureevents"   
+[28] "procedures_icd"     "provider"           "services"          
+[31] "transfers"         </code></pre>
+</div>
+</div>
+</section>
+<section id="q1.2-icustays-data" class="level3">
+<h3 class="anchored" data-anchor-id="q1.2-icustays-data">Q1.2 <code>icustays</code> data</h3>
+<p>Connect to the <code>icustays</code> table.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># full ICU stays table</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>icustays_tble <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con_bq, <span class="st">"icustays"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># show_query() |&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">width =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   table&lt;icustays&gt; [?? x 8]
+# Database: BigQueryConnection
+   subject_id  hadm_id  stay_id first_careunit last_careunit 
+        &lt;int&gt;    &lt;int&gt;    &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;         
+ 1   10004113 29879900 35200789 Neuro Stepdown Neuro Stepdown
+ 2   10018328 23786647 31269608 Neuro Stepdown Neuro Stepdown
+ 3   10019607 24546857 34178938 Neuro Stepdown Neuro Stepdown
+ 4   10023994 21824032 30439823 Neuro Stepdown Neuro Stepdown
+ 5   10028930 26238833 33941522 Neuro Stepdown Neuro Stepdown
+ 6   10067921 27475639 31097260 Neuro Stepdown Neuro Stepdown
+ 7   10088776 26138210 39177309 Neuro Stepdown Neuro Stepdown
+ 8   10088776 27242516 35695123 Neuro Stepdown Neuro Stepdown
+ 9   10103795 20269407 30619907 Neuro Stepdown Neuro Stepdown
+10   10103795 22741814 31411464 Neuro Stepdown Neuro Stepdown
+   intime              outtime                los
+   &lt;dttm&gt;              &lt;dttm&gt;               &lt;dbl&gt;
+ 1 2173-03-20 20:16:36 2173-03-21 21:43:59  1.06 
+ 2 2154-04-24 23:03:44 2154-05-02 15:55:21  7.70 
+ 3 2167-03-19 17:37:39 2167-03-21 13:12:28  1.82 
+ 4 2146-07-19 15:32:22 2146-07-20 14:05:53  0.940
+ 5 2172-08-28 13:11:37 2172-08-29 14:19:35  1.05 
+ 6 2128-07-15 00:55:00 2128-07-16 11:41:23  1.45 
+ 7 2156-01-01 17:29:32 2156-01-02 13:35:41  0.838
+ 8 2155-05-01 15:30:41 2155-05-02 14:59:41  0.978
+ 9 2176-09-12 00:26:56 2176-09-17 14:52:28  5.60 
+10 2176-07-01 19:45:36 2176-07-11 22:07:48 10.1  
+# ℹ more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="q1.3-admissions-data" class="level3">
+<h3 class="anchored" data-anchor-id="q1.3-admissions-data">Q1.3 <code>admissions</code> data</h3>
+<p>Connect to the <code>admissions</code> table.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># full admissions table</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>admissions_tble <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con_bq, <span class="st">"admissions"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># show_query() |&gt;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">width =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   table&lt;admissions&gt; [?? x 16]
+# Database: BigQueryConnection
+   subject_id  hadm_id admittime           dischtime           deathtime
+        &lt;int&gt;    &lt;int&gt; &lt;dttm&gt;              &lt;dttm&gt;              &lt;dttm&gt;   
+ 1   10106244 26713233 2147-05-09 10:34:00 2147-05-12 13:43:00 NA       
+ 2   13700703 20448599 2172-09-25 01:01:00 2172-10-03 13:25:00 NA       
+ 3   15443666 27961368 2168-12-30 23:30:00 2169-01-05 16:02:00 NA       
+ 4   16299919 26977065 2193-05-15 08:37:00 2193-05-17 16:03:00 NA       
+ 5   19596808 26675460 2128-06-04 16:13:00 2128-06-05 11:36:00 NA       
+ 6   15868868 27142491 2191-08-07 13:06:00 2191-08-11 19:55:00 NA       
+ 7   11532813 24829571 2160-12-18 06:59:00 2160-12-25 14:40:00 NA       
+ 8   14527596 28165014 2165-11-28 19:02:00 2165-12-07 17:23:00 NA       
+ 9   15902500 27166666 2124-10-26 19:37:00 2124-10-28 16:30:00 NA       
+10   16625434 25780525 2135-09-05 17:38:00 2135-10-14 15:08:00 NA       
+   admission_type    admit_provider_id admission_location    
+   &lt;chr&gt;             &lt;chr&gt;             &lt;chr&gt;                 
+ 1 DIRECT EMER.      &lt;NA&gt;              PHYSICIAN REFERRAL    
+ 2 OBSERVATION ADMIT &lt;NA&gt;              EMERGENCY ROOM        
+ 3 OBSERVATION ADMIT &lt;NA&gt;              EMERGENCY ROOM        
+ 4 OBSERVATION ADMIT &lt;NA&gt;              EMERGENCY ROOM        
+ 5 EW EMER.          P0038O            EMERGENCY ROOM        
+ 6 URGENT            P004U7            WALK-IN/SELF REFERRAL 
+ 7 OBSERVATION ADMIT P004U7            EMERGENCY ROOM        
+ 8 URGENT            P005HP            TRANSFER FROM HOSPITAL
+ 9 URGENT            P005HP            TRANSFER FROM HOSPITAL
+10 URGENT            P005HP            TRANSFER FROM HOSPITAL
+   discharge_location       insurance language marital_status
+   &lt;chr&gt;                    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;         
+ 1 HOME                     Other     ENGLISH  SINGLE        
+ 2 HOME                     Other     ENGLISH  MARRIED       
+ 3 HOME HEALTH CARE         Other     ENGLISH  SINGLE        
+ 4 HOSPICE                  Medicare  ENGLISH  WIDOWED       
+ 5 HOME                     Medicare  ENGLISH  MARRIED       
+ 6 HOME HEALTH CARE         Medicare  ENGLISH  SINGLE        
+ 7 ACUTE HOSPITAL           Medicare  ENGLISH  SINGLE        
+ 8 HOME                     Medicaid  ?        MARRIED       
+ 9 HOME                     Medicare  ENGLISH  MARRIED       
+10 SKILLED NURSING FACILITY Medicare  ?        SINGLE        
+   race                   edregtime           edouttime          
+   &lt;chr&gt;                  &lt;dttm&gt;              &lt;dttm&gt;             
+ 1 WHITE                  NA                  NA                 
+ 2 WHITE                  2172-09-24 17:38:00 2172-09-25 03:07:00
+ 3 BLACK/AFRICAN AMERICAN 2168-12-30 11:19:00 2168-12-31 01:22:00
+ 4 BLACK/AFRICAN AMERICAN 2193-05-15 04:36:00 2193-05-15 14:27:00
+ 5 WHITE                  2128-06-04 13:25:00 2128-06-04 16:59:00
+ 6 WHITE                  2191-08-06 18:50:00 2191-08-07 16:30:00
+ 7 WHITE                  2160-12-17 16:20:00 2160-12-18 08:43:00
+ 8 BLACK/CARIBBEAN ISLAND NA                  NA                 
+ 9 BLACK/CAPE VERDEAN     NA                  NA                 
+10 WHITE                  NA                  NA                 
+   hospital_expire_flag
+                  &lt;int&gt;
+ 1                    0
+ 2                    0
+ 3                    0
+ 4                    0
+ 5                    0
+ 6                    0
+ 7                    0
+ 8                    0
+ 9                    0
+10                    0
+# ℹ more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="q1.4-patients-data" class="level3">
+<h3 class="anchored" data-anchor-id="q1.4-patients-data">Q1.4 <code>patients</code> data</h3>
+<p>Connect to the <code>patients</code> table.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># full patients table</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>patients_tble <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con_bq, <span class="st">"patients"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># show_query() |&gt;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">width =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   table&lt;patients&gt; [?? x 6]
+# Database: BigQueryConnection
+   subject_id gender anchor_age anchor_year anchor_year_group dod   
+        &lt;int&gt; &lt;chr&gt;       &lt;int&gt;       &lt;int&gt; &lt;chr&gt;             &lt;date&gt;
+ 1   10078138 F              18        2110 2017 - 2019       NA    
+ 2   10180372 M              18        2110 2008 - 2010       NA    
+ 3   10686175 M              18        2110 2011 - 2013       NA    
+ 4   10851602 F              18        2110 2014 - 2016       NA    
+ 5   10902424 F              18        2110 2017 - 2019       NA    
+ 6   11092326 M              18        2110 2008 - 2010       NA    
+ 7   11289691 F              18        2110 2017 - 2019       NA    
+ 8   11595073 M              18        2110 2011 - 2013       NA    
+ 9   11739764 F              18        2110 2017 - 2019       NA    
+10   11776346 F              18        2110 2008 - 2010       NA    
+# ℹ more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="q1.5-labevents-data" class="level3">
+<h3 class="anchored" data-anchor-id="q1.5-labevents-data">Q1.5 <code>labevents</code> data</h3>
+<p>Connect to the <code>labevents</code> table and retrieve a subset that only contain subjects who appear in <code>icustays_tble</code> and the lab items listed in HW3. Only keep the last lab measurements before the ICU stay and pivot lab items to become variables/columns. Write all steps in <em>one</em> chain of pipes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># labevents table</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>labevents_tble <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con_bq, <span class="st">"labevents"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">semi_join</span>(icustays_tble, <span class="at">by =</span> <span class="st">"subject_id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(itemid <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">50912</span>, <span class="dv">50971</span>, <span class="dv">50983</span>, <span class="dv">50902</span>, <span class="dv">50882</span>, <span class="dv">51221</span>, <span class="dv">51301</span>, <span class="dv">50931</span>))<span class="sc">|&gt;</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(labevents_d_tble<span class="ot">&lt;-</span><span class="fu">tbl</span>(con_bq, <span class="st">"d_labitems"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(itemid <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">50912</span>, <span class="dv">50971</span>, <span class="dv">50983</span>, <span class="dv">50902</span>, <span class="dv">50882</span>, <span class="dv">51221</span>, <span class="dv">51301</span>, <span class="dv">50931</span>)) </span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">%&gt;%</span> <span class="fu">select</span>(itemid, label), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"itemid"</span> <span class="ot">=</span> <span class="st">"itemid"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">measure =</span> label) <span class="sc">|&gt;</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(icustays_tble,subject_id,stay_id,intime), <span class="at">by =</span> <span class="st">"subject_id"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(storetime <span class="sc">&lt;</span> intime) <span class="sc">|&gt;</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(subject_id, stay_id, measure) <span class="sc">|&gt;</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(storetime <span class="sc">==</span> <span class="fu">max</span>(storetime)) <span class="sc">|&gt;</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()<span class="sc">|&gt;</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subject_id, stay_id, measure, valuenum) <span class="sc">|&gt;</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> measure, <span class="at">values_from =</span> valuenum) <span class="sc">%&gt;%</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">width =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Missing values are always removed in SQL aggregation functions.
+Use `na.rm = TRUE` to silence this warning
+This warning is displayed once every 8 hours.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 10]
+# Database: BigQueryConnection
+   subject_id  stay_id `White Blood Cells` Creatinine Potassium Glucose Sodium
+        &lt;int&gt;    &lt;int&gt;               &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1   10012853 31338022                 5.7        0.9       3.8      96    145
+ 2   10030753 33325078                11.9        2.3       3.9     738    135
+ 3   10049041 32252327                12.7        0.6       4.4     148    142
+ 4   10110133 37358695                11.7        0.8       3.7     115    131
+ 5   10161042 34912691                 7.9        1.5       4.5     103    138
+ 6   10209298 33684656                10.1        2.1       4.7     155    146
+ 7   10218413 34387079                18          0.6       3.9      95    138
+ 8   10288279 32716397                 8.8        8.1       5.1     314    138
+ 9   10386925 30976617                20.9        2.9       4.4      74    136
+10   10398756 34742836                19.9        1         5.4     169    140
+   Chloride Bicarbonate Hematocrit
+      &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
+ 1      105          31       35.3
+ 2       93          25       28.4
+ 3       91          37       29.1
+ 4       99          23       41.4
+ 5      101          27       43.4
+ 6      124          13       27.8
+ 7      100          25       25.8
+ 8       97          23       35.9
+ 9      105          16       32.7
+10      112          23       30.2
+# ℹ more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="q1.6-chartevents-data" class="level3">
+<h3 class="anchored" data-anchor-id="q1.6-chartevents-data">Q1.6 <code>chartevents</code> data</h3>
+<p>Connect to <code>chartevents</code> table and retrieve a subset that only contain subjects who appear in <code>icustays_tble</code> and the chart events listed in HW3. Only keep the first chart events during ICU stay and pivot chart events to become variables/columns. Write all steps in <em>one</em> chain of pipes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chartevents table</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>chartevents_tble <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con_bq, <span class="st">"chartevents"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">semi_join</span>(icustays_tble, <span class="at">by =</span> <span class="st">"subject_id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(itemid <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">220045</span>, <span class="dv">220179</span>, <span class="dv">220180</span>, <span class="dv">223761</span>, <span class="dv">220210</span>))<span class="sc">|&gt;</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(chartevents_d_tble<span class="ot">&lt;-</span><span class="fu">tbl</span>(con_bq, <span class="st">"d_items"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(itemid <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">220045</span>, <span class="dv">220179</span>, <span class="dv">220180</span>, <span class="dv">223761</span>, <span class="dv">220210</span>)) </span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">%&gt;%</span> <span class="fu">select</span>(itemid, label), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"itemid"</span> <span class="ot">=</span> <span class="st">"itemid"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">vital =</span> label) <span class="sc">|&gt;</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(icustays_tble,subject_id,intime,outtime), <span class="at">by =</span> <span class="st">"subject_id"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(charttime <span class="sc">&gt;=</span> intime <span class="sc">&amp;</span> charttime <span class="sc">&lt;=</span> outtime) <span class="sc">|&gt;</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(subject_id, stay_id, vital) <span class="sc">|&gt;</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(charttime<span class="sc">==</span><span class="fu">min</span>(charttime)) <span class="sc">|&gt;</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()<span class="sc">|&gt;</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subject_id, stay_id, vital, value) <span class="sc">|&gt;</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> vital, <span class="at">values_from =</span> value) <span class="sc">%&gt;%</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">width =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 7]
+# Database: BigQueryConnection
+   subject_id  stay_id `Heart Rate` `Non Invasive Blood Pressure systolic`
+        &lt;int&gt;    &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;                                 
+ 1   10023771 33177122 80           101                                   
+ 2   10127185 34550507 80           113                                   
+ 3   10191971 34100576 117          135                                   
+ 4   10208557 30431175 62           120                                   
+ 5   10236534 30647553 65           123                                   
+ 6   10240561 39784639 80           117                                   
+ 7   10247228 39932581 88           103                                   
+ 8   10249925 32593030 74           119                                   
+ 9   10270654 38467213 78           126                                   
+10   10468327 31604411 98           132                                   
+   `Temperature Fahrenheit` `Respiratory Rate`
+   &lt;chr&gt;                    &lt;chr&gt;             
+ 1 98                       15                
+ 2 96.2                     14                
+ 3 98.7                     21                
+ 4 97.1                     25                
+ 5 98.3                     16                
+ 6 98.1                     11                
+ 7 97.8                     21                
+ 8 98.9                     18                
+ 9 98.1                     18                
+10 97.8                     19                
+   `Non Invasive Blood Pressure diastolic`
+   &lt;chr&gt;                                  
+ 1 64                                     
+ 2 56                                     
+ 3 63                                     
+ 4 50                                     
+ 5 67                                     
+ 6 65                                     
+ 7 51                                     
+ 8 53                                     
+ 9 66                                     
+10 84                                     
+# ℹ more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="q1.7-put-things-together" class="level3">
+<h3 class="anchored" data-anchor-id="q1.7-put-things-together">Q1.7 Put things together</h3>
+<p>This step is similar to Q7 of HW3. Using <em>one</em> chain of pipes <code>|&gt;</code> to perform following data wrangling steps: (i) start with the <code>icustays_tble</code>, (ii) merge in admissions and patients tables, (iii) keep adults only (age at ICU intime &gt;= 18), (iv) merge in the labevents and chartevents tables, (v) <code>collect</code> the tibble.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mimic_icu_cohort</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="ot">&lt;-</span>icustays_tble<span class="sc">|&gt;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(patients_tble, <span class="at">by =</span> <span class="st">"subject_id"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age_intime =</span> <span class="fu">year</span>(intime) <span class="sc">-</span> anchor_year <span class="sc">+</span> anchor_age)<span class="sc">|&gt;</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(age_intime<span class="sc">&gt;</span><span class="dv">18</span>)<span class="sc">|&gt;</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(admissions_tble,<span class="sc">-</span>subject_id), <span class="at">by =</span> <span class="st">"hadm_id"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(labevents_tble, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"subject_id"</span>,<span class="st">"stay_id"</span>))<span class="sc">|&gt;</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(chartevents_tble, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"subject_id"</span>,<span class="st">"stay_id"</span>))<span class="sc">|&gt;</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()<span class="sc">|&gt;</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">width=</span><span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 73,097 × 41
+   subject_id  hadm_id  stay_id first_careunit last_careunit 
+        &lt;int&gt;    &lt;int&gt;    &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;         
+ 1   10004113 29879900 35200789 Neuro Stepdown Neuro Stepdown
+ 2   10018328 23786647 31269608 Neuro Stepdown Neuro Stepdown
+ 3   10019607 24546857 34178938 Neuro Stepdown Neuro Stepdown
+ 4   10023994 21824032 30439823 Neuro Stepdown Neuro Stepdown
+ 5   10028930 26238833 33941522 Neuro Stepdown Neuro Stepdown
+ 6   10067921 27475639 31097260 Neuro Stepdown Neuro Stepdown
+ 7   10088776 26138210 39177309 Neuro Stepdown Neuro Stepdown
+ 8   10088776 27242516 35695123 Neuro Stepdown Neuro Stepdown
+ 9   10103795 20269407 30619907 Neuro Stepdown Neuro Stepdown
+10   10103795 22741814 31411464 Neuro Stepdown Neuro Stepdown
+   intime              outtime                los gender anchor_age anchor_year
+   &lt;dttm&gt;              &lt;dttm&gt;               &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt;       &lt;int&gt;
+ 1 2173-03-20 20:16:36 2173-03-21 21:43:59  1.06  M              33        2173
+ 2 2154-04-24 23:03:44 2154-05-02 15:55:21  7.70  F              83        2154
+ 3 2167-03-19 17:37:39 2167-03-21 13:12:28  1.82  M              20        2167
+ 4 2146-07-19 15:32:22 2146-07-20 14:05:53  0.940 F              38        2146
+ 5 2172-08-28 13:11:37 2172-08-29 14:19:35  1.05  M              65        2172
+ 6 2128-07-15 00:55:00 2128-07-16 11:41:23  1.45  F              68        2128
+ 7 2156-01-01 17:29:32 2156-01-02 13:35:41  0.838 F              73        2155
+ 8 2155-05-01 15:30:41 2155-05-02 14:59:41  0.978 F              73        2155
+ 9 2176-09-12 00:26:56 2176-09-17 14:52:28  5.60  M              58        2176
+10 2176-07-01 19:45:36 2176-07-11 22:07:48 10.1   M              58        2176
+   anchor_year_group dod    age_intime admittime           dischtime          
+   &lt;chr&gt;             &lt;date&gt;      &lt;int&gt; &lt;dttm&gt;              &lt;dttm&gt;             
+ 1 2014 - 2016       NA             33 2173-03-20 00:00:00 2173-03-22 14:35:00
+ 2 2014 - 2016       NA             83 2154-04-24 03:15:00 2154-05-03 14:00:00
+ 3 2017 - 2019       NA             20 2167-03-19 17:36:00 2167-03-21 12:55:00
+ 4 2017 - 2019       NA             38 2146-07-19 02:13:00 2146-07-20 13:00:00
+ 5 2017 - 2019       NA             65 2172-08-28 13:09:00 2172-08-29 14:15:00
+ 6 2017 - 2019       NA             68 2128-07-14 23:59:00 2128-07-16 11:35:00
+ 7 2014 - 2016       NA             74 2156-01-01 00:54:00 2156-01-02 13:00:00
+ 8 2014 - 2016       NA             73 2155-05-01 00:00:00 2155-05-02 14:59:00
+ 9 2017 - 2019       NA             58 2176-09-11 00:28:00 2176-09-19 16:30:00
+10 2017 - 2019       NA             58 2176-07-01 16:56:00 2176-07-12 14:50:00
+   deathtime admission_type              admit_provider_id
+   &lt;dttm&gt;    &lt;chr&gt;                       &lt;chr&gt;            
+ 1 NA        SURGICAL SAME DAY ADMISSION P898NM           
+ 2 NA        SURGICAL SAME DAY ADMISSION P898NM           
+ 3 NA        URGENT                      P88US1           
+ 4 NA        SURGICAL SAME DAY ADMISSION P898NM           
+ 5 NA        DIRECT OBSERVATION          P898NM           
+ 6 NA        OBSERVATION ADMIT           P47SIK           
+ 7 NA        SURGICAL SAME DAY ADMISSION P898NM           
+ 8 NA        SURGICAL SAME DAY ADMISSION P898NM           
+ 9 NA        SURGICAL SAME DAY ADMISSION P34SFE           
+10 NA        OBSERVATION ADMIT           P09SHG           
+   admission_location     discharge_location           insurance language
+   &lt;chr&gt;                  &lt;chr&gt;                        &lt;chr&gt;     &lt;chr&gt;   
+ 1 PHYSICIAN REFERRAL     HOME                         Other     ENGLISH 
+ 2 PHYSICIAN REFERRAL     HOME HEALTH CARE             Other     ENGLISH 
+ 3 TRANSFER FROM HOSPITAL HOME                         Other     ENGLISH 
+ 4 PHYSICIAN REFERRAL     HOME                         Other     ENGLISH 
+ 5 TRANSFER FROM HOSPITAL &lt;NA&gt;                         Other     ENGLISH 
+ 6 EMERGENCY ROOM         HOME                         Medicare  ENGLISH 
+ 7 PHYSICIAN REFERRAL     HOME                         Medicare  ENGLISH 
+ 8 PHYSICIAN REFERRAL     HOME                         Medicare  ENGLISH 
+ 9 PHYSICIAN REFERRAL     REHAB                        Other     ENGLISH 
+10 EMERGENCY ROOM         CHRONIC/LONG TERM ACUTE CARE Other     ENGLISH 
+   marital_status race                   edregtime           edouttime          
+   &lt;chr&gt;          &lt;chr&gt;                  &lt;dttm&gt;              &lt;dttm&gt;             
+ 1 MARRIED        WHITE                  NA                  NA                 
+ 2 DIVORCED       WHITE                  NA                  NA                 
+ 3 SINGLE         UNKNOWN                NA                  NA                 
+ 4 SINGLE         UNKNOWN                NA                  NA                 
+ 5 &lt;NA&gt;           ASIAN                  NA                  NA                 
+ 6 SINGLE         WHITE - OTHER EUROPEAN 2128-07-14 22:19:00 2128-07-15 00:55:00
+ 7 SINGLE         WHITE                  NA                  NA                 
+ 8 SINGLE         WHITE                  NA                  NA                 
+ 9 MARRIED        WHITE                  NA                  NA                 
+10 MARRIED        WHITE                  2176-07-01 14:02:00 2176-07-01 20:29:00
+   hospital_expire_flag `White Blood Cells` Creatinine Potassium Glucose Sodium
+                  &lt;int&gt;               &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1                    0                NA         NA        NA        NA     NA
+ 2                    0                17.8        0.6       3.2     143    140
+ 3                    0                NA         NA        NA        NA     NA
+ 4                    0                 7.1        0.7       3.5     139    141
+ 5                    0                NA         NA        NA        NA     NA
+ 6                    0                10.2       NA        NA        NA     NA
+ 7                    0                 7.6        0.8       3.5      86    138
+ 8                    0                 8.6        0.9       4.1     119    140
+ 9                    0                 4.9        0.8       4        85    143
+10                    0                10.5        0.6       3.3     118    141
+   Chloride Bicarbonate Hematocrit `Heart Rate`
+      &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;       
+ 1       NA          NA       NA   86          
+ 2      108          22       27.2 73          
+ 3       NA          NA       NA   70          
+ 4      102          22       40.1 94          
+ 5       NA          NA       NA   75          
+ 6       NA          NA       37.9 72          
+ 7      105          26       26.9 66          
+ 8      101          26       39.3 76          
+ 9      105          29       37.7 56          
+10      104          23       40.2 83          
+   `Non Invasive Blood Pressure systolic` `Temperature Fahrenheit`
+   &lt;chr&gt;                                  &lt;chr&gt;                   
+ 1 108                                    98.4                    
+ 2 136                                    97.5                    
+ 3 103                                    99.9                    
+ 4 119                                    98.3                    
+ 5 125                                    98.2                    
+ 6 141                                    97.6                    
+ 7 122                                    98.2                    
+ 8 109                                    98.6                    
+ 9 114                                    98.6                    
+10 129                                    100.4                   
+   `Respiratory Rate` `Non Invasive Blood Pressure diastolic`
+   &lt;chr&gt;              &lt;chr&gt;                                  
+ 1 19                 61                                     
+ 2 17                 56                                     
+ 3 17                 52                                     
+ 4 18                 67                                     
+ 5 12                 73                                     
+ 6 15                 59                                     
+ 7 25                 72                                     
+ 8 11                 58                                     
+ 9 14                 86                                     
+10 20                 99                                     
+# ℹ 73,087 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="q1.8-preprocessing" class="level3">
+<h3 class="anchored" data-anchor-id="q1.8-preprocessing">Q1.8 Preprocessing</h3>
+<p>Perform the following preprocessing steps. (i) Lump infrequent levels into “Other” level for <code>first_careunit</code>, <code>last_careunit</code>, <code>admission_type</code>, <code>admission_location</code>, and <code>discharge_location</code>. (ii) Collapse the levels of <code>race</code> into <code>ASIAN</code>, <code>BLACK</code>, <code>HISPANIC</code>, <code>WHITE</code>, and <code>Other</code>. (iii) Create a new variable <code>los_long</code> that is <code>TRUE</code> when <code>los</code> is greater than or equal to 2 days. (iv) Summarize the data using <code>tbl_summary()</code>, stratified by <code>los_long</code>. Hint: <code>fct_lump</code> and <code>fct_collapse</code> from the <code>forcats</code> package can be useful.</p>
+<p>Hint: Below is a numerical summary of my tibble after preprocessing:</p>
+<iframe width="95%" height="500" src="./mimic_icu_cohort_gtsummary.html">
+</iframe>
+</section>
+<section id="q1.9-save-the-final-tibble" class="level3">
+<h3 class="anchored" data-anchor-id="q1.9-save-the-final-tibble">Q1.9 Save the final tibble</h3>
+<p>Save the final tibble to an R data file <code>mimic_icu_cohort.rds</code> in the <code>mimiciv_shiny</code> folder.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a directory mimiciv_shiny</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="st">"mimiciv_shiny"</span>)) {</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="st">"mimiciv_shiny"</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># save the final tibble</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort <span class="sc">|&gt;</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_rds</span>(<span class="st">"mimiciv_shiny/mimic_icu_cohort.rds"</span>, <span class="at">compress =</span> <span class="st">"gz"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Close database connection and clear workspace.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">exists</span>(<span class="st">"con_bq"</span>)) {</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dbDisconnect</span>(con_bq)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Although it is not a good practice to add big data files to git, for grading purpose, please add <code>mimic_icu_cohort.rds</code> to your git repository.</p>
+</section>
+</section>
+<section id="q2.-shiny-app" class="level2">
+<h2 class="anchored" data-anchor-id="q2.-shiny-app">Q2. Shiny app</h2>
+<p>Develop a Shiny app for exploring the ICU cohort data created in Q1. The app should reside in the <code>mimiciv_shiny</code> folder. The app should contain at least two tabs. One tab provides easy access to the graphical and numerical summaries of variables (demographics, lab measurements, vitals) in the ICU cohort. The other allows user to choose a specific patient in the cohort and display the patient’s ADT and ICU stay information as we did in Q1 of HW3.</p>
+<p><img src="Q2example1.png" class="img-fluid"> <img src="Q2example2.png" class="img-fluid"></p>
+<p><img src="Q2example3.png" class="img-fluid"></p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
