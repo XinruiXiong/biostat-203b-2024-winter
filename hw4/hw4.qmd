@@ -8,25 +8,26 @@ execute:
 
 Display machine information:
 
-```{r}
+```{r,eval=T}
 sessionInfo()
 ```
 
 Display my machine memory.
 
-```{r}
+```{r,eval=T}
 memuse::Sys.meminfo()
 ```
 
 Load database libraries and the tidyverse frontend:
 
-```{r}
+```{r,eval=T}
 library(bigrquery)
 library(dbplyr)
 library(DBI)
 library(gt)
 library(gtsummary)
 library(tidyverse)
+library(forcats)
 ```
 
 ## Q1. Compile the ICU cohort in HW3 from the Google BigQuery database
@@ -37,7 +38,7 @@ Below is an outline of steps. In this homework, we exclusively work with the Big
 
 Authenticate with BigQuery using the service account token. Please place the service account token (shared via BruinLearn) in the working directory (same folder as your qmd file). Do **not** add this token to your git repository.
 
-```{r}
+```{r,eval=T}
 # path to the service account token 
 satoken <- "biostat-203b-2024-winter-313290ce47a6.json"
 # BigQuery authentication using service account
@@ -46,7 +47,7 @@ bq_auth(path = satoken)
 
 Connect to BigQuery database `mimic4_v2_2` in GCP (Google Cloud Platform), using the project billing account `biostat-203b-2024-winter`.
 
-```{r}
+```{r,eval=T}
 # connect to the BigQuery database `biostat-203b-2024-winter.mimic4_v2_2`
 con_bq <- dbConnect(
     bigrquery::bigquery(),
@@ -59,7 +60,7 @@ con_bq
 
 List all tables in the `mimic4_v2_2` database.
 
-```{r}
+```{r,eval=T}
 dbListTables(con_bq)
 ```
 
@@ -67,7 +68,7 @@ dbListTables(con_bq)
 
 Connect to the `icustays` table.
 
-```{r}
+```{r,eval=T}
 # full ICU stays table
 icustays_tble <- tbl(con_bq, "icustays") |>
   # show_query() |>
@@ -78,7 +79,7 @@ icustays_tble <- tbl(con_bq, "icustays") |>
 
 Connect to the `admissions` table.
 
-```{r}
+```{r,eval=T}
 # full admissions table
 admissions_tble <- tbl(con_bq, "admissions") |>
   # show_query() |>
@@ -89,7 +90,7 @@ admissions_tble <- tbl(con_bq, "admissions") |>
 
 Connect to the `patients` table.
 
-```{r}
+```{r,eval=T}
 # full patients table
 patients_tble <- tbl(con_bq, "patients") |>
   # show_query() |>
@@ -100,29 +101,70 @@ patients_tble <- tbl(con_bq, "patients") |>
 
 Connect to the `labevents` table and retrieve a subset that only contain subjects who appear in `icustays_tble` and the lab items listed in HW3. Only keep the last lab measurements before the ICU stay and pivot lab items to become variables/columns. Write all steps in *one* chain of pipes.
 
-```{r}
-# full labevents table
+```{r,eval=T}
+# labevents table
 labevents_tble <- tbl(con_bq, "labevents") |>
-  # show_query() |>
+  semi_join(icustays_tble, by = "subject_id") |>
+  filter(itemid %in% c(50912, 50971, 50983, 50902, 50882, 51221, 51301, 50931))|>
+  left_join(labevents_d_tble<-tbl(con_bq, "d_labitems")|>
+  filter(itemid %in% c(50912, 50971, 50983, 50902, 50882, 51221, 51301, 50931)) 
+  %>% select(itemid, label), by = c("itemid" = "itemid")) |>
+  rename(measure = label) |>
+  left_join(select(icustays_tble,subject_id,stay_id,intime), by = "subject_id")|>
+  filter(storetime < intime) |>
+  group_by(subject_id, stay_id, measure) |>
+  filter(storetime == max(storetime)) |>
+  ungroup()|>
+  select(subject_id, stay_id, measure, valuenum) |>
+  pivot_wider(names_from = measure, values_from = valuenum) %>%
   print(width = Inf)
+
+
 ```
 
 ### Q1.6 `chartevents` data
 
 Connect to `chartevents` table and retrieve a subset that only contain subjects who appear in `icustays_tble` and the chart events listed in HW3. Only keep the first chart events during ICU stay and pivot chart events to become variables/columns. Write all steps in *one* chain of pipes.
 
-```{r}
-# # TODO
-# chartevents_tble <- 
+```{r,eval=T}
+# chartevents table
+chartevents_tble <- tbl(con_bq, "chartevents") |>
+  semi_join(icustays_tble, by = "subject_id") |>
+  filter(itemid %in% c(220045, 220179, 220180, 223761, 220210))|>
+  left_join(chartevents_d_tble<-tbl(con_bq, "d_items")|>
+  filter(itemid %in% c(220045, 220179, 220180, 223761, 220210)) 
+  %>% select(itemid, label), by = c("itemid" = "itemid")) |>
+  rename(vital = label) |>
+  left_join(select(icustays_tble,subject_id,intime,outtime), by = "subject_id")|>
+  filter(charttime >= intime & charttime <= outtime) |>
+  group_by(subject_id, stay_id, vital) |>
+  filter(charttime==min(charttime)) |>
+  ungroup()|>
+  select(subject_id, stay_id, vital, value) |>
+  pivot_wider(names_from = vital, values_from = value) %>%
+  print(width = Inf)
+
+
 ```
 
 ### Q1.7 Put things together
 
 This step is similar to Q7 of HW3. Using *one* chain of pipes `|>` to perform following data wrangling steps: (i) start with the `icustays_tble`, (ii) merge in admissions and patients tables, (iii) keep adults only (age at ICU intime \>= 18), (iv) merge in the labevents and chartevents tables, (v) `collect` the tibble.
 
-```{r}
-# # TODO
-# mimic_icu_cohort <- 
+```{r,eval=T}
+
+# mimic_icu_cohort
+
+mimic_icu_cohort<-icustays_tble|>
+  left_join(patients_tble, by = "subject_id")|>
+  mutate(age_intime = year(intime) - anchor_year + anchor_age)|>
+  filter(age_intime>18)|>
+  left_join(select(admissions_tble,-subject_id), by = "hadm_id")|>
+  left_join(labevents_tble, by = c("subject_id","stay_id"))|>
+  left_join(chartevents_tble, by = c("subject_id","stay_id"))|>
+  collect()|>
+  print(width=Inf)
+
 ```
 
 ### Q1.8 Preprocessing
