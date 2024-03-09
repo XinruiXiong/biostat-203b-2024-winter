@@ -8,6 +8,10 @@ library(gt)
 library(gtsummary)
 library(tidyverse)
 
+
+library(dqshiny)
+
+
 setwd("/Volumes/Extreme\ SSD/biostat\ 203B/biostat-203b-2024-winter/hw4")
 mimic_icu_cohort<-readRDS("mimiciv_shiny/mimic_icu_cohort.rds")
 
@@ -36,7 +40,7 @@ ui <- fluidPage(
              sidebarLayout(
                sidebarPanel(
                  selectInput(inputId = "VOI",
-                             label = "Variable of interest:",
+                             label = "Variable of interest:(may require some time)",
                              choices = c("Race","Age","Gender", "LabMeasurements", "Vitals","LastCareUnit")),
                  checkboxInput(inputId = "RMO",
                              label = "Remove Outliers in IQR method for measurement?",
@@ -53,9 +57,10 @@ ui <- fluidPage(
     tabPanel("Patient's ADT and ICU stay Information",
              sidebarLayout(
                sidebarPanel(
-                 textInput(inputId = "PID",
-                           label = "Select a patient:",
-                           value = "10013310")
+                 # textInput(inputId = "PID",
+                 #           label = "Select a patient:",
+                 #           value = "10013310"),
+                 autocomplete_input("PID", "Select a patient:(the plot loading may require some time)", as.character(mimic_icu_cohort$subject_id),"10013310", max_options = 1000)
                ),
                mainPanel(
                  plotOutput("plot2")
@@ -231,10 +236,13 @@ server <- function(input, output) {
              shape=guide_legend(ncol=1))+
       theme(legend.position = "bottom")
   })
-  
+
 }
 
 
 # Run the app
 shinyApp(ui = ui, server = server)
+
+
+
 
