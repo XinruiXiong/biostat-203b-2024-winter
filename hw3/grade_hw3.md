@@ -1,6 +1,6 @@
 *Xinrui Xiong*
 
-### Overall Grade: 193/260
+### Overall Grade: 219/260
 
 ### Quality of report: 10/10
 
@@ -12,7 +12,7 @@
 
 -   Is the report clear (whole sentences, typos, grammar)? Do readers have a clear idea what's going on and how results are produced by just reading the report? Take some points off if the solutions are too succinct to grasp, or there are too many typos/grammar.
 
-### Completeness, correctness and efficiency of solution: 167/210
+### Completeness, correctness and efficiency of solution: 193/210
 
 -   Q1 (28/30)
 
