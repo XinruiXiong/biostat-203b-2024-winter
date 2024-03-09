@@ -47,3 +47,13 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+._README.md
+._hw2
+hw2/._.gitignore
+hw2/._arrow_logo.png
+hw2/._bigfile.png
+hw2/._duckdb_logo.png
+hw2/._linux_logo.png
+hw2/._parquet_logo.png
+hw2/._readr_logo.png
