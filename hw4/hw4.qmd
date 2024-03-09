@@ -226,4 +226,4 @@ Develop a Shiny app for exploring the ICU cohort data created in Q1. The app sho
 
 ![](Q2example1.png) ![](Q2example2.png)
 
-![](Q2example3.png)
+![](Q2example3.png) **The app.R file is in hw4/mimiciv_shiny folder.**
