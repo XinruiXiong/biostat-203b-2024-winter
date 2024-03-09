@@ -144,8 +144,8 @@ chartevents_tble <- tbl(con_bq, "chartevents") |>
             by = "subject_id")|>
   filter(charttime >= intime & charttime <= outtime) |>
   group_by(subject_id, stay_id, vital) |>
-  filter(charttime==min(charttime)) |>
-  ungroup()|>
+  filter(charttime == min(charttime)) |>
+  ungroup() |>
   select(subject_id, stay_id, vital, valuenum) |>
   pivot_wider(names_from = vital, values_from = valuenum) |>
   print(width = Inf)

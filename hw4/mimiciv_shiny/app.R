@@ -82,19 +82,19 @@ ui <- fluidPage(
 server <- function(input, output) {
   output$plot1 <- renderPlot({
     if (input$VOI == "Race") {
-      ggplot(mimic_icu_cohort, aes(x=race)) + 
+      ggplot(mimic_icu_cohort, aes(x = race)) + 
         geom_bar(stat="count",fill="blue") +
         labs(title = "Race distribution", x = "race", y = "count") +
         coord_flip()
     }
     else if (input$VOI == "Age") {
-      ggplot(mimic_icu_cohort, aes(x=age_intime)) + 
+      ggplot(mimic_icu_cohort, aes(x = age_intime)) + 
         geom_histogram(binwidth = 5,fill="skyblue") +
         labs(title = "Age distribution", x = "age", y = "count") +
         coord_flip()
     }
     else if (input$VOI =="Gender") {
-      ggplot(mimic_icu_cohort, aes(x=gender)) + 
+      ggplot(mimic_icu_cohort, aes(x = gender)) + 
         geom_bar(stat="count",fill="green") +
         labs(title = "Gender distribution", x = "gender", y = "count") +
         coord_flip()
