@@ -136,8 +136,8 @@ loaded via a namespace (and not attached):
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>memuse<span class="sc">::</span><span class="fu">Sys.meminfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Totalram:  16.000 GiB 
-Freeram:   80.391 MiB </code></pre>
+<pre><code>Totalram:   16.000 GiB 
+Freeram:   898.297 MiB </code></pre>
 </div>
 </div>
 <p>Load database libraries and the tidyverse frontend:</p>
@@ -358,18 +358,18 @@ Freeram:   80.391 MiB </code></pre>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># labevents table</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>labevents_tble <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con_bq, <span class="st">"labevents"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">semi_join</span>(icustays_tble, <span class="at">by =</span> <span class="st">"subject_id"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(itemid <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">50912</span>, <span class="dv">50971</span>, <span class="dv">50983</span>, <span class="dv">50902</span>, <span class="dv">50882</span>, <span class="dv">51221</span>, <span class="dv">51301</span>, <span class="dv">50931</span>))<span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(itemid <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">50912</span>, <span class="dv">50971</span>, <span class="dv">50983</span>, <span class="dv">50902</span>, <span class="dv">50882</span>, <span class="dv">51221</span>, <span class="dv">51301</span>, <span class="dv">50931</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(labevents_d_tble<span class="ot">&lt;-</span><span class="fu">tbl</span>(con_bq, <span class="st">"d_labitems"</span>)<span class="sc">|&gt;</span></span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(itemid <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">50912</span>, <span class="dv">50971</span>, <span class="dv">50983</span>, <span class="dv">50902</span>, <span class="dv">50882</span>, <span class="dv">51221</span>, <span class="dv">51301</span>, <span class="dv">50931</span>)) </span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="sc">%&gt;%</span> <span class="fu">select</span>(itemid, label), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"itemid"</span> <span class="ot">=</span> <span class="st">"itemid"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">measure =</span> label) <span class="sc">|&gt;</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(icustays_tble,subject_id,stay_id,intime), <span class="at">by =</span> <span class="st">"subject_id"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(icustays_tble,subject_id,stay_id,intime), <span class="at">by =</span> <span class="st">"subject_id"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(storetime <span class="sc">&lt;</span> intime) <span class="sc">|&gt;</span></span>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(subject_id, stay_id, measure) <span class="sc">|&gt;</span></span>
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(storetime <span class="sc">==</span> <span class="fu">max</span>(storetime)) <span class="sc">|&gt;</span></span>
 <span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()<span class="sc">|&gt;</span></span>
 <span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subject_id, stay_id, measure, valuenum) <span class="sc">|&gt;</span></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> measure, <span class="at">values_from =</span> valuenum) <span class="sc">%&gt;%</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> measure, <span class="at">values_from =</span> valuenum) <span class="sc">|&gt;</span></span>
 <span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">width =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Missing values are always removed in SQL aggregation functions.
@@ -425,7 +425,7 @@ This warning is displayed once every 8 hours.</code></pre>
 <span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(charttime<span class="sc">==</span><span class="fu">min</span>(charttime)) <span class="sc">|&gt;</span></span>
 <span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()<span class="sc">|&gt;</span></span>
 <span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(subject_id, stay_id, vital, valuenum) <span class="sc">|&gt;</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> vital, <span class="at">values_from =</span> valuenum) <span class="sc">%&gt;%</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> vital, <span class="at">values_from =</span> valuenum) <span class="sc">|&gt;</span></span>
 <span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">width =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Source:   SQL [?? x 7]
@@ -476,14 +476,14 @@ This warning is displayed once every 8 hours.</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mimic_icu_cohort</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="ot">&lt;-</span>icustays_tble<span class="sc">|&gt;</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(patients_tble, <span class="at">by =</span> <span class="st">"subject_id"</span>)<span class="sc">|&gt;</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age_intime =</span> <span class="fu">year</span>(intime) <span class="sc">-</span> anchor_year <span class="sc">+</span> anchor_age)<span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort <span class="ot">&lt;-</span> icustays_tble <span class="sc">|&gt;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(patients_tble, <span class="at">by =</span> <span class="st">"subject_id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age_intime =</span> <span class="fu">year</span>(intime) <span class="sc">-</span> anchor_year <span class="sc">+</span> anchor_age) <span class="sc">|&gt;</span></span>
 <span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(age_intime<span class="sc">&gt;</span><span class="dv">18</span>)<span class="sc">|&gt;</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(admissions_tble,<span class="sc">-</span>subject_id), <span class="at">by =</span> <span class="st">"hadm_id"</span>)<span class="sc">|&gt;</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(labevents_tble, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"subject_id"</span>,<span class="st">"stay_id"</span>))<span class="sc">|&gt;</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(chartevents_tble, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"subject_id"</span>,<span class="st">"stay_id"</span>))<span class="sc">|&gt;</span></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()<span class="sc">|&gt;</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(admissions_tble, <span class="sc">-</span> subject_id), <span class="at">by =</span> <span class="st">"hadm_id"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(labevents_tble, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"subject_id"</span>,<span class="st">"stay_id"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(chartevents_tble, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"subject_id"</span>,<span class="st">"stay_id"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>() <span class="sc">|&gt;</span></span>
 <span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">width=</span><span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 73,097 × 41
@@ -619,36 +619,61 @@ This warning is displayed once every 8 hours.</code></pre>
 </iframe>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>mimic_icu_cohort<span class="ot">&lt;-</span>mimic_icu_cohort <span class="sc">|&gt;</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(first_careunit, last_careunit, admission_type, discharge_location), <span class="sc">~</span> <span class="fu">fct_lump</span>(., <span class="at">n =</span> <span class="dv">4</span>, <span class="at">other_level =</span> <span class="st">"Other"</span>)))<span class="sc">|&gt;</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">admission_location =</span> <span class="fu">fct_lump</span>(admission_location, <span class="at">n =</span> <span class="dv">3</span>, <span class="at">other_level =</span> <span class="st">"Other"</span>))<span class="sc">|&gt;</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">race =</span> <span class="fu">fct_collapse</span>(race,</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">BLACK =</span> <span class="fu">c</span>(<span class="st">"BLACK/AFRICAN"</span>, <span class="st">"BLACK/CAPE VERDEAN"</span>, <span class="st">"BLACK/AFRICAN AMERICAN"</span>,<span class="st">"BLACK/CARIBBEAN ISLAND"</span>), </span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>                             <span class="at">HISPANIC =</span> <span class="fu">c</span>(<span class="st">"HISPANIC/LATINO - GUATEMALAN"</span>, <span class="st">"HISPANIC/LATINO - MEXICAN"</span>, <span class="st">"HISPANIC/LATINO - SALVADORAN"</span>,<span class="st">"HISPANIC/LATINO - CUBAN"</span>,<span class="st">"HISPANIC/LATINO - HONDURAN"</span>,<span class="st">"HISPANIC/LATINO - COLUMBIAN"</span>,<span class="st">"HISPANIC/LATINO - CENTRAL AMERICAN"</span>,<span class="st">"HISPANIC OR LATINO"</span>,<span class="st">"HISPANIC/LATINO - DOMINICAN"</span>,<span class="st">"HISPANIC/LATINO - PUERTO RICAN"</span>), </span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">ASIAN =</span> <span class="fu">c</span>(<span class="st">"ASIAN - ASIAN INDIAN"</span>,<span class="st">"ASIAN - SOUTH EAST ASIAN"</span>,<span class="st">"ASIAN - KOREAN"</span>,<span class="st">"ASIAN"</span>,<span class="st">"ASIAN - CHINESE"</span>),</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>                             <span class="at">WHITE =</span> <span class="fu">c</span>(<span class="st">"WHITE - EASTERN EUROPEAN"</span>,<span class="st">"WHITE - BRAZILIAN"</span>,<span class="st">"WHITE"</span>,<span class="st">"WHITE - RUSSIAN"</span>,<span class="st">"WHITE - OTHER EUROPEAN"</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">race =</span> <span class="fu">fct_other</span>(race, <span class="at">keep =</span> <span class="fu">c</span>(<span class="st">"ASIAN"</span>, <span class="st">"BLACK"</span>, <span class="st">"HISPANIC"</span>, <span class="st">"WHITE"</span>)))<span class="sc">|&gt;</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">los_long =</span> (los <span class="sc">&gt;=</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(first_careunit, last_careunit, admission_type, discharge_location),</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span> <span class="fu">fct_lump</span>(., <span class="at">n =</span> <span class="dv">4</span>, <span class="at">other_level =</span> <span class="st">"Other"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">admission_location =</span> <span class="fu">fct_lump</span>(</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    admission_location, <span class="at">n =</span> <span class="dv">3</span>, <span class="at">other_level =</span> <span class="st">"Other"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">race =</span> <span class="fu">fct_collapse</span>(race,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">BLACK =</span> <span class="fu">c</span>(<span class="st">"BLACK/AFRICAN"</span>, </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"BLACK/CAPE VERDEAN"</span>, </span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"BLACK/AFRICAN AMERICAN"</span>, </span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"BLACK/CARIBBEAN ISLAND"</span>), </span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>                             <span class="at">HISPANIC =</span> <span class="fu">c</span>(<span class="st">"HISPANIC/LATINO - GUATEMALAN"</span>, </span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"HISPANIC/LATINO - MEXICAN"</span>, </span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"HISPANIC/LATINO - SALVADORAN"</span>, </span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"HISPANIC/LATINO - CUBAN"</span>, </span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"HISPANIC/LATINO - HONDURAN"</span>, </span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"HISPANIC/LATINO - COLUMBIAN"</span>, </span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"HISPANIC/LATINO - CENTRAL AMERICAN"</span>, </span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"HISPANIC OR LATINO"</span>,<span class="st">"HISPANIC/LATINO - DOMINICAN"</span>, </span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"HISPANIC/LATINO - PUERTO RICAN"</span>), </span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>                             <span class="at">ASIAN =</span> <span class="fu">c</span>(<span class="st">"ASIAN - ASIAN INDIAN"</span>, </span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"ASIAN - SOUTH EAST ASIAN"</span>,<span class="st">"ASIAN - KOREAN"</span>, </span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"ASIAN"</span>, </span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"ASIAN - CHINESE"</span>),</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>                             <span class="at">WHITE =</span> <span class="fu">c</span>(<span class="st">"WHITE - EASTERN EUROPEAN"</span>, </span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"WHITE - BRAZILIAN"</span>,<span class="st">"WHITE"</span>, </span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"WHITE - RUSSIAN"</span>, </span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"WHITE - OTHER EUROPEAN"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">race =</span> <span class="fu">fct_other</span>(race, </span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>                          <span class="at">keep =</span> <span class="fu">c</span>(<span class="st">"ASIAN"</span>, <span class="st">"BLACK"</span>, <span class="st">"HISPANIC"</span>, <span class="st">"WHITE"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">los_long =</span> (los <span class="sc">&gt;=</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl_summary</span>(mimic_icu_cohort<span class="sc">%&gt;%</span><span class="fu">select</span>(<span class="sc">-</span>subject_id,<span class="sc">-</span>hadm_id,<span class="sc">-</span>stay_id,<span class="sc">-</span>admit_provider_id), <span class="at">by =</span> los_long)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tbl_summary</span>(mimic_icu_cohort <span class="sc">%&gt;%</span> <span class="fu">select</span>( </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span> subject_id, </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span> hadm_id,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span> stay_id,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span> admit_provider_id), </span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> los_long)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="xuefjgonqa" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#xuefjgonqa table {
+<div id="ycppdchuua" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ycppdchuua table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#xuefjgonqa thead, #xuefjgonqa tbody, #xuefjgonqa tfoot, #xuefjgonqa tr, #xuefjgonqa td, #xuefjgonqa th {
+#ycppdchuua thead, #ycppdchuua tbody, #ycppdchuua tfoot, #ycppdchuua tr, #ycppdchuua td, #ycppdchuua th {
   border-style: none;
 }
 
-#xuefjgonqa p {
+#ycppdchuua p {
   margin: 0;
   padding: 0;
 }
 
-#xuefjgonqa .gt_table {
+#ycppdchuua .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -674,12 +699,12 @@ This warning is displayed once every 8 hours.</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#xuefjgonqa .gt_caption {
+#ycppdchuua .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#xuefjgonqa .gt_title {
+#ycppdchuua .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -691,7 +716,7 @@ This warning is displayed once every 8 hours.</code></pre>
   border-bottom-width: 0;
 }
 
-#xuefjgonqa .gt_subtitle {
+#ycppdchuua .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -703,7 +728,7 @@ This warning is displayed once every 8 hours.</code></pre>
   border-top-width: 0;
 }
 
-#xuefjgonqa .gt_heading {
+#ycppdchuua .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -715,13 +740,13 @@ This warning is displayed once every 8 hours.</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#xuefjgonqa .gt_bottom_border {
+#ycppdchuua .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#xuefjgonqa .gt_col_headings {
+#ycppdchuua .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -736,7 +761,7 @@ This warning is displayed once every 8 hours.</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#xuefjgonqa .gt_col_heading {
+#ycppdchuua .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -756,7 +781,7 @@ This warning is displayed once every 8 hours.</code></pre>
   overflow-x: hidden;
 }
 
-#xuefjgonqa .gt_column_spanner_outer {
+#ycppdchuua .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -768,15 +793,15 @@ This warning is displayed once every 8 hours.</code></pre>
   padding-right: 4px;
 }
 
-#xuefjgonqa .gt_column_spanner_outer:first-child {
+#ycppdchuua .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#xuefjgonqa .gt_column_spanner_outer:last-child {
+#ycppdchuua .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#xuefjgonqa .gt_column_spanner {
+#ycppdchuua .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -788,11 +813,11 @@ This warning is displayed once every 8 hours.</code></pre>
   width: 100%;
 }
 
-#xuefjgonqa .gt_spanner_row {
+#ycppdchuua .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#xuefjgonqa .gt_group_heading {
+#ycppdchuua .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -818,7 +843,7 @@ This warning is displayed once every 8 hours.</code></pre>
   text-align: left;
 }
 
-#xuefjgonqa .gt_empty_group_heading {
+#ycppdchuua .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -833,15 +858,15 @@ This warning is displayed once every 8 hours.</code></pre>
   vertical-align: middle;
 }
 
-#xuefjgonqa .gt_from_md > :first-child {
+#ycppdchuua .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#xuefjgonqa .gt_from_md > :last-child {
+#ycppdchuua .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#xuefjgonqa .gt_row {
+#ycppdchuua .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -860,7 +885,7 @@ This warning is displayed once every 8 hours.</code></pre>
   overflow-x: hidden;
 }
 
-#xuefjgonqa .gt_stub {
+#ycppdchuua .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -873,7 +898,7 @@ This warning is displayed once every 8 hours.</code></pre>
   padding-right: 5px;
 }
 
-#xuefjgonqa .gt_stub_row_group {
+#ycppdchuua .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -887,15 +912,15 @@ This warning is displayed once every 8 hours.</code></pre>
   vertical-align: top;
 }
 
-#xuefjgonqa .gt_row_group_first td {
+#ycppdchuua .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#xuefjgonqa .gt_row_group_first th {
+#ycppdchuua .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#xuefjgonqa .gt_summary_row {
+#ycppdchuua .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -905,16 +930,16 @@ This warning is displayed once every 8 hours.</code></pre>
   padding-right: 5px;
 }
 
-#xuefjgonqa .gt_first_summary_row {
+#ycppdchuua .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#xuefjgonqa .gt_first_summary_row.thick {
+#ycppdchuua .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#xuefjgonqa .gt_last_summary_row {
+#ycppdchuua .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -924,7 +949,7 @@ This warning is displayed once every 8 hours.</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#xuefjgonqa .gt_grand_summary_row {
+#ycppdchuua .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -934,7 +959,7 @@ This warning is displayed once every 8 hours.</code></pre>
   padding-right: 5px;
 }
 
-#xuefjgonqa .gt_first_grand_summary_row {
+#ycppdchuua .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -944,7 +969,7 @@ This warning is displayed once every 8 hours.</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#xuefjgonqa .gt_last_grand_summary_row_top {
+#ycppdchuua .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -954,11 +979,11 @@ This warning is displayed once every 8 hours.</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#xuefjgonqa .gt_striped {
+#ycppdchuua .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#xuefjgonqa .gt_table_body {
+#ycppdchuua .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -967,7 +992,7 @@ This warning is displayed once every 8 hours.</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#xuefjgonqa .gt_footnotes {
+#ycppdchuua .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -981,7 +1006,7 @@ This warning is displayed once every 8 hours.</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#xuefjgonqa .gt_footnote {
+#ycppdchuua .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -990,7 +1015,7 @@ This warning is displayed once every 8 hours.</code></pre>
   padding-right: 5px;
 }
 
-#xuefjgonqa .gt_sourcenotes {
+#ycppdchuua .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1004,7 +1029,7 @@ This warning is displayed once every 8 hours.</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#xuefjgonqa .gt_sourcenote {
+#ycppdchuua .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1012,63 +1037,63 @@ This warning is displayed once every 8 hours.</code></pre>
   padding-right: 5px;
 }
 
-#xuefjgonqa .gt_left {
+#ycppdchuua .gt_left {
   text-align: left;
 }
 
-#xuefjgonqa .gt_center {
+#ycppdchuua .gt_center {
   text-align: center;
 }
 
-#xuefjgonqa .gt_right {
+#ycppdchuua .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#xuefjgonqa .gt_font_normal {
+#ycppdchuua .gt_font_normal {
   font-weight: normal;
 }
 
-#xuefjgonqa .gt_font_bold {
+#ycppdchuua .gt_font_bold {
   font-weight: bold;
 }
 
-#xuefjgonqa .gt_font_italic {
+#ycppdchuua .gt_font_italic {
   font-style: italic;
 }
 
-#xuefjgonqa .gt_super {
+#ycppdchuua .gt_super {
   font-size: 65%;
 }
 
-#xuefjgonqa .gt_footnote_marks {
+#ycppdchuua .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#xuefjgonqa .gt_asterisk {
+#ycppdchuua .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#xuefjgonqa .gt_indent_1 {
+#ycppdchuua .gt_indent_1 {
   text-indent: 5px;
 }
 
-#xuefjgonqa .gt_indent_2 {
+#ycppdchuua .gt_indent_2 {
   text-indent: 10px;
 }
 
-#xuefjgonqa .gt_indent_3 {
+#ycppdchuua .gt_indent_3 {
   text-indent: 15px;
 }
 
-#xuefjgonqa .gt_indent_4 {
+#ycppdchuua .gt_indent_4 {
   text-indent: 20px;
 }
 
-#xuefjgonqa .gt_indent_5 {
+#ycppdchuua .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
