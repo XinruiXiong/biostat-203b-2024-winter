@@ -1,0 +1,191 @@
+---
+title: "Biostat 203B Homework 5"
+subtitle: Due Mar 22 @ 11:59PM
+author: "Xinrui Xiong 806329308"
+---
+
+## Predicting ICU duration
+
+Using the ICU cohort `mimiciv_icu_cohort.rds` you built in Homework 4, develop at least three machine learning approaches (logistic regression with enet regularization, random forest, boosting, SVM, MLP, etc) plus a model stacking approach for predicting whether a patient's ICU stay will be longer than 2 days. You should use the `los_long` variable as the outcome. You algorithms can use patient demographic information (gender, age at ICU `intime`, marital status, race), ICU admission information (first care unit), the last lab measurements before the ICU stay, and first vital measurements during ICU stay as features. You are welcome to use any feature engineering techniques you think are appropriate; but make sure to not use features that are not available at an ICU stay's `intime`. For instance, `last_careunit` cannot be used in your algorithms.
+
+1.  Data preprocessing and feature engineering.
+
+```{r, eval = T}
+library(tidyverse)
+library(tidymodels)
+library(ggplot2)
+library(GGally)
+library(gtsummary)
+```
+
+```{r, eval=T}
+mimiciv_icu_cohort <- readRDS("./mimic_icu_cohort.rds")
+
+mimiciv_icu_cohort$los_long <- as.factor(mimiciv_icu_cohort$los_long)
+
+mimiciv_icu_cohort <- mimiciv_icu_cohort %>%
+  select(subject_id, hadm_id, stay_id, gender, age_intime, marital_status, race, first_careunit,
+         `White Blood Cells`, `Creatinine`, `Potassium`, 
+         `Glucose`, `Sodium`, `Chloride`, `Bicarbonate`, 
+         `Hematocrit`, `Heart Rate`, `Non Invasive Blood Pressure systolic`,
+         `Temperature Fahrenheit`, `Respiratory Rate`, 
+         `Non Invasive Blood Pressure diastolic`, los_long)
+
+
+tbl_summary(mimiciv_icu_cohort %>% select(-subject_id, -hadm_id, -stay_id), by=los_long)
+
+```
+
+From the tbl_summary, we can see that there are some missing values in the dataset. We'll use the mean value to fill in the missing values for the continuous variables and use the mode value to fill in the missing values for the categorical variables in the recipe procedure in the next step.
+
+2.  Partition data into 50% training set and 50% test set. Stratify partitioning according to `los_long`. For grading purpose, sort the data by `subject_id`, `hadm_id`, and `stay_id` and use the seed `203` for the initial data split. Below is the sample code.
+
+```{r, eval = T}
+set.seed(203)
+
+# sort
+mimiciv_icu_cohort <- mimiciv_icu_cohort |>
+  arrange(subject_id, hadm_id, stay_id)
+
+data_split <- initial_split(
+  mimiciv_icu_cohort, 
+  # stratify by los_long
+  strata = "los_long", 
+  prop = 0.5
+  )
+
+
+mimic_training<-training(data_split)
+mimic_testing<-testing(data_split)
+
+```
+
+```{r, eval = T}
+# recipe
+# To exclued the subject_id, hadm_id, stay_id, "los_long ~ . "are not used.
+logit_recipe <- recipe(los_long ~ gender + age_intime + marital_status + 
+                   race + first_careunit + `White Blood Cells` + 
+                   `Creatinine` + `Potassium` + `Glucose` + `Sodium` + 
+                   `Chloride` + `Bicarbonate` + `Hematocrit` + 
+                   `Heart Rate` + `Non Invasive Blood Pressure systolic` + 
+                   `Temperature Fahrenheit` + `Respiratory Rate` + 
+                   `Non Invasive Blood Pressure diastolic`, 
+                 data = mimic_training) |>
+  # mean imputation for continuous variables
+  step_impute_mean(`White Blood Cells`, `Creatinine`, 
+                   `Potassium`, `Glucose`, `Sodium`, 
+                   `Chloride`, `Bicarbonate`, `Hematocrit`, 
+                   `Heart Rate`, `Non Invasive Blood Pressure systolic`, 
+                   `Temperature Fahrenheit`, `Respiratory Rate`, 
+                   `Non Invasive Blood Pressure diastolic`) |>
+  # mode imputation for categorical variables
+  step_impute_mode(marital_status) |>
+  # create traditional dummy variables
+  step_dummy(all_nominal_predictors()) |>
+  # zero-variance filter
+  step_zv(all_numeric_predictors()) |> 
+  # center and scale numeric data
+  step_normalize(all_numeric_predictors()) |>
+  # estimate the means and standard deviations
+  prep(training = mimic_training, retain = TRUE) |>
+  print()
+  
+
+```
+
+3.  Train and tune the models using the training set.
+
+**logistic regression with enet regularization:**
+
+```{r, eval = T}
+
+logit_mod <- logistic_reg(penalty = tune(), mixture = tune()) %>%
+  set_engine("glmnet") %>%
+  set_mode("classification") %>%
+  print()
+
+```
+
+```{r, eval = T}
+logit_wf <- workflow() |>
+  add_recipe(logit_recipe) |>
+  add_model(logit_mod) |>
+  print()
+```
+
+```{r, eval = T}
+param_grid <- grid_regular(
+  penalty(range = c(-6, 3)), 
+  mixture(),
+  levels = c(100, 5)
+  ) |>
+  print()
+```
+
+```{r, eval = T}
+
+set.seed(203)
+
+folds <- vfold_cv(mimic_training, v = 5)
+folds
+
+```
+
+```{r, eval = T}
+logit_fit <- logit_wf |>
+  tune_grid(
+    resamples = folds,
+    grid = param_grid,
+    metrics = metric_set(roc_auc, accuracy)
+    )
+
+logit_fit
+```
+
+
+```{r, eval = T}
+logit_fit |>
+  # aggregate metrics from K folds
+  collect_metrics() |>
+  print(width = Inf) |>
+  filter(.metric == "roc_auc") |>
+  ggplot(mapping = aes(x = penalty, y = mean, color = factor(mixture))) +
+  geom_point() +
+  labs(x = "Penalty", y = "CV AUC") +
+  scale_x_log10()
+```
+
+
+```{r, eval = T}
+logit_fit |>
+  show_best("roc_auc")
+
+
+best_logit <- logit_fit |>
+  select_best("roc_auc")
+best_logit
+```
+
+
+```{r, eval = T}
+# Final workflow
+final_wf <- logit_wf |>
+  finalize_workflow(best_logit)
+final_wf
+
+# Fit the whole training set, then predict the test cases
+final_fit <- 
+  final_wf |>
+  last_fit(data_split)
+final_fit
+
+# Test metrics
+final_fit |> 
+  collect_metrics()
+```
+
+
+
+
+
+4.  Compare model classification performance on the test set. Report both the area under ROC curve and accuracy for each machine learning algorithm and the model stacking. Interpret the results. What are the most important features in predicting long ICU stays? How do the models compare in terms of performance and interpretability?
