@@ -16,6 +16,11 @@ library(tidymodels)
 library(ggplot2)
 library(GGally)
 library(gtsummary)
+library(keras)
+library(ranger)
+library(stacks)
+library(vip)
+
 ```
 
 ```{r, eval=T}
@@ -87,7 +92,7 @@ recipe <- recipe(los_long ~ gender + age_intime + marital_status +
   # center and scale numeric data
   step_normalize(all_numeric_predictors()) |>
   # estimate the means and standard deviations
-  prep(training = mimic_training, retain = TRUE) |>
+  # prep(training = mimic_training, retain = TRUE) |>
   print()
   
 
@@ -142,7 +147,6 @@ logit_fit <- logit_wf |>
 logit_fit
 ```
 
-
 ```{r, eval = T}
 logit_fit |>
   # aggregate metrics from K folds
@@ -155,34 +159,33 @@ logit_fit |>
   scale_x_log10()
 ```
 
-
 ```{r, eval = T}
 logit_fit |>
-  show_best("roc_auc")
+  show_best(metric = "roc_auc")
 
 
 best_logit <- logit_fit |>
-  select_best("roc_auc")
+  select_best(metric="roc_auc")
 best_logit
 ```
 
-
 ```{r, eval = T}
 # Final workflow
-final_wf <- logit_wf |>
+logit_final_wf <- logit_wf |>
   finalize_workflow(best_logit)
-final_wf
+logit_final_wf
 
 # Fit the whole training set, then predict the test cases
-final_fit <- 
-  final_wf |>
+logit_final_fit <- 
+  logit_final_wf |>
   last_fit(data_split)
-final_fit
+logit_final_fit
 
 # Test metrics
-final_fit |> 
+logit_final_fit |> 
   collect_metrics()
 ```
+
 **Random Forest**
 
 ```{r, eval = T}
@@ -242,30 +245,30 @@ rf_fit |>
   labs(x = "Num. of Trees", y = "CV AUC")
 
 rf_fit |>
-  show_best("roc_auc")
+  show_best(metric = "roc_auc")
 
 
 best_rf <- rf_fit |>
-  select_best("roc_auc")
+  select_best(metric = "roc_auc")
 best_rf
 ```
 
 ```{r, eval = T}
 # Final workflow
-final_wf <- rf_wf |>
+rf_final_wf <- rf_wf |>
   finalize_workflow(best_rf)
-final_wf
+rf_final_wf
 
 
 # Fit the whole training set, then predict the test cases
-final_fit <- 
-  final_wf |>
+rf_final_fit <- 
+  rf_final_wf |>
   last_fit(data_split)
-final_fit
+rf_final_fit
 
 
 # Test metrics
-final_fit |> 
+rf_final_fit |> 
   collect_metrics()
 ```
 
@@ -317,7 +320,6 @@ gb_fit
 
 ```
 
-
 ```{r, eval = T}
 gb_fit |>
   collect_metrics() |>
@@ -329,63 +331,173 @@ gb_fit |>
   scale_x_log10()
 
 gb_fit |>
-  show_best("roc_auc")
+  show_best(metric = "roc_auc")
 
 best_gb <- gb_fit |>
-  select_best("roc_auc")
+  select_best(metric = "roc_auc")
 best_gb
 ```
 
 ```{r, eval = T}
 # Final workflow
-final_wf <- gb_wf |>
+gb_final_wf <- gb_wf |>
   finalize_workflow(best_gb)
-final_wf
+gb_final_wf
 
 # Fit the whole training set, then predict the test cases
-final_fit <- 
-  final_wf |>
+gb_final_fit <- 
+  gb_final_wf |>
   last_fit(data_split)
-final_fit
+gb_final_fit
 
 # Test metrics
-final_fit |> 
+gb_final_fit |> 
   collect_metrics()
 ```
+
 **Model Stacking (Ensemble Learning)**
 
 ```{r, eval = T}
+logit_grid <- grid_regular(
+  penalty(range = c(-6, 3)), 
+  mixture(),
+  levels = c(100, 5)
+  )
 
+logit_res <- 
+  tune_grid(
+    object = logit_wf, 
+    resamples = folds, 
+    grid = logit_grid,
+    control = control_stack_grid()
+  )
+logit_res
+
+
+rf_grid <- grid_regular(
+  trees(range = c(100L, 500L)), 
+  mtry(range = c(1L, 5L)),
+  levels = c(5, 5)
+  )
+
+rf_res <- 
+  tune_grid(
+    object = rf_wf, 
+    resamples = folds, 
+    grid = rf_grid,
+    control = control_stack_grid()
+  )
+rf_res
+
+gb_grid <- grid_regular(
+  tree_depth(range = c(1L, 3L)),
+  learn_rate(range = c(-5, 2), trans = log10_trans()),
+  levels = c(3, 10)
+  )
+
+gb_res <- 
+  tune_grid(
+    object = gb_wf, 
+    resamples = folds, 
+    grid = gb_grid,
+    control = control_stack_grid()
+  )
+```
+
+```{r, eval = T}
+mimic_model_st <- 
+  # initialize the stack
+  stacks() |>
+  # add candidate members
+  add_candidates(logit_res) |>
+  add_candidates(rf_res) |>
+  add_candidates(gb_res) |>
+  # determine how to combine their predictions
+  blend_predictions(
+    penalty = 10^(-6:2),
+    metrics = c("roc_auc")
+    ) |>
+  # fit the candidates with nonzero stacking coefficients
+  fit_members()
+mimic_model_st
+
+autoplot(mimic_model_st)
+autoplot(mimic_model_st, type = "members")
+autoplot(mimic_model_st, type = "weights")
+
+
+collect_parameters(mimic_model_st, "logit_res")
+collect_parameters(mimic_model_st, "rf_res")
+collect_parameters(mimic_model_st, "gb_res")
+
+
+```
+
+```{r, eval = T}
+mimic_pred <- mimic_testing %>%
+  bind_cols(predict(mimic_model_st, ., type = "prob")) %>%
+  print(width = Inf)
+
+
+mimic_pred <- mimic_pred %>%
+  mutate(.pred_class = if_else(.pred_FALSE > 0.5, "FALSE", "TRUE"))%>%
+  mutate(.pred_class = factor(.pred_class, levels = c("FALSE", "TRUE")))
+mimic_pred$los_long <- factor(mimic_pred$los_long, levels = c("FALSE", "TRUE"))
+  
+```
+
+```{r, eval = T}
+yardstick::roc_auc(
+  mimic_pred,
+  truth = los_long,
+  contains(".pred_FALSE")
+  )
+
+yardstick::accuracy(
+  mimic_pred,
+  truth = los_long,
+  estimate = .pred_class
+  )
 ```
 
 4.  Compare model classification performance on the test set. Report both the area under ROC curve and accuracy for each machine learning algorithm and the model stacking. Interpret the results. What are the most important features in predicting long ICU stays? How do the models compare in terms of performance and interpretability?
 
-<font color ="Blue">
- **Firstly, the performance are concluded as follows:**
-  
-  **Logistic Regression with Elastic Net Regularization:**
-  
-  - AUC: 
-  - Accuracy: 
-  
-  **Random Forest:**
-  
-  - AUC:
-  - Accuracy: 
-  
-  **Boosting:**
-  
-  - AUC: 
-  - Accuracy: 
-  
-  **Model Stacking:**
-</font>    
+<font color ="Blue"> **Firstly, the performance are concluded as follows:**
+
+**Logistic Regression with Elastic Net Regularization:**
+
+-   AUC: 0.5965392\
+-   Accuracy: 0.5736409
+
+**Random Forest:**
+
+-   AUC: 0.6329192
+-   Accuracy: 0.5961586
+
+**Boosting:**
+
+-   AUC: 0.6386602
+-   Accuracy: 0.6008920
+
+**Model Stacking:** - AUC: 0.6461363 - Accuracy: 0.6054612
+
+
+To determine the most important features in predicting long ICU stays, we can use the `vip` package to calculate the variable importance. 
+Let's use the boosting model as an example:
+
+```{r, eval = T}
+final_tree <- extract_workflow(gb_final_fit)
+final_tree 
+
+final_tree %>% 
+  extract_fit_parsnip() %>% 
+  vip()
+
+```
+As the plot shows, the Temperature Fahrenheit is the most important feature in predicting long ICU stays.
 
 
 
+The model stacking has the best performance and interpretability: AUC is a measure of how well the model can distinguish between the two classes. The higher the AUC, the better the model is at predicting the outcome. The AUC for the model stacking is 0.6461363, which is the highest among all the models. This indicates that the model stacking is the best at distinguishing between the two classes. The accuracy of the model stacking is 0.6054612, which is also the highest among all the models. This indicates that the model stacking is the best at predicting the outcome. As for the rest 3 models, their performance can be ranked as follows: Boosting \> Random Forest \> Logistic Regression with Elastic Net Regularization.
 
-
-
-
-
-
+</font>
