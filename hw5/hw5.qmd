@@ -29,15 +29,22 @@ mimiciv_icu_cohort <- readRDS("./mimic_icu_cohort.rds")
 mimiciv_icu_cohort$los_long <- as.factor(mimiciv_icu_cohort$los_long)
 
 mimiciv_icu_cohort <- mimiciv_icu_cohort %>%
-  select(subject_id, hadm_id, stay_id, gender, age_intime, marital_status, race, first_careunit,
+  select(subject_id, hadm_id, stay_id, gender, 
+         age_intime, marital_status, race, first_careunit,
          `White Blood Cells`, `Creatinine`, `Potassium`, 
          `Glucose`, `Sodium`, `Chloride`, `Bicarbonate`, 
-         `Hematocrit`, `Heart Rate`, `Non Invasive Blood Pressure systolic`,
+         `Hematocrit`, `Heart Rate`, 
+         `Non Invasive Blood Pressure systolic`,
          `Temperature Fahrenheit`, `Respiratory Rate`, 
          `Non Invasive Blood Pressure diastolic`, los_long)
 
 
-tbl_summary(mimiciv_icu_cohort %>% select(-subject_id, -hadm_id, -stay_id), by=los_long)
+tbl_summary(mimiciv_icu_cohort %>% 
+              select(
+                -subject_id, 
+                -hadm_id, 
+                -stay_id), 
+            by=los_long)
 
 ```
 
@@ -68,14 +75,15 @@ mimic_testing<-testing(data_split)
 ```{r, eval = T}
 # recipe
 # To exclued the subject_id, hadm_id, stay_id, "los_long ~ . "are not used.
-recipe <- recipe(los_long ~ gender + age_intime + marital_status + 
-                   race + first_careunit + `White Blood Cells` + 
-                   `Creatinine` + `Potassium` + `Glucose` + `Sodium` + 
-                   `Chloride` + `Bicarbonate` + `Hematocrit` + 
-                   `Heart Rate` + `Non Invasive Blood Pressure systolic` + 
-                   `Temperature Fahrenheit` + `Respiratory Rate` + 
-                   `Non Invasive Blood Pressure diastolic`, 
-                 data = mimic_training) |>
+recipe <- recipe(
+  los_long ~ gender + age_intime + marital_status + 
+    race + first_careunit + `White Blood Cells` + 
+    `Creatinine` + `Potassium` + `Glucose` + `Sodium` + 
+    `Chloride` + `Bicarbonate` + `Hematocrit` + 
+    `Heart Rate` + `Non Invasive Blood Pressure systolic` + 
+    `Temperature Fahrenheit` + `Respiratory Rate` + 
+    `Non Invasive Blood Pressure diastolic`, 
+  data = mimic_training) |>
   # mean imputation for continuous variables
   step_impute_mean(`White Blood Cells`, `Creatinine`, 
                    `Potassium`, `Glucose`, `Sodium`, 
@@ -104,7 +112,9 @@ recipe <- recipe(los_long ~ gender + age_intime + marital_status +
 
 ```{r, eval = T}
 
-logit_mod <- logistic_reg(penalty = tune(), mixture = tune()) %>%
+logit_mod <- logistic_reg(
+  penalty = tune(), 
+  mixture = tune()) %>%
   set_engine("glmnet") %>%
   set_mode("classification") %>%
   print()
@@ -153,7 +163,11 @@ logit_fit |>
   collect_metrics() |>
   print(width = Inf) |>
   filter(.metric == "roc_auc") |>
-  ggplot(mapping = aes(x = penalty, y = mean, color = factor(mixture))) +
+  ggplot(mapping = aes(
+    x = penalty, 
+    y = mean, 
+    color = factor(mixture)
+    )) +
   geom_point() +
   labs(x = "Penalty", y = "CV AUC") +
   scale_x_log10()
@@ -239,7 +253,9 @@ rf_fit |>
   collect_metrics() |>
   print(width = Inf) |>
   filter(.metric == "roc_auc") |>
-  ggplot(mapping = aes(x = trees, y = mean, color = factor(mtry))) +
+  ggplot(mapping = aes(
+    x = trees, y = mean, color = factor(mtry)
+    )) +
   geom_point() + 
   # geom_line() + 
   labs(x = "Num. of Trees", y = "CV AUC")
@@ -297,7 +313,8 @@ gb_wf
 ```{r, eval = T}
 param_grid <- grid_regular(
   tree_depth(range = c(1L, 3L)),
-  learn_rate(range = c(-5, 2), trans = log10_trans()),
+  learn_rate(range = c(-5, 2), 
+             trans = log10_trans()),
   levels = c(3, 10)
   )
 param_grid
@@ -325,7 +342,11 @@ gb_fit |>
   collect_metrics() |>
   print(width = Inf) |>
   filter(.metric == "roc_auc") |>
-  ggplot(mapping = aes(x = learn_rate, y = mean, color = factor(tree_depth))) +
+  ggplot(mapping = aes(
+    x = learn_rate, 
+    y = mean, 
+    color = factor(tree_depth)
+    )) +
   geom_point() +
   labs(x = "Learning Rate", y = "CV AUC") +
   scale_x_log10()
@@ -440,9 +461,15 @@ mimic_pred <- mimic_testing %>%
 
 
 mimic_pred <- mimic_pred %>%
-  mutate(.pred_class = if_else(.pred_FALSE > 0.5, "FALSE", "TRUE"))%>%
-  mutate(.pred_class = factor(.pred_class, levels = c("FALSE", "TRUE")))
-mimic_pred$los_long <- factor(mimic_pred$los_long, levels = c("FALSE", "TRUE"))
+  mutate(.pred_class = if_else(.pred_FALSE > 0.5, 
+                               "FALSE", 
+                               "TRUE"))%>%
+  mutate(.pred_class = factor(.pred_class,
+                              levels = c("FALSE", "TRUE")))
+
+
+mimic_pred$los_long <- factor(mimic_pred$los_long, 
+                              levels = c("FALSE", "TRUE"))
   
 ```
 
